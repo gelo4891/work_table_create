@@ -9,6 +9,7 @@ class WorkClassAll {
 		private $WCA_dbName;
 		private $WCA_conn;
 		private $BT_class_Name;
+		
 	
 		public function __construct($WCA_dbType, $WCA_host, $WCA_port, $WCA_user, $WCA_password, $WCA_dbName) {
 			$this->dbType = $WCA_dbType;
@@ -18,7 +19,7 @@ class WorkClassAll {
 			$this->password = $WCA_password;
 			$this->dbName = $WCA_dbName;
 		}
-	
+	/*-------------------------------connect Base Oracle or MySQL-------------------------------------*/
 		public function WCA_connect_to_base() {
 			if ($this->dbType == 'mysql') {
 				$this->conn = mysqli_connect($this->host, $this->user, $this->password, $this->dbName, $this->port);
@@ -29,7 +30,68 @@ class WorkClassAll {
 				throw new Exception('Could not connect to database');
 			}
 		}
-	
+	/*--------------------------------END------------------------------------*/
+
+	/*---------------------------Create SQL_Query-----------------------------*/
+	public function buildQuery($type, $table, $data = array(), $conditions = array(), $orderBy = '', $limit = '')
+    {
+        switch(strtolower($type)) {
+            case 'select':
+                $fields = isset($data['fields']) ? $data['fields'] : '*';
+                $query = "SELECT $fields FROM $table";
+                break;
+
+            case 'insert':
+                $fields = implode(',', array_keys($data));
+                $values = "'" . implode("','", array_values($data)) . "'";
+                $query = "INSERT INTO $table ($fields) VALUES ($values)";
+                break;
+
+            case 'update':
+                $set = array();
+                foreach($data as $field => $value) {
+                    $set[] = "$field = '$value'";
+                }
+                $set = implode(',', $set);
+                $query = "UPDATE $table SET $set";
+                break;
+
+            case 'delete':
+                $query = "DELETE FROM $table";
+                break;
+				
+            case 'merge':
+                $fields = implode(',', array_keys($data));
+                $values = "'" . implode("','", array_values($data)) . "'";
+                $update = array();
+                foreach($data as $field => $value) {
+                    $update[] = "$field = VALUES($field)";
+                }
+                $update = implode(',', $update);
+                $query = "INSERT INTO $table ($fields) VALUES ($values) ON DUPLICATE KEY UPDATE $update";
+                break;
+            default:
+                throw new Exception('Unsupported query type');
+        }
+        if(!empty($conditions)) {
+            $where = array();
+            foreach($conditions as $field => $value) {
+                $where[] = "$field = '$value'";
+            }
+            $where = implode(' AND ', $where);
+            $query .= " WHERE $where";
+        }
+        if(!empty($orderBy)) {
+            $query .= " ORDER BY $orderBy";
+        }
+        if(!empty($limit)) {
+            $query .= " LIMIT $limit";
+        }
+        return $query;
+    }
+	/*--------------------------------END------------------------------------*/
+
+	/*---------------------------Query Sql-----------------------------------*/
 		public function WCA_query_sql($sql) {
 			if (!$this->conn) {
 				throw new Exception('Not connected to database');
@@ -48,7 +110,9 @@ class WorkClassAll {
 				return mysqli_affected_rows($this->conn);
 			}
 		}
-	
+	/*--------------------------------END------------------------------------*/
+
+	/*----------------------------Bild Table----------------------------------------*/
 		public function WCA_BuildTable($BT_data,$BT_class_Name) {
 			if (empty($BT_data)) {
 				throw new Exception('No data provided to build table');
@@ -72,6 +136,6 @@ class WorkClassAll {
 			return $html;
 		}
 	}
-
+/*--------------------------------END------------------------------------*/
 
 ?>
