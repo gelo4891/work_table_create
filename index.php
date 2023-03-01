@@ -17,7 +17,7 @@ $dbname = "base_o_zvit";
 $class_Name="BT_Class_Name";
 
 
-$workClass = new WorkClassAll ('mysql', $servername, '3306', $username, $password, $dbname);
+$workClass = new WorkClassAll ('mysql', $servername, '3306', $username, $password, $dbname,'1');
 
 // Connect to the database
 $workClass->WCA_connect_to_base();

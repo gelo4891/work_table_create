@@ -9,15 +9,17 @@ class WorkClassAll {
 		private $WCA_dbName;
 		private $WCA_conn;
 		private $BT_class_Name;
+		private	$WCA_table;
 		
 	
-		public function __construct($WCA_dbType, $WCA_host, $WCA_port, $WCA_user, $WCA_password, $WCA_dbName) {
+		public function __construct($WCA_dbType, $WCA_host, $WCA_port, $WCA_user, $WCA_password, $WCA_dbName, $WCA_table) {
 			$this->dbType = $WCA_dbType;
 			$this->host = $WCA_host;
 			$this->port = $WCA_port;
 			$this->user = $WCA_user;
 			$this->password = $WCA_password;
 			$this->dbName = $WCA_dbName;
+			$this->WCA_table= $WCA_table;
 		}
 	/*-------------------------------connect Base Oracle or MySQL-------------------------------------*/
 		public function WCA_connect_to_base() {
@@ -33,18 +35,18 @@ class WorkClassAll {
 	/*--------------------------------END------------------------------------*/
 
 	/*---------------------------Create SQL_Query-----------------------------*/
-	public function buildQuery($type, $table, $data = array(), $conditions = array(), $orderBy = '', $limit = '')
+	public function WCA_buildQuery($WCA_dbType, $WCA_table, $data = array(), $conditions = array(), $orderBy = '', $limit = '')
     {
-        switch(strtolower($type)) {
+        switch(strtolower($WCA_dbType)) {
             case 'select':
                 $fields = isset($data['fields']) ? $data['fields'] : '*';
-                $query = "SELECT $fields FROM $table";
+                $query = "SELECT $fields FROM $WCA_table";
                 break;
 
             case 'insert':
                 $fields = implode(',', array_keys($data));
                 $values = "'" . implode("','", array_values($data)) . "'";
-                $query = "INSERT INTO $table ($fields) VALUES ($values)";
+                $query = "INSERT INTO $WCA_table ($fields) VALUES ($values)";
                 break;
 
             case 'update':
@@ -53,13 +55,13 @@ class WorkClassAll {
                     $set[] = "$field = '$value'";
                 }
                 $set = implode(',', $set);
-                $query = "UPDATE $table SET $set";
+                $query = "UPDATE $WCA_table SET $set";
                 break;
 
             case 'delete':
-                $query = "DELETE FROM $table";
+                $query = "DELETE FROM $WCA_table";
                 break;
-				
+
             case 'merge':
                 $fields = implode(',', array_keys($data));
                 $values = "'" . implode("','", array_values($data)) . "'";
@@ -68,7 +70,7 @@ class WorkClassAll {
                     $update[] = "$field = VALUES($field)";
                 }
                 $update = implode(',', $update);
-                $query = "INSERT INTO $table ($fields) VALUES ($values) ON DUPLICATE KEY UPDATE $update";
+                $query = "INSERT INTO $WCA_table ($fields) VALUES ($values) ON DUPLICATE KEY UPDATE $update";
                 break;
             default:
                 throw new Exception('Unsupported query type');
