@@ -1,34 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Список таблиць Oracle</title>
-</head>
-<body>
-	<h1>Список таблиць Oracle</h1>
-	
-	<!-- Форма вибору таблиці -->
-	<form method="POST" action="process.php">
-		<label for="table_name">Виберіть таблицю:</label>
-		<select name="table_name" id="table_name">
-			<?php
 
-                echo '<link rel="stylesheet" href="../css/style_lab_1-13_1.css">';
+			<?php
+				echo '<link rel="stylesheet" href="/work_table_create/css/WTC_first.css">';
+				
+				/*require_once ("/work_table_create/Work_Class/W_C_all.php");*/
+
+				require_once __DIR__ . '/Work_Class/W_C_all.php';
+
                 
-				// Підключення до бази даних Oracle
-				$conn = oci_connect('username', 'password', 'db_server/db_name');
-				
-				// Отримання списку таблиць
-				$sql = "SELECT table_name FROM user_tables";
-				$stmt = oci_parse($conn, $sql);
-				oci_execute($stmt);
-				
-				// Виведення випадаючого списку з таблицями
-				while (($row = oci_fetch_array($stmt, OCI_ASSOC)) != false) {
-					echo "<option value='" . $row['TABLE_NAME'] . "'>" . $row['TABLE_NAME'] . "</option>";
-				}
-			?>
-		</select>
-		<button type="submit">Показати</button>
-	</form>
-</body>
-</html>
+
+
+// Приклад використання класу та методу
+$servername = "localhost";
+$username = "gelo4891";
+$password = "gelo1111";
+$dbname = "base_o_zvit";
+$class_Name="BT_Class_Name";
+
+
+$workClass = new WorkClassAll ('mysql', $servername, '3306', $username, $password, $dbname);
+
+// Connect to the database
+$workClass->WCA_connect_to_base();
+
+// Execute a SQL query
+$query = "SELECT * FROM boz_perelik_table";
+$result = $workClass->WCA_query_sql($query);
+
+// Display the results as a table
+echo $workClass->WCA_BuildTable($result,$class_Name);
+
+
+$query = "update boz_perelik_table set PT_number='1' where  PT_number='uniqer'";
+$result = $workClass->WCA_query_sql($query);
+
+echo $result ;
+
+// Display the results as a table
+
+
+$query = "SELECT * FROM boz_perelik_table";
+$result = $workClass->WCA_query_sql($query);
+
+// Display the results as a table
+echo $workClass->WCA_BuildTable($result,$class_Name);
+
+
+
+
+?>
+
+

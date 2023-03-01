@@ -1,0 +1,12 @@
+.BT_Class_Name{
+    border: 2px solid blue;
+}
+
+th{
+    border: 2px solid red;
+}
+
+td{
+    border: 2px solid chartreuse;
+    text-align: center;
+}
