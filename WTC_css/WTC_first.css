@@ -12,6 +12,11 @@ td{
 }
 
 
+/*---------------------------index.php---------------------------------*/
+
+.WTK_index_body{
+    background-image: url(/WTC_img/WTC_mountains.jpg);
+}
 
 .WTK_index_div {
     height: 500px;
@@ -19,3 +24,10 @@ td{
     justify-content: center;
     background: rebeccapurple;    
 }
+
+.WTK_index_div button{
+    margin: 50px;
+    height: 300px;
+    width: 300px;
+}
+/*--------------------------index.php END----------------------------------*/
