@@ -1,52 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Кнопки</title>
+	<link rel="stylesheet" href="WTC_css/WTC_first.css">
+</head>
+<body>
+	<!-- Місце для відображення кнопок -->
+	<div class="WTK_index_div"><a class="buttons-container"></a></div>
 
-			<?php
-				echo '<link rel="stylesheet" href="/work_table_create/css/WTC_first.css">';
-				
-				/*require_once ("/work_table_create/Work_Class/W_C_all.php");*/
-
-				require_once __DIR__ . '/Work_Class/W_C_all.php';
-
-                
-
-
-// Приклад використання класу та методу
-$servername = "localhost";
-$username = "gelo4891";
-$password = "gelo1111";
-$dbname = "base_o_zvit";
-$class_Name="BT_Class_Name";
-
-
-$workClass = new WorkClassAll ('mysql', $servername, '3306', $username, $password, $dbname,'1');
-
-// Connect to the database
-$workClass->WCA_connect_to_base();
-
-// Execute a SQL query
-$query = "SELECT * FROM boz_perelik_table";
-$result = $workClass->WCA_query_sql($query);
-
-// Display the results as a table
-echo $workClass->WCA_BuildTable($result,$class_Name);
-
-
-$query = "update boz_perelik_table set PT_number='1' where  PT_number='uniqer'";
-$result = $workClass->WCA_query_sql($query);
-
-echo $result ;
-
-// Display the results as a table
-
-
-$query = "SELECT * FROM boz_perelik_table";
-$result = $workClass->WCA_query_sql($query);
-
-// Display the results as a table
-echo $workClass->WCA_BuildTable($result,$class_Name);
-
-
-
-
-?>
-
-
+	<!-- Підключення JavaScript-файлів -->
+	<script src="WTC_js/class_Create.js"></script>
+	<script src="WTC_config/WTC_button.json"></script>
+	<script>
+		const buttonCreator = new ButtonCreator("WTC_config/WTC_button.json", "buttons-container");
+		buttonCreator.createButtons();
+	</script>
+</body>
+</html>

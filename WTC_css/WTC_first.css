@@ -10,3 +10,12 @@ td{
     border: 2px solid chartreuse;
     text-align: center;
 }
+
+
+
+.WTK_index_div {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    background: rebeccapurple;    
+}
