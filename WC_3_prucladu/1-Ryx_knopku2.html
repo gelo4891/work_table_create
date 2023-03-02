@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Кругла кнопка з рукою</title>
+	<style>
+		.button {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			background-color: #4CAF50;
+			position: relative;
+			margin: 50px;
+		}
+
+		.hand {
+			width: 60px;
+			height: 60px;
+			background-color: white;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform-origin: 0% 50%;
+			transform: rotate(0deg) translate(-50%, -50%);
+			border-radius: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="button" onclick="rotateHand()">
+		<div class="hand"></div>
+	</div>
+
+	<script>
+		function rotateHand() {
+			let hand = document.querySelector('.hand');
+			let rotation = parseInt(hand.style.transform.replace('rotate(', '').replace('deg)', ''));
+
+			if (isNaN(rotation)) {
+				rotation = 0;
+			}
+
+			rotation += 6;
+			hand.style.transform = `rotate(${rotation}deg) translate(-50%, -50%)`;
+		}
+	</script>
+</body>
+</html>

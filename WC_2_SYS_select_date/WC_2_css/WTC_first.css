@@ -16,18 +16,22 @@ td{
 
 .WTK_index_body{
     background-image: url(/WTC_img/WTC_mountains.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.WTK_index_div {
-    height: 500px;
+.WTK_index_div {  
     display: flex;
-    justify-content: center;
-    background: rebeccapurple;    
+    justify-content: center;  
 }
 
 .WTK_index_div button{
     margin: 50px;
     height: 300px;
     width: 300px;
+    background-color: yellow;
+    color: red;
+    font-size: 20px;
+    border-radius: 50%;
 }
 /*--------------------------index.php END----------------------------------*/

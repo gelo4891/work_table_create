@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Круглі кнопки з ефектами</title>
+	<style>
+	/*	.button {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			background-color: #4CAF50;
+			position: relative;
+			margin: 50px;
+			overflow: hidden;
+			cursor: pointer;
+			display: inline-block;
+		}
+*/
+
+		.button {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  border-radius: 50%;
+  animation: rotate-color 10s linear infinite;
+}
+
+		/* Ефект зміни кольору */
+		.button-color {
+			animation: color 5s infinite;
+		}
+
+		/* Ефект зміни прозорості */
+		.button-opacity {
+			animation: opacity 5s infinite;
+		}
+
+		/* Ефект обертання */
+		.button-rotate {
+			animation: rotate 5s infinite linear;
+		}
+
+		@keyframes color {
+			0% {
+				background-color: #4CAF50;
+			}
+			50% {
+				background-color: blue;
+			}
+			100% {
+				background-color: red;
+			}
+		}
+
+		@keyframes opacity {
+			0% {
+				opacity: 1;
+			}
+			50% {
+				opacity: 0.5;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
+		@keyframes rotate-color {
+  0% {
+    transform: rotate(0deg);
+    background-color: blue;
+  }
+  10% {
+    transform: rotate(10deg);
+    background-color: purple;
+  }
+  20% {
+    transform: rotate(20deg);
+    background-color: pink;
+  }
+  /* ... додайте кольори для інших градусів ... */
+  100% {
+    transform: rotate(360deg);
+    background-color: blue;
+  }
+}
+
+	</style>
+</head>
+<body>
+	<div class="button button-color"></div>
+	<div class="button button-opacity"></div>
+	<div class="button button-rotate"></div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+.button-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+  }
+  
+  .button {
+	width: 100px;
+	height: 100px;
+	background-color: blue;
+	border-radius: 25%;
+	margin: 0 20px;
+	animation: rotate-color 10s linear infinite;
+  }
+  
+  @keyframes rotate-color {
+	0% {
+	  transform: rotate(0deg);
+	  background-color: blue;
+	}
+	10% {
+	  transform: rotate(10deg);
+	  background-color: purple;
+	}
+	20% {
+	  transform: rotate(20deg);
+	  background-color: pink;
+	}
+	30% {
+	  transform: rotate(30deg);
+	  background-color: red;
+	}
+	40% {
+	  transform: rotate(40deg);
+	  background-color: yellow;
+	}
+	50% {
+	  transform: rotate(50deg);
+	  background-color: orange;
+	}
+	60% {
+	  transform: rotate(60deg);
+	  background-color: green;
+	}
+	70% {
+	  transform: rotate(70deg);
+	  background-color: brown;
+	}
+	80% {
+	  transform: rotate(80deg);
+	  background-color: cyan;
+	}
+	90% {
+	  transform: rotate(90deg);
+	  background-color: lime;
+	}
+	100% {
+	  transform: rotate(360deg);
+	  background-color: blue;
+	}
+  }
