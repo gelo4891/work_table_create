@@ -1,4 +1,4 @@
-<?
+<? 
 $servername = "localhost";
 $username = "gelo4891";
 $password = "gelo1111";

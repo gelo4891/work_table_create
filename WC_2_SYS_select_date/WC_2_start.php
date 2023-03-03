@@ -1,6 +1,6 @@
 <?php
 // Підключаємо файли з конфігурацією бази даних та класом QueryBuilder
-require_once(__DIR__ . '/WC_2_Class/WC_2_all_class.php');
+require_once __DIR__ . '/WC_2_Class/WC_2_all_class.php';
 require_once __DIR__ . '/WC_2_config/WC_2_config.php';
 
 // Запускаємо сесію
@@ -35,17 +35,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html >
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="WC_2_css/WC_2_file_start.css">
 </head>
-<body>
-    <h1>Login</h1>
+<body class="WC_2_start_class_html">
+    
     <?php if(isset($error)): ?>
     <p><?php echo $error; ?></p>
     <?php endif; ?>
+
     <form method="POST">
+        <div><h1>Login</h1></div>
         <div>
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>

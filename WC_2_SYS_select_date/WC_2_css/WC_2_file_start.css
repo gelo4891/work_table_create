@@ -1,0 +1,14 @@
+.WC_2_start_class_html{
+  display: flex;
+  background-color: aqua;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+
+
+.WC_2_start_class_html form{ 
+    border: 2px solid red;
+}

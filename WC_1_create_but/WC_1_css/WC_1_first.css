@@ -23,15 +23,24 @@
     color: red;
     font-size: 20px;
     border-radius: 50%;
-    animation: rotate-color 10s linear infinite;
 	animation-fill-mode:forwards /* додаємо, щоб кнопка залишалася в останній позиції анімації */
 }
 
+.WTK_index_div button:nth-child(1){
+	animation: rotate-color 10s linear infinite;
+}
+
+.WTK_index_div button:nth-child(2){
+	animation: rotate-color 15s linear infinite;
+}
+
+.WTK_index_div button:nth-child(3){
+	animation: rotate-color 20s linear infinite;
+}
+
+
 .WTK_index_div button:hover {
 	animation-play-state: paused;
-  /*transform: rotate(0deg);
-  background-color: rgb(9, 255, 0);
-    /*animation-play-state: paused; */
 	animation: rotation 2s linear infinite;
 }
 
@@ -65,41 +74,40 @@
 	  background-color: blue;
 	}
 	10% {
-	  transform: rotate(10deg);
+	  transform: rotate(5deg);
 	  background-color: purple;
 	}
 	20% {
-	  transform: rotate(-20deg);
+	  transform: rotate(-10deg);
 	  background-color: pink;
 	}
 	30% {
-	  transform: rotate(30deg);
+	  transform: rotate(15deg);
 	  background-color: rgb(255, 0, 234);
 	}
 	40% {
-	  transform: rotate(40deg);
+	  transform: rotate(20deg);
 	  background-color: yellow;
 	}
 	50% {
-	  transform: rotate(-50deg);
+	  transform: rotate(-25deg);
 	  background-color: orange;
 	}
 	60% {
-	  transform: rotate(-60deg);
+	  transform: rotate(-30deg);
 	  background-color: green;
 	}
 	70% {
-	  transform: rotate(70deg);
+	  transform: rotate(35deg);
 	  background-color: brown;
 	}
 	80% {
-	  transform: rotate(80deg);
+	  transform: rotate(40deg);
 	  background-color: cyan;
 	}
 
 	100% {
-	  transform: rotate(-360deg);
+	  transform: rotate(-45deg);
 	  background-color: blue;
 	}
   }
-
