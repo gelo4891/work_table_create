@@ -12,8 +12,10 @@
 	<script src="WC_1_js/WC_1_class_Create.js"></script>
 	<script src="WC_1_config/WC_1_button.json"></script>
 	<script>
-		const buttonCreator = new ButtonCreator("WC_1_config/WC_1_button.json", "buttons-container");
-		buttonCreator.createButtons();
+		const buttonCreator_text = new WC_1_ButtonCreator("WC_1_config/WC_1_button.json", "buttons-container");
+		buttonCreator_text.WC_1_createButtons_text();
+
+
 	</script>
 </body>
 </html>

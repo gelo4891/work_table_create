@@ -11,23 +11,53 @@
 
 .WTK_index_div {  
     display: flex;
+	height: 100vh;
     justify-content: center;  
+	align-items: center;	
 }
 
 .WTK_index_div button{
     margin: 50px;
     height: 300px;
     width: 300px;
-    background-color: yellow;
     color: red;
     font-size: 20px;
     border-radius: 50%;
     animation: rotate-color 10s linear infinite;
+	animation-fill-mode:forwards /* додаємо, щоб кнопка залишалася в останній позиції анімації */
 }
+
+.WTK_index_div button:hover {
+	animation-play-state: paused;
+  /*transform: rotate(0deg);
+  background-color: rgb(9, 255, 0);
+    /*animation-play-state: paused; */
+	animation: rotation 2s linear infinite;
+}
+
 /*--------------------------index.php END----------------------------------*/
 /*---------------------------WTC_1_create_but----END-----------------------------*/
-
-
+@keyframes rotation {
+	0%{
+		background-color: rgb(9, 255, 0);
+		border-radius: 50%;
+		border: 5px solid red;
+	color: blue;
+	}
+	50%{
+		background-color: rgb(136, 255, 0);
+		border-radius: 35%;
+		border: 5px solid red;
+	color: blue;
+	}
+	100%{
+		background-color: rgb(255, 238, 0);
+		border-radius: 20%;
+		border: 5px solid red;
+	color: blue;
+	}
+	
+}
 
 @keyframes rotate-color {
 	0% {
@@ -39,23 +69,23 @@
 	  background-color: purple;
 	}
 	20% {
-	  transform: rotate(20deg);
+	  transform: rotate(-20deg);
 	  background-color: pink;
 	}
 	30% {
 	  transform: rotate(30deg);
-	  background-color: red;
+	  background-color: rgb(255, 0, 234);
 	}
 	40% {
 	  transform: rotate(40deg);
 	  background-color: yellow;
 	}
 	50% {
-	  transform: rotate(50deg);
+	  transform: rotate(-50deg);
 	  background-color: orange;
 	}
 	60% {
-	  transform: rotate(60deg);
+	  transform: rotate(-60deg);
 	  background-color: green;
 	}
 	70% {
@@ -66,12 +96,10 @@
 	  transform: rotate(80deg);
 	  background-color: cyan;
 	}
-	90% {
-	  transform: rotate(90deg);
-	  background-color: lime;
-	}
+
 	100% {
-	  transform: rotate(360deg);
+	  transform: rotate(-360deg);
 	  background-color: blue;
 	}
   }
+
