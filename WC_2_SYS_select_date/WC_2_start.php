@@ -1,63 +1,23 @@
-<?php
-// Підключаємо файли з конфігурацією бази даних та класом QueryBuilder
-require_once __DIR__ . '/WC_2_Class/WC_2_all_class.php';
-require_once __DIR__ . '/WC_2_config/WC_2_config.php';
-
-// Запускаємо сесію
-session_start();
-
-// Перевіряємо, чи користувач вже авторизований, і перенаправляємо його на іншу сторінку, якщо так
-if(isset($_SESSION['user'])) {
-    header('Location: welcome.php');
-    exit;
-}
-
-// Якщо форма була відправлена, обробляємо її дані
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Витягуємо дані з форми
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    
-    // Перевіряємо дані користувача з базою даних
-    //$qb = new WorkClassAll() ;
-	$qb = new WorkClassAll ();
-    //$user = $qb->boz_user('users', array('username' => $username, 'password' => $password))->first();
-
-    // Якщо користувач існує, зберігаємо його дані в сесії та перенаправляємо на нову сторінку
-    if($user) {
-        $_SESSION['user'] = $user;
-        header('Location: test.php');
-        exit;
-    } else {
-        $error = 'Invalid username or password';
-    }
-}
-?>
-
 <!DOCTYPE html>
-<html >
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+	<title>Login Page</title>
     <link rel="stylesheet" href="WC_2_css/WC_2_file_start.css">
 </head>
 <body class="WC_2_start_class_html">
-    
-    <?php if(isset($error)): ?>
-    <p><?php echo $error; ?></p>
-    <?php endif; ?>
+	<div>
+        <h2>Увійдіть<br>до системи генерації запитів</h2>
+    </div>
 
-    <form method="POST">
-        <div><h1>Login</h1></div>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-        </div>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-    </form>
+	<div>
+     <form action="WC_2_php/WC_2_php_START_AUTH.php" method="post">
+		<label for="WC_username">Username(Користувач):</label>
+		<input type="text" id="WC_username" name="WC_username"><br><br>
+
+		<label for="WC_password">Password (Пароль):</label>
+		<input type="password" id="WC_password" name="WC_password"><br><br>
+		<input type="submit" value="Login">
+	 </form>
+    </div>
+</body>
+</html>

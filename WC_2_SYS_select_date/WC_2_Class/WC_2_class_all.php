@@ -9,8 +9,7 @@ class WorkClassAll {
 		private $WCA_dbName;
 		private $WCA_conn;
 		private $BT_class_Name;
-		private	$WCA_table;
-		
+		private	$WCA_table;		
 	
 		public function __construct($WCA_dbType, $WCA_host, $WCA_port, $WCA_user, $WCA_password, $WCA_dbName, $WCA_table) {
 			$this->dbType = $WCA_dbType;
@@ -34,62 +33,111 @@ class WorkClassAll {
 		}
 	/*--------------------------------END------------------------------------*/
 
-	/*---------------------------Create SQL_Query-----------------------------*/
-	public function WC_buildQuery($WCA_dbType, $WCA_table, $data = array(), $conditions = array(), $orderBy = '', $limit = '')
+
+    	/*---------------------------Create SQL_Query-----------------------------*/
+
+/*
+        public function WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator = 'AND') {
+            $WC_where = array();
+            foreach ($WC_Array_data_Where as $WC_field => $WC_value) {
+                if (is_array($WC_value)) {
+                    if (count($WC_value) == 2 && strtoupper($WC_value[0]) == 'IN') {
+                        // Handle subquery in the IN clause
+                        $subquery = $WC_value[1];
+                        if (is_array($subquery) && !empty($subquery['SUBQUERY'])) {
+                            $WC_where[] = "$WC_field IN (" . $subquery['SUBQUERY'] . ")";
+                        } else {
+                            $WC_where[] = "$WC_field (" . (is_string($subquery) ? $subquery : $this->WC_buildQuery(...$subquery)) . ")";
+                        }
+                    } else {
+                        $WC_where[] = "$WC_field " . implode(' ', $WC_value);
+                    }
+                } else {
+                    $WC_where[] = "$WC_field = '$WC_value'";
+                }
+            }
+            return implode(" $WC_logicOperator ", $WC_where);
+        }
+        */
+
+
+
+        public function WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator = 'AND') {
+            $WC_where = array();
+            foreach ($WC_Array_data_Where as $WC_field => $WC_value) {
+                if (is_array($WC_value)) {
+                    if (count($WC_value) == 2 && strtoupper($WC_value[0]) == 'IN') {
+                        // Handle subquery in the IN clause
+                        $subquery = $WC_value[1];
+                        $WC_where[] = "$WC_field (" . (is_string($subquery) ? $subquery : $this->WC_buildQuery(...$subquery)) . ")";
+                    } else {
+                        $WC_where[] = "$WC_field " . implode(' ', $WC_value);
+                    }
+                } else {
+                    $WC_where[] = "$WC_field = '$WC_value'";
+                }
+            }
+            return implode(" $WC_logicOperator ", $WC_where);
+        }
+
+
+        
+    public function WC_buildQuery($WC_Tup_Zaputy, $WC_Name_Table, $WC_Array_data_insert = array(), $WC_Array_data_Where = array(), $WC_orderBy = '', $WC_limit = '', $WC_logicOperator = 'AND')
     {
-        switch(strtolower($WCA_dbType)) {
+        switch(strtolower($WC_Tup_Zaputy)) {
             case 'select':
-                $fields = isset($data['fields']) ? $data['fields'] : '*';
-                $query = "SELECT $fields FROM $WCA_table";
+                $WC_fields = isset($WC_Array_data_insert['fields']) ? $WC_Array_data_insert['fields'] : '*';
+                $WC_query = "SELECT $WC_fields FROM $WC_Name_Table";
                 break;
 
             case 'insert':
-                $fields = implode(',', array_keys($data));
-                $values = "'" . implode("','", array_values($data)) . "'";
-                $query = "INSERT INTO $WCA_table ($fields) VALUES ($values)";
+                $WC_fields = implode(',', array_keys($WC_Array_data_insert));
+                $WC_values = "'" . implode("','", array_values($WC_Array_data_insert)) . "'";
+                $WC_query = "INSERT INTO $WC_Name_Table ($WC_fields) VALUES ($WC_values)";
                 break;
 
             case 'update':
-                $set = array();
-                foreach($data as $field => $value) {
-                    $set[] = "$field = '$value'";
+                $WC_set = array();
+                foreach($WC_Array_data_insert as $WC_field => $WC_value) {
+                    if(is_array($WC_value)) {
+                        $WC_set[] = "$WC_field " . implode(' ', $WC_value);
+                    } else {
+                        $WC_set[] = "$WC_field = '$WC_value'";
+                    }
                 }
-                $set = implode(',', $set);
-                $query = "UPDATE $WCA_table SET $set";
+                $WC_set = implode(',', $WC_set);
+                $WC_where = $WC_Array_data_Where ? ' WHERE ' . $this->WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator) : '';
+                $WC_query = "UPDATE $WC_Name_Table SET $WC_set$WC_where";
                 break;
 
             case 'delete':
-                $query = "DELETE FROM $WCA_table";
+                $WC_where = $WC_Array_data_Where ? ' WHERE ' . $this->WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator) : '';
+                $WC_query = "DELETE FROM $WC_Name_Table$WC_where";
                 break;
 
             case 'merge':
-                $fields = implode(',', array_keys($data));
-                $values = "'" . implode("','", array_values($data)) . "'";
-                $update = array();
-                foreach($data as $field => $value) {
-                    $update[] = "$field = VALUES($field)";
+                $WC_fields = implode(',', array_keys($WC_Array_data_insert));
+                $WC_values = "'" . implode("','", array_values($WC_Array_data_insert)) . "'";
+                $WC_update = array();
+                foreach($WC_Array_data_insert as $WC_field => $WC_value) {
+                    $WC_update[] = "$WC_field = VALUES($WC_field)";
                 }
-                $update = implode(',', $update);
-                $query = "INSERT INTO $WCA_table ($fields) VALUES ($values) ON DUPLICATE KEY UPDATE $update";
+                $WC_update = implode(',', $WC_update);
+                $WC_query = "INSERT INTO $WC_Name_Table ($WC_fields) VALUES ($WC_values) ON DUPLICATE KEY UPDATE $WC_update";
                 break;
+
             default:
                 throw new Exception('Unsupported query type');
         }
-        if(!empty($conditions)) {
-            $where = array();
-            foreach($conditions as $field => $value) {
-                $where[] = "$field = '$value'";
-            }
-            $where = implode(' AND ', $where);
-            $query .= " WHERE $where";
+
+        if(!empty($WC_orderBy)) {
+            $WC_query .= " ORDER BY $WC_orderBy";
         }
-        if(!empty($orderBy)) {
-            $query .= " ORDER BY $orderBy";
+        if(!empty($WC_limit)) {
+            $WC_query .= " LIMIT $WC_limit";
         }
-        if(!empty($limit)) {
-            $query .= " LIMIT $limit";
-        }
-        return $query;
+
+        return $WC_query;
     }
 	/*--------------------------------END------------------------------------*/
 
@@ -245,9 +293,19 @@ private function WC_buildQuery_Oracle($table, $data = array(), $conditions = arr
 
 
 
+
+
+
+
+
+
+
+
+
+
 	}
 /*--------------------------------END------------------------------------*/
 
 
-echo "<br> -----====== file conect WC_2_all_class.php ===---------<br>";
+//echo "<br> -----====== file conect WC_2_all_class.php ===---------<br>";
 ?>

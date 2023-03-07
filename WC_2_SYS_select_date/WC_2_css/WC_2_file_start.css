@@ -1,14 +1,21 @@
+
+
+/*-----------------WC_2_start.php-----------------------------*/
 .WC_2_start_class_html{
   display: flex;
   background-color: aqua;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column;
 }
-
-
-
 
 .WC_2_start_class_html form{ 
     border: 2px solid red;
 }
+
+.WC_2_start_class_html div:nth-child(1){
+  text-align: center;
+}
+
+/*-------------------WC_2_start.php END----------------------*/
