@@ -5,26 +5,33 @@ require_once __DIR__ . '../../WC_2_Class/WC_2_class_auth.php';
 require_once __DIR__ . '../../WC_2_config/WC_2_config.php';
 
 
-/*
-    $servername   = "localhost";
-    $username     = "gelo4891";
-    $password     = "gelo1111";
-    $dbname       = "base_o_zvit";
-    $class_Name   = "BT_Class_Name";
-*/
+$WC_Auth_userLogin = "exampleuser";
+$WC_Auth_userPass = "examplepassword";
+$WC_Auth_QuerySelect = "SELECT * FROM boz_user";
+$WC_Auth_QueryInsert = "INSERT INTO boz_user SET BOZ_user_login=1, BOZ_user_pass=1";
+
+
 
 $WCA = new WorkClassAll('mysql', $servername, '3306', $username, $password, $dbname, 'boz_user');
 
+$wc_auth1 = new WC_class_Auth('');
 //створення SQL запиту SELECT для таблиці rrrr1
 $WC_query = $WCA->WC_buildQuery('select', 'boz_user', array('fields' => 'BOZ_user_login, BOZ_user_pass'));
 
 //підключення до бази даних
 $WCA->WC_connect_to_base();
 
-//виконання запиту
-$WC_Base_result = mysqli_query($WCA->conn, $WC_query);
+
+$WC_test=$wc_auth1->WC_checkAndUpdateData($WCA->WCA_conn, $WC_Auth_userLogin, $WC_Auth_userPass, $WC_Auth_QuerySelect, $WC_Auth_QueryInsert);
+
+
+echo $WC_test ;
+if (!$WC_test==true) {
+
+    //виконання запиту
+$WC_Base_result = mysqli_query($WCA->WCA_conn, $WC_query);
 if (!$WC_Base_result) {
-    die('Invalid query: ' . mysqli_error($WCA->conn));
+    die('Invalid query: ' . mysqli_error($WCA->WCA_conn));
 }
 
 //виведення результату запиту
@@ -36,17 +43,22 @@ if (!$WC_Base_result) {
 if(isset($_POST['WC_username']) && isset($_POST['WC_password'])) {
     $my_username = $_POST['WC_username'];
     $my_password = $_POST['WC_password'];
-    $my_header = '../TEST/WC_2_TEST.php';
-  
-  /*$Select_BASE_Date_Users = array(
-    array("BOZ_user_login" => "1", "BOZ_user_pass" => "1"),
-    array("BOZ_user_login" => "user1", "BOZ_user_pass" => "1234"),
-    array("BOZ_user_login" => "user2", "BOZ_user_pass" => "5678")
-  );*/
-  
-  $auth = new WC_class_Auth($WC_Base_result);
-  $auth->login($my_username, $my_password, $my_header);
+      
+  $wc_auth = new WC_class_Auth($WC_Base_result);
+  $wc_auth->WC_Auth_login($my_username, $my_password, $WC_2_php_START_AUTH_header);
 }
+
+
+
+
+
+} else {
+    echo "User not found in the Table   '.$dbname.'<br> Create Admin New User And Password'";
+}
+
+
+
+
 
 
 ?>

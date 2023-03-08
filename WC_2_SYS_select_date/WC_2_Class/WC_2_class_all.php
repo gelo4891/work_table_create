@@ -7,27 +7,27 @@ class WorkClassAll {
 		private $WCA_user;
 		private $WCA_password;
 		private $WCA_dbName;
-		private $WCA_conn;
+		public $WCA_conn;
 		private $BT_class_Name;
 		private	$WCA_table;		
 	
 		public function __construct($WCA_dbType, $WCA_host, $WCA_port, $WCA_user, $WCA_password, $WCA_dbName, $WCA_table) {
-			$this->dbType = $WCA_dbType;
-			$this->host = $WCA_host;
-			$this->port = $WCA_port;
-			$this->user = $WCA_user;
-			$this->password = $WCA_password;
-			$this->dbName = $WCA_dbName;
-			$this->WCA_table= $WCA_table;
+			$this->WCA_dbType = $WCA_dbType;
+			$this->WCA_host = $WCA_host;
+			$this->WCA_port = $WCA_port;
+			$this->WCA_user = $WCA_user;
+			$this->WCA_password = $WCA_password;
+			$this->WCA_dbName = $WCA_dbName;
+			$this->WCA_WCA_table= $WCA_table;
 		}
 	/*-------------------------------connect Base Oracle or MySQL-------------------------------------*/
 		public function WC_connect_to_base() {
-			if ($this->dbType == 'mysql') {
-				$this->conn = mysqli_connect($this->host, $this->user, $this->password, $this->dbName, $this->port);
-			} elseif ($this->dbType == 'oracle') {
-				$this->conn = oci_connect($this->user, $this->password, "(DESCRIPTION=(ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = $this->host)(PORT = $this->port)))(CONNECT_DATA=(SID=$this->dbName)))");
+			if ($this->WCA_dbType == 'mysql') {
+				$this->WCA_conn = mysqli_connect($this->WCA_host, $this->WCA_user, $this->WCA_password, $this->WCA_dbName, $this->WCA_port);
+			} elseif ($this->WCA_dbType == 'oracle') {
+				$this->WCA_conn= oci_connect($this->WCA_user, $this->WCA_password, "(DESCRIPTION=(ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = $this->WCA_host)(PORT = $this->WCA_port)))(CONNECT_DATA=(SID=$this->WCA_dbName)))");
 			}
-			if (!$this->conn) {
+			if (!$this->WCA_conn) {
 				throw new Exception('Could not connect to database');
 			}
 		}
@@ -35,32 +35,6 @@ class WorkClassAll {
 
 
     	/*---------------------------Create SQL_Query-----------------------------*/
-
-/*
-        public function WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator = 'AND') {
-            $WC_where = array();
-            foreach ($WC_Array_data_Where as $WC_field => $WC_value) {
-                if (is_array($WC_value)) {
-                    if (count($WC_value) == 2 && strtoupper($WC_value[0]) == 'IN') {
-                        // Handle subquery in the IN clause
-                        $subquery = $WC_value[1];
-                        if (is_array($subquery) && !empty($subquery['SUBQUERY'])) {
-                            $WC_where[] = "$WC_field IN (" . $subquery['SUBQUERY'] . ")";
-                        } else {
-                            $WC_where[] = "$WC_field (" . (is_string($subquery) ? $subquery : $this->WC_buildQuery(...$subquery)) . ")";
-                        }
-                    } else {
-                        $WC_where[] = "$WC_field " . implode(' ', $WC_value);
-                    }
-                } else {
-                    $WC_where[] = "$WC_field = '$WC_value'";
-                }
-            }
-            return implode(" $WC_logicOperator ", $WC_where);
-        }
-        */
-
-
 
         public function WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator = 'AND') {
             $WC_where = array();
@@ -81,7 +55,7 @@ class WorkClassAll {
         }
 
 
-        
+
     public function WC_buildQuery($WC_Tup_Zaputy, $WC_Name_Table, $WC_Array_data_insert = array(), $WC_Array_data_Where = array(), $WC_orderBy = '', $WC_limit = '', $WC_logicOperator = 'AND')
     {
         switch(strtolower($WC_Tup_Zaputy)) {
@@ -238,69 +212,6 @@ private function WC_buildQuery_MySql($table, $data = array(), $conditions = arra
     }
     return $query;
 }
-/*
-private function WC_buildQuery_Oracle($table, $data = array(), $conditions = array(), $orderBy = '', $limit = '') {
-    $queryType = 'SELECT';
-    $selectFields = isset($data['fields']) ? $data['fields'] : '*';
-    $insertFields = implode(',', array_keys($data));
-    $insertValues = "'" . implode("','", array_values($data)) . "'";
-    $updateFields = array();
-    foreach($data as $field => $value) {
-        $updateFields[] = "$field = '$value'";
-    }
-    $updateFields = implode(',', $updateFields);
-
-    $whereConditions = array();
-    foreach($conditions as $field => $value) {
-        $whereConditions[] = "$field = '$value'";
-    }
-    $whereClause = !empty($whereConditions)
-	
-    // Declare the $query variable before building the query
-    $query = "SELECT $selectFields FROM $table";
-
-    // Build the WHERE clause
-    if (!empty($whereConditions)) {
-        $whereClause = implode(' AND ', $whereConditions);
-        $query .= " WHERE $whereClause";
-    }
-
-    // Add the ORDER BY clause if provided
-    if (!empty($orderBy)) {
-        $query .= " ORDER BY $orderBy";
-    }
-
-    // Add the LIMIT clause if provided
-    if (!empty($limit)) {
-        $query .= " LIMIT $limit";
-    }
-
-    // Return the final query
-    return $query;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	}
