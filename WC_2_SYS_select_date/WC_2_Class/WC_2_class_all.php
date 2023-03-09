@@ -7,7 +7,7 @@ class WorkClassAll {
 		private $WCA_user;
 		private $WCA_password;
 		private $WCA_dbName;
-		public $WCA_conn;
+		private $WCA_conn;
 		private $BT_class_Name;
 		private	$WCA_table;		
 	
@@ -21,16 +21,17 @@ class WorkClassAll {
 			$this->WCA_WCA_table= $WCA_table;
 		}
 	/*-------------------------------connect Base Oracle or MySQL-------------------------------------*/
-		public function WC_connect_to_base() {
-			if ($this->WCA_dbType == 'mysql') {
-				$this->WCA_conn = mysqli_connect($this->WCA_host, $this->WCA_user, $this->WCA_password, $this->WCA_dbName, $this->WCA_port);
-			} elseif ($this->WCA_dbType == 'oracle') {
-				$this->WCA_conn= oci_connect($this->WCA_user, $this->WCA_password, "(DESCRIPTION=(ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = $this->WCA_host)(PORT = $this->WCA_port)))(CONNECT_DATA=(SID=$this->WCA_dbName)))");
-			}
-			if (!$this->WCA_conn) {
-				throw new Exception('Could not connect to database');
-			}
-		}
+        public function WC_connect_to_base() {
+        if ($this->WCA_dbType == 'mysql') {
+            $this->WCA_conn = mysqli_connect($this->WCA_host, $this->WCA_user, $this->WCA_password, $this->WCA_dbName, $this->WCA_port);
+        } elseif ($this->WCA_dbType == 'oracle') {
+            $this->WCA_conn= oci_connect($this->WCA_user, $this->WCA_password, "(DESCRIPTION=(ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = $this->WCA_host)(PORT = $this->WCA_port)))(CONNECT_DATA=(SID=$this->WCA_dbName)))");
+        }
+        if (!$this->WCA_conn) {
+            throw new Exception('Could not connect to database');
+        }
+        return $this->WCA_conn;
+    }
 	/*--------------------------------END------------------------------------*/
 
 
@@ -56,7 +57,7 @@ class WorkClassAll {
 
 
 
-    public function WC_buildQuery($WC_Tup_Zaputy, $WC_Name_Table, $WC_Array_data_insert = array(), $WC_Array_data_Where = array(), $WC_orderBy = '', $WC_limit = '', $WC_logicOperator = 'AND')
+    public function WC_2_buildQuery($WC_Tup_Zaputy, $WC_Name_Table, $WC_Array_data_insert = array(), $WC_Array_data_Where = array(), $WC_orderBy = '', $WC_limit = '', $WC_logicOperator = 'AND')
     {
         switch(strtolower($WC_Tup_Zaputy)) {
             case 'select':

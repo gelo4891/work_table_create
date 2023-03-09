@@ -82,35 +82,60 @@ if (!$session_reliable) {
 */
 /*---------------------------------------------------------------------------------------------------*/
 
-public function WC_checkAndUpdateData($WC_Auth_conn, $WC_Auth_userLogin, $WC_Auth_userPass, $WC_Auth_QuerySelect, $WC_Auth_QueryInsert) {
-  // Перевірка, чи виконався запит до бази даних
-  $result = $WC_Auth_conn->query($WC_Auth_QuerySelect);
-  
-  if (!$result) {
-      // Якщо запит не виконався, виводимо помилку та виходимо з функції
-      echo "Помилка запиту до бази даних: " . $WC_Auth_conn->error;
-      return false;
-  }
-  
-  // Якщо запит виконався успішно та є дати, перевіряємо, чи є потрібні дані
-  while ($row = $result->fetch_assoc()) {
-      if ($row['BOZ_user_login'] == $WC_Auth_userLogin && $row['BOZ_user_pass'] == $WC_Auth_userPass) {
-          echo "Дані користувача відповідають запиту";
-          return true;
-      }
-  }
-  
-  // Якщо даних немає, вставляємо нові дані до таблиці
-  $result = $WC_Auth_conn->query($WC_Auth_QueryInsert);
-  
-  if ($result) {
-      echo "Нові дані користувача успішно вставлено до таблиці";
-      return true;
-  } else {
-      echo "Помилка при вставці нових даних: " . $WC_Auth_conn->error;
-      return false;
-  }
+public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_table_name = 'users', $WC_Auth_insert_fields = array('BOZ_user_login', 'BOZ_user_pass'), $WC_Auth_Header = '') {
+    // Перевірка, чи є дані в таблиці
+    $query_select_all = "SELECT * FROM `$WC_Auth_table_name`";
+    $result = $WC_Auth_conn->query($query_select_all);
+    if (!$result) {
+        echo "Помилка запиту до бази даних: " . $WC_Auth_conn->error . "------------<br>";
+        return false;
+    }
+    $table_empty = ($result->num_rows == 0);
+
+    // Перевірка, чи є користувач з такими полями в таблиці
+    $WC_Auth_insert_fields_str = implode('`, `', $WC_Auth_insert_fields);
+    $placeholders_str = implode(',', array_fill(0, count($WC_Auth_insert_fields), '?'));
+    $query_select_user = "SELECT * FROM `$WC_Auth_table_name` WHERE `$WC_Auth_insert_fields[0]` = ? AND `$WC_Auth_insert_fields[1]` = ?";
+    $stmt = $WC_Auth_conn->prepare($query_select_user);
+    $stmt->bind_param('ss', ...$WC_Auth_insert_fields);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user_found = ($result->num_rows > 0);
+
+    if ($user_found) {
+        // Якщо користувача знайдено, створюємо сесію та перенаправляємо на WC_Auth_Header
+        session_start();
+        $_SESSION['loggedin'] = true;
+        foreach ($WC_Auth_insert_fields as $field) {
+            $_SESSION[$field] = $$field;
+        }
+        if (!empty($WC_Auth_Header)) {
+            header('Location: ' . $WC_Auth_Header);
+            exit;
+        } else {
+            echo 'Login successful!';
+        }
+    } else {
+        // Якщо користувача не знайдено, створюємо новий запис
+        if ($table_empty) {
+            $default_values = array('admin', 'admin');
+            $placeholders_str = implode(',', array_fill(0, count($default_values), '?'));
+            $query_insert_user = "INSERT INTO `$WC_Auth_table_name` (`$WC_Auth_insert_fields_str`) VALUES ($placeholders_str)";
+            $stmt = $WC_Auth_conn->prepare($query_insert_user);
+            $stmt->bind_param(str_repeat('s', count($default_values)), ...$default_values);
+            $stmt->execute();
+            echo "Нові дані користувача успішно вставлено до таблиці";
+        } else {
+            echo "Неправильні дані користувача!";
+        }
+    }
 }
+
+
+
+
+
+
 
 
   
