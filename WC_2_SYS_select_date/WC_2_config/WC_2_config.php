@@ -3,6 +3,7 @@
     $WC_2_config_base_user = "gelo4891";
     $WC_2_config_base_pass = "gelo1111";
     $WC_2_config_table_name="boz_user";
+    $WC_2_config_table_colum =array('BOZ_user_login', 'BOZ_user_pass');
     $WC_2_config_base_name = "base_o_zvit";
     
     $class_Name="BT_Class_Name";

@@ -1,6 +1,6 @@
 <?php
 
-ECHO ('file connected');
+ECHO ('file WC_2_TEST.php  connected');
 
 
 

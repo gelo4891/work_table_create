@@ -82,7 +82,8 @@ if (!$session_reliable) {
 */
 /*---------------------------------------------------------------------------------------------------*/
 
-public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_table_name = 'users', $WC_Auth_insert_fields = array('BOZ_user_login', 'BOZ_user_pass'), $WC_Auth_Header = '') {
+
+public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_login, $WC_Auth_pass, $WC_Auth_table_name = 'boz_user', $WC_2_config_table_colum = array('BOZ_user_login', 'BOZ_user_pass'), $WC_Auth_Header = '') {
     // Перевірка, чи є дані в таблиці
     $query_select_all = "SELECT * FROM `$WC_Auth_table_name`";
     $result = $WC_Auth_conn->query($query_select_all);
@@ -93,53 +94,59 @@ public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_table_name = 'u
     $table_empty = ($result->num_rows == 0);
 
     // Перевірка, чи є користувач з такими полями в таблиці
-    $WC_Auth_insert_fields_str = implode('`, `', $WC_Auth_insert_fields);
-    $placeholders_str = implode(',', array_fill(0, count($WC_Auth_insert_fields), '?'));
-    $query_select_user = "SELECT * FROM `$WC_Auth_table_name` WHERE `$WC_Auth_insert_fields[0]` = ? AND `$WC_Auth_insert_fields[1]` = ?";
-    $stmt = $WC_Auth_conn->prepare($query_select_user);
-    $stmt->bind_param('ss', ...$WC_Auth_insert_fields);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user_found = ($result->num_rows > 0);
+    $WC_2_config_table_colum_str = implode("`,`", $WC_2_config_table_colum);
+    $query_select_user = "SELECT `$WC_2_config_table_colum[0]`, `$WC_2_config_table_colum[1]` FROM `$WC_Auth_table_name` ";
+                                            
+        $stmt = $WC_Auth_conn->prepare($query_select_user);
+       // $stmt->bind_param('ss', $WC_Auth_login, $WC_Auth_pass);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $DAte_select_table = ($result->num_rows > 0);
 
-    if ($user_found) {
-        // Якщо користувача знайдено, створюємо сесію та перенаправляємо на WC_Auth_Header
-        session_start();
-        $_SESSION['loggedin'] = true;
-        foreach ($WC_Auth_insert_fields as $field) {
-            $_SESSION[$field] = $$field;
-        }
-        if (!empty($WC_Auth_Header)) {
-            header('Location: ' . $WC_Auth_Header);
-            exit;
-        } else {
-            echo 'Login successful!';
-        }
-    } else {
-        // Якщо користувача не знайдено, створюємо новий запис
+        if ($DAte_select_table) {
+            while ($user_data = $result->fetch_assoc()) {
+            // Якщо користувача знайдено, створюємо сесію та перенаправляємо на WC_Auth_Header
+            foreach ($WC_2_config_table_colum as $field){
+               
+                if ($user_data[$WC_2_config_table_colum[0]] == $WC_Auth_login && $user_data[$WC_2_config_table_colum[1]] == md5($WC_Auth_pass)) {                     
+                    session_start();
+                    $_SESSION['loggedin'] = true;
+                    foreach ($WC_2_config_table_colum as $field) {
+                        $_SESSION[$field] = $user_data[$field];
+                    }
+                    if (!empty($WC_Auth_Header)) {
+                        header('Location: ' . $WC_Auth_Header);
+                        exit;
+                    } else {
+                        echo 'Login successful!';
+                    }
+                    break;
+                }                
+            }
+             } 
+             else {
+                echo "Неправильний логін або пароль<br>";
+            }
+    }
+     else {
+        // Якщо жодного запису в таблиці не знайдено, створюємо новий запис
         if ($table_empty) {
-            $default_values = array('admin', 'admin');
-            $placeholders_str = implode(',', array_fill(0, count($default_values), '?'));
-            $query_insert_user = "INSERT INTO `$WC_Auth_table_name` (`$WC_Auth_insert_fields_str`) VALUES ($placeholders_str)";
+            $query_insert_user = "INSERT INTO `$WC_Auth_table_name` (`" . implode("`, `", $WC_2_config_table_colum) . "`) VALUES (?, ?)";
             $stmt = $WC_Auth_conn->prepare($query_insert_user);
-            $stmt->bind_param(str_repeat('s', count($default_values)), ...$default_values);
+            $WC_Auth_login_adm='admin';
+            $WC_Auth_pass_adm= md5($WC_Auth_pass_adm='admin');
+            $stmt->bind_param('ss', $WC_Auth_login_adm, $WC_Auth_pass_adm);
             $stmt->execute();
-            echo "Нові дані користувача успішно вставлено до таблиці";
+            echo "Першого користувача створено: ------------<br>-----обов'язково змініть пароль--------<br>";
         } else {
-            echo "Неправильні дані користувача!";
+            
         }
+        
     }
 }
 
 
-
-
-
-
-
-
-  
- }
+}
 
 
 ?>
