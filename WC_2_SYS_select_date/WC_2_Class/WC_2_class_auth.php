@@ -88,28 +88,28 @@ public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_login, $WC_Auth
     $query_select_all = "SELECT * FROM `$WC_Auth_table_name`";
     $result = $WC_Auth_conn->query($query_select_all);
     if (!$result) {
-        echo "Помилка запиту до бази даних: " . $WC_Auth_conn->error . "------------<br>";
+        echo ("Помилка запиту до бази даних: " . $WC_Auth_conn->error );
+        
+        
         return false;
     }
     $table_empty = ($result->num_rows == 0);
 
     // Перевірка, чи є користувач з такими полями в таблиці
     $WC_2_config_table_colum_str = implode("`,`", $WC_2_config_table_colum);
-    $query_select_user = "SELECT `$WC_2_config_table_colum[0]`, `$WC_2_config_table_colum[1]` FROM `$WC_Auth_table_name` ";
-                                            
-        $stmt = $WC_Auth_conn->prepare($query_select_user);
-       // $stmt->bind_param('ss', $WC_Auth_login, $WC_Auth_pass);
+        $query_select_user = "SELECT  `$WC_2_config_table_colum[0]`, `$WC_2_config_table_colum[1]` FROM `$WC_Auth_table_name` WHERE `$WC_2_config_table_colum[0]` = ? and `$WC_2_config_table_colum[1]` = md5(?)";
+                                          
+        $stmt = $WC_Auth_conn->prepare($query_select_user);     
+        $stmt->bind_param('ss', $WC_Auth_login, $WC_Auth_pass);
+
         $stmt->execute();
         $result = $stmt->get_result();
         $DAte_select_table = ($result->num_rows > 0);
-
-        if ($DAte_select_table) {
-            while ($user_data = $result->fetch_assoc()) {
-            // Якщо користувача знайдено, створюємо сесію та перенаправляємо на WC_Auth_Header
-            foreach ($WC_2_config_table_colum as $field){
-               
-                if ($user_data[$WC_2_config_table_colum[0]] == $WC_Auth_login && $user_data[$WC_2_config_table_colum[1]] == md5($WC_Auth_pass)) {                     
-                    session_start();
+        
+        if ($DAte_select_table==1) {
+            $user_data = $result->fetch_assoc();
+                
+                  session_start();
                     $_SESSION['loggedin'] = true;
                     foreach ($WC_2_config_table_colum as $field) {
                         $_SESSION[$field] = $user_data[$field];
@@ -118,17 +118,10 @@ public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_login, $WC_Auth
                         header('Location: ' . $WC_Auth_Header);
                         exit;
                     } else {
-                        echo 'Login successful!';
-                    }
-                    break;
-                }                
-            }
-             } 
-             else {
-                echo "Неправильний логін або пароль<br>";
-            }
-    }
-     else {
+                        echo ('Login successful!');
+                    }                
+                } 
+        else {
         // Якщо жодного запису в таблиці не знайдено, створюємо новий запис
         if ($table_empty) {
             $query_insert_user = "INSERT INTO `$WC_Auth_table_name` (`" . implode("`, `", $WC_2_config_table_colum) . "`) VALUES (?, ?)";
@@ -139,12 +132,11 @@ public function WC_Auth_login_and_update($WC_Auth_conn, $WC_Auth_login, $WC_Auth
             $stmt->execute();
             echo "Першого користувача створено: ------------<br>-----обов'язково змініть пароль--------<br>";
         } else {
-            
+            echo "Неправильний логін або пароль<br>";
         }
         
     }
 }
-
 
 }
 
