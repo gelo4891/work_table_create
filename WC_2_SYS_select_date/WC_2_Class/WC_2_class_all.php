@@ -20,7 +20,7 @@ class WorkClassAll {
 			$this->WCA_dbName = $WCA_dbName;
 			$this->WCA_WCA_table= $WCA_table;
 		}
-	/*-------------------------------connect Base Oracle or MySQL-------------------------------------*/
+	/*-----------------------------OLD--connect Base Oracle or MySQL-------------------------------------*/
         public function WC_connect_to_base() {
         if ($this->WCA_dbType == 'mysql') {
             $this->WCA_conn = mysqli_connect($this->WCA_host, $this->WCA_user, $this->WCA_password, $this->WCA_dbName, $this->WCA_port);
@@ -32,9 +32,46 @@ class WorkClassAll {
         }
         return $this->WCA_conn;
     }
-	/*--------------------------------END------------------------------------*/
+	/*--------------------------------END-----connect Base Oracle or MySQL-------------------------------*/
+/*=====================================================================================================================*/
+	/*------------------------OLD-------connect Base PDO-------------------------------------*/
+  public function WC_connect_to_base_PDO1() {
+        $WCA_PDO_dsn = "{$this->WCA_PDO_dbType}:dbname={$this->WCA_PDO_dbName};host={$this->WCA_PDO_host};port={$this->WCA_PDO_port};charset=utf8mb4";
+        $WCA_PDO_options = array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        );
+        try {
+            $this->WCA_PDO_conn = new PDO($WCA_PDO_dsn, $this->WCA_PDO_user, $this->WCA_PDO_password, $WCA_PDO_options);
+        } catch (PDOException $e) {
+            throw new Exception('Could not connect to database: ' . $e->getMessage());
+        }
+        return $this->WCA_PDO_conn;
+    }
 
+/*------------------------NEW-------connect Base PDO-------------------------------------*/
+public function WC_connect_to_base_PDO() {
+    try {
+        if ($this->WCA_dbType == 'mysql') {
+            $this->WCA_conn = new PDO("mysql:host={$this->WCA_host};dbname={$this->WCA_dbName}", $this->WCA_user, $this->WCA_password);
+            return $this->WCA_conn;
+        } elseif ($this->WCA_dbType == 'oracle') {
+            $this->WCA_conn= new PDO("oci:dbname={$this->WCA_host}:{$this->WCA_port}/{$this->WCA_dbName}", $this->WCA_user, $this->WCA_password);
+            return $this->WCA_conn;
+        }
+    } catch (PDOException $e) {
+        echo "Could not connect to database: " . $e->getMessage();
+        return;
+    }
+}
 
+    public function WC_disconnect_from_base() {
+        $this->WCA_conn = null;
+    }
+    
+	/*--------------------------------END----connect Base PDO--------------------------------*/
+/*=====================================================================================================================*/
     	/*---------------------------Create SQL_Query-----------------------------*/
 
         public function WC_buildWhereClause($WC_Array_data_Where, $WC_logicOperator = 'AND') {
@@ -115,7 +152,7 @@ class WorkClassAll {
         return $WC_query;
     }
 	/*--------------------------------END------------------------------------*/
-
+/*=====================================================================================================================*/
 	/*---------------------------Query Sql-----------------------------------*/
 		public function WC_query_sql($sql) {
 			if (!$this->conn) {
@@ -136,7 +173,7 @@ class WorkClassAll {
 			}
 		}
 	/*--------------------------------END------------------------------------*/
-
+/*=====================================================================================================================*/
 	/*----------------------------Bild Table----------------------------------------*/
 		public function WC_BuildTable($BT_data,$BT_class_Name) {
 			if (empty($BT_data)) {
@@ -161,7 +198,7 @@ class WorkClassAll {
 			return $html;
 		}
 /*--------------------------------END------------------------------------*/
-
+/*=====================================================================================================================*/
 /*-------------------------------Create QUERY SQL-------------------------------------*/
 public function WC_buildQuery_system($dbType, $table, $data = array(), $conditions = array(), $orderBy = '', $limit = '') {
     switch(strtolower($dbType)) {
@@ -217,7 +254,7 @@ private function WC_buildQuery_MySql($table, $data = array(), $conditions = arra
 
 	}
 /*--------------------------------END------------------------------------*/
-
+/*=====================================================================================================================*/
 
 //echo "<br> -----====== file conect WC_2_all_class.php ===---------<br>";
 ?>
