@@ -33,6 +33,64 @@ class WorkClassAll {
         return $this->WCA_conn;
     }
 	/*--------------------------------END-----connect Base Oracle or MySQL-------------------------------*/
+    
+/*=====================================================================================================================*/
+
+/*-------------------------------------create button-------------------------------*/
+public function WC_1_createButtons_text_json($buttonDataUrl, $containerClass) {
+    $buttonsData = file_get_contents($buttonDataUrl);
+    $buttonsData = json_decode($buttonsData, true);
+    $buttonsContainer = "<div class='$containerClass'>";
+    foreach ($buttonsData as $buttonData) {
+        $button = "<button>";
+        $button .= "<a href='" . $buttonData["link"] . "' target='_blank' title='". $buttonData["title"] ."'><span class='comment'>" . $buttonData["nazve_knopku"] . "</span></a>";
+        $button .= "</button>";
+        $buttonsContainer .= $button;
+    }
+    $buttonsContainer .= "</div>";
+    echo $buttonsContainer;
+}
+
+public function WC_1_createButtons_php($buttonDataFile, $containerClass) {
+    $buttonsData = include($buttonDataFile);
+    $buttonsContainer = "<div class='$containerClass'>";
+    foreach ($buttonsData as $buttonData) {
+        $button = "<button>";
+        $button .= "<a href='" . $buttonData["link"] . "' target='_blank' title='". $buttonData["title"] ."'><span class='comment'>" . $buttonData["nazve_knopku"] . "</span></a>";
+        $button .= "</button>";
+        $buttonsContainer .= $button;
+    }
+    $buttonsContainer .= "</div>";
+    echo $buttonsContainer;
+}
+/*--------------------------------END-----create button-------------------------------*/
+
+/*=====================================================================================================================*/
+/*-------------------------------------create bmenu-------------------------------*/
+    public function WC_generateMenu($menuData, $containerClass) {
+        $menuContainer = "<ul class='$containerClass'>";
+
+        foreach ($menuData as $menuItem) {
+            $menu = "<li>";
+            $menuLink = "<a href='" . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+            $menu .= $menuLink;
+
+            // Check if sub-menu exists
+            if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
+                // Generate sub-menu recursively
+                $menu .= $this->WC_generateMenu($menuItem["submenu"], "");
+            }
+
+            $menu .= "</li>";
+            $menuContainer .= $menu;
+        }
+
+        $menuContainer .= "</ul>";
+
+        echo $menuContainer;
+    }
+/*--------------------------------END-----create menu-------------------------------*/
+  
 /*=====================================================================================================================*/
 	/*------------------------OLD-------connect Base PDO-------------------------------------*/
   public function WC_connect_to_base_PDO1() {

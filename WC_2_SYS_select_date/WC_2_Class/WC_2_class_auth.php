@@ -56,14 +56,15 @@ class WC_class_Auth {
 function WC_Auth_check_session($redirect_url = '', $should_redirect = true, $error_message = 'Your session is not reliable.') {
     $reliable_session = false;
     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-//print_r($_SESSION);
+
         // Check if session has not expired and user agent has not changed
-        if (isset($_SESSION['user_agent']) && $_SESSION['user_agent'] === $_SERVER['HTTP_USER_AGENT'] &&
+      if (isset($_SESSION['user_agent']) && $_SESSION['user_agent'] === $_SERVER['HTTP_USER_AGENT'] &&
             isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) < 3600) {
             $reliable_session = true;
             $_SESSION['last_activity'] = time();
         }
-    }
+    }    
+    
     if (!$reliable_session && $should_redirect) {
         if (!empty($redirect_url)) {
             header('Location: ' . $redirect_url);
@@ -72,6 +73,7 @@ function WC_Auth_check_session($redirect_url = '', $should_redirect = true, $err
             echo $error_message;
         }
     }
+    
     return $reliable_session;
 }
 /*---------------------------------------------------------------------------------------------------*/
@@ -105,6 +107,8 @@ public function WC_Auth_login_and_update_PDO_universal($WC_Auth_conn, $WC_Auth_l
         $user_data = $user_data[0];
         session_start();
         $_SESSION['loggedin'] = true;
+        $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $_SESSION['last_activity'] = time();
         foreach ($WC_2_config_table_colum as $field) {
             $_SESSION[$field] = $user_data[$field];
         }
@@ -129,6 +133,7 @@ public function WC_Auth_login_and_update_PDO_universal($WC_Auth_conn, $WC_Auth_l
             echo ('Login failed!');
         }
     }
+    
 }
 
 

@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . '../../WC_2_Class/WC_2_class_all.php';
-require_once __DIR__ . '../../WC_2_Class/WC_2_class_auth.php';
-require_once __DIR__ . '../../WC_2_config/WC_2_config.php';
-
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_Path.php');
+require_once ($WC_2_class_auth);
+require_once ($WC_2_class_all);
+require_once ($WC_2_config);
 
 /*--------------підключаємося до бази даних----------------- */
 

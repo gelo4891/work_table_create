@@ -19,7 +19,7 @@
     
     
     $class_Name="BT_Class_Name";
-    $WC_2_php_START_AUTH_header="../TEST/WC_2_TEST.php";
+    $WC_2_php_START_AUTH_header="../WC_2_php/WC_2_php_menu/WC_2_menu_start.php";
 
     $WC_2_config_insert_user_admin = array(
         'BOZ_user_login' => 'admin',
