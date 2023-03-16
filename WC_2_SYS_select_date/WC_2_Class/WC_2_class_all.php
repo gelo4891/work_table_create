@@ -11,15 +11,15 @@ class WorkClassAll {
 		private $BT_class_Name;
 		private	$WCA_table;		
 	
-		public function __construct($WCA_dbType, $WCA_host, $WCA_port, $WCA_user, $WCA_password, $WCA_dbName, $WCA_table) {
-			$this->WCA_dbType = $WCA_dbType;
-			$this->WCA_host = $WCA_host;
-			$this->WCA_port = $WCA_port;
-			$this->WCA_user = $WCA_user;
-			$this->WCA_password = $WCA_password;
-			$this->WCA_dbName = $WCA_dbName;
-			$this->WCA_WCA_table= $WCA_table;
-		}
+		public function __construct($WCA_dbType = 'mysql', $WCA_host = 'localhost', $WCA_port = 3306, $WCA_user = '', $WCA_password = '', $WCA_dbName = '', $WCA_table = '') {
+            $this->WCA_dbType = $WCA_dbType;
+            $this->WCA_host = $WCA_host;
+            $this->WCA_port = $WCA_port;
+            $this->WCA_user = $WCA_user;
+            $this->WCA_password = $WCA_password;
+            $this->WCA_dbName = $WCA_dbName;
+            $this->WCA_WCA_table= $WCA_table;
+        }
 	/*-----------------------------OLD--connect Base Oracle or MySQL-------------------------------------*/
         public function WC_connect_to_base() {
         if ($this->WCA_dbType == 'mysql') {
@@ -33,7 +33,7 @@ class WorkClassAll {
         return $this->WCA_conn;
     }
 	/*--------------------------------END-----connect Base Oracle or MySQL-------------------------------*/
-    
+
 /*=====================================================================================================================*/
 
 /*-------------------------------------create button-------------------------------*/
@@ -67,28 +67,139 @@ public function WC_1_createButtons_php($buttonDataFile, $containerClass) {
 
 /*=====================================================================================================================*/
 /*-------------------------------------create bmenu-------------------------------*/
-    public function WC_generateMenu($menuData, $containerClass) {
-        $menuContainer = "<ul class='$containerClass'>";
+public function WC_generateMenu($menuData, $containerClass, $level = 0) {
+    $menuContainer = "<ul class='$containerClass'>";
 
-        foreach ($menuData as $menuItem) {
-            $menu = "<li>";
-            $menuLink = "<a href='" . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
-            $menu .= $menuLink;
+    foreach ($menuData as $menuItem) {
+        $menu = "<li>";
+        $menuLink = "<a href='" . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+        $menu .= $menuLink;
 
-            // Check if sub-menu exists
-            if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
-                // Generate sub-menu recursively
-                $menu .= $this->WC_generateMenu($menuItem["submenu"], "");
-            }
-
-            $menu .= "</li>";
-            $menuContainer .= $menu;
+        // Check if sub-menu exists
+        if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
+            // Generate sub-menu recursively
+            $menu .= $this->WC_generateMenu($menuItem["submenu"], "", $level + 1);
         }
 
-        $menuContainer .= "</ul>";
-
-        echo $menuContainer;
+        $menu .= "</li>";
+        $menuContainer .= $menu;
     }
+
+    $menuContainer .= "</ul>";
+
+    return $menuContainer;
+}
+
+
+/*--------------------------------------------------------------------------------*/
+public function WC_generateMenu_3($menuData, $containerClass, $menuAttrs = [], $level = 0, $isSubmenu = false) {
+    $menuContainerAttrs = $this->WC_generateAttrs($menuAttrs);
+    $menuContainer = "";
+
+    // Add class for main menu container
+    if (!$isSubmenu) {
+        $menuContainer .= "<ul class='$containerClass' $menuContainerAttrs>";
+    } else {
+        $menuContainer .= "<ul class='submenu' $menuContainerAttrs>";
+    }
+
+    foreach ($menuData as $menuItem) {
+        $menuItemAttrs = isset($menuItem["attrs"]) ? $this->WC_generateAttrs($menuItem["attrs"]) : "";
+        $menu = "<li $menuItemAttrs>";
+        $menuLinkAttrs = $this->WC_generateAttrs([
+            "href" => $menuItem["link"],
+            "target" => isset($menuItem["target"]) ? $menuItem["target"] : ""
+        ]);
+        $menuLink = "<a $menuLinkAttrs>" . $menuItem["title"] . "</a>";
+        $menu .= $menuLink;
+
+        // Check if sub-menu exists
+        if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
+            // Generate sub-menu recursively and add class for sub-menu container
+            $menu .= $this->WC_generateMenu_3($menuItem["submenu"], "", [], $level + 1, true);
+        }
+        $menu .= "</li>";
+        $menuContainer .= $menu;
+    }
+
+    $menuContainer .= "</ul>";
+    return $menuContainer;
+}
+
+private function WC_generateAttrs($attrs) {
+    $attributes = "";
+    foreach ($attrs as $attr => $value) {
+        $attributes .= " $attr='$value'";
+    }
+    return $attributes;
+}
+/*--------------------------------------------------------------------------------*/
+
+public function WC_generateMenu_4($menuData, $containerClass, $accessLevel, $level = 0, $isSubmenu = false) {
+    $menuContainer = "";
+
+    // Add class for main menu container
+    if (!$isSubmenu) {
+        $menuContainer .= "<ul class='$containerClass'>";
+    } else {
+        $menuContainer .= "<ul class='submenu'>";
+    }
+
+    foreach ($menuData as $menuItem) {
+        // Check if the menu item should be displayed based on the access level
+        if (isset($menuItem["accessLevel"]) && $menuItem["accessLevel"] > $accessLevel) {
+            continue;
+        }
+
+        $menu = "<li>";
+        $menuLink = "<a href='" . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+        $menu .= $menuLink;
+
+        // Check if sub-menu exists
+        if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
+            // Generate sub-menu recursively and add class for sub-menu container
+            $menu .= $this->WC_generateMenu_4($menuItem["submenu"], "", $accessLevel, $level + 1, true);
+        }
+
+        $menu .= "</li>";
+        $menuContainer .= $menu;
+    }
+
+    $menuContainer .= "</ul>";
+
+    return $menuContainer;
+}
+/*--------------------------------------------------------------------------------*/
+/*
+public function WC_generateMenu_2($menuData_1, $containerClass, $submenuClass) {
+    $menuContainer = "<ul class='$containerClass'>";
+
+    foreach ($menuData_1 as $menuItem) {
+        $menu = "<li>";
+        $menuLinkAttrs = "href='" . $menuItem["link"] . "'";
+
+        // Check if submenu exists and is not empty
+        if (is_array($menuItem["submenu"]) && count($menuItem["submenu"]) > 0) {
+            $menuLinkAttrs .= " class='$submenuClass'";
+        }
+
+        $menuLink = "<a $menuLinkAttrs>" . $menuItem["title"] . "</a>";
+        $menu .= $menuLink;
+
+        // Generate submenu recursively if it exists and is not empty
+        if (is_array($menuItem["submenu"]) && count($menuItem["submenu"]) > 0) {
+            $menu .= $this->WC_generateMenu_2($menuItem["submenu"], "", $submenuClass);
+        }
+
+        $menu .= "</li>";
+        $menuContainer .= $menu;
+    }
+
+    $menuContainer .= "</ul>";
+
+    echo $menuContainer;
+}
+*/
 /*--------------------------------END-----create menu-------------------------------*/
   
 /*=====================================================================================================================*/
