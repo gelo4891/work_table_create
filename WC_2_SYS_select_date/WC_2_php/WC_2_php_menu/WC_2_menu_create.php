@@ -18,13 +18,10 @@ $WCA_connect = new WorkClassAll();
     // виведення результатів запиту
     //echo $WC_Menu_array= $WCA_connect->WC_BuildTable($results,'Class_menu');
 
-    //$WCA_connect->WC_disconnect_from_base();
+    $WCA_connect->WC_disconnect_from_base();
 
 
-
-    $containerClass = 'button-container';
-    $accessLevel = 1;
-    $ECHO_MENU_4=$WCA_connect->WC_generateMenu_4($results, $containerClass, $accessLevel);
+    $ECHO_MENU_4=$WCA_connect->WC_generateMenu_4($results, 'button-container', 2,'BOZ_AccessLevel');
     echo $ECHO_MENU_4;
 
    /*

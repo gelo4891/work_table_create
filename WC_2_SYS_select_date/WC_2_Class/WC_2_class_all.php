@@ -134,8 +134,9 @@ private function WC_generateAttrs($attrs) {
     return $attributes;
 }
 /*--------------------------------------------------------------------------------*/
-/*--формування меню з двома параметрами 1-назва меню, 2-посилання взятих із полів link і title-*/
-public function WC_generateMenu_4($menuData, $containerClass, $accessLevel, $level = 0, $isSubmenu = false) {
+/*--формування меню з двома параметрами 1-назва меню, 2-посилання взятих із полів -*/
+public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_AccessLevel, $level = 0, $isSubmenu = false) {
+
     $menuContainer = "";
 
     // Add class for main menu container
@@ -143,15 +144,27 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel, $lev
         $menuContainer .= "<ul class='$containerClass'>";
     } else {
         $menuContainer .= "<ul class='submenu'>";
-    }
-
+    }    
     foreach ($menuData as $menuItem) {
-        // Check if the menu item should be displayed based on the access level
-        if (isset($menuItem["accessLevel"]) && $menuItem["accessLevel"] > $accessLevel) {
-            continue;
-        }
+            // Check if the menu item should be displayed based on the access level
+        if (isset($menuItem["$BOZ_AccessLevel"]) && $menuItem["$BOZ_AccessLevel"] > $accessLevel) {
+            continue;            
+        }       
+      
+        //echo $path = 'http://' . $_SERVER['HTTP_HOST'] . '/' . basename($_SERVER['DOCUMENT_ROOT']) . $menuItem["link"] ;
         $menu = "<li>";
-        $menuLink = "<a href='"  . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+
+
+        if (strtolower(substr($menuItem["link"], 0, 4)) === 'http') {
+            // виконується коли перші чотири символи рядка рівні 'http'
+            echo ('test');
+            $menuLink='0';
+        } else {
+            // виконується коли перші чотири символи рядка не рівні 'http'
+            $menuLink = "<a href='" . 'http://' . $_SERVER['HTTP_HOST'] . '/' .  $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+        }
+        
+        
         $menu .= $menuLink;
 
         // Check if sub-menu exists
@@ -162,45 +175,13 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel, $lev
         $menu .= "</li>";
         $menuContainer .= $menu;
     }
+
     $menuContainer .= "</ul>";
     return $menuContainer;
 }
 
 
-public function WC_generateMenu_5($menuData, $containerClass, $accessLevel, $linkField = 'link', $titleField = 'title', $level = 0, $isSubmenu = false, $childParams = array()) {
-    $menuContainer = "";
 
-    // Add class for main menu container
-    if (!$isSubmenu) {
-        $menuContainer .= "<ul class='$containerClass'>";
-    } else {
-        $menuContainer .= "<ul class='submenu'>";
-    }
-
-    foreach ($menuData as $menuItem) {
-        // Check if the menu item should be displayed based on the access level
-        if (isset($menuItem["accessLevel"]) && $menuItem["accessLevel"] > $accessLevel) {
-            continue;
-        }
-
-        $menu = "<li>";
-        $menuLink = "<a href='" . $menuItem[$linkField] . "' target='_blank'>" . $menuItem[$titleField] . "</a>";
-        $menu .= $menuLink;
-
-        // Check if sub-menu exists
-        if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
-            // Generate sub-menu recursively and add class for sub-menu container
-            $menu .= $this->WC_generateMenu_5($menuItem["submenu"], "", $accessLevel, $linkField, $titleField, $level + 1, true, $childParams);
-        }
-
-        $menu .= "</li>";
-        $menuContainer .= $menu;
-    }
-
-    $menuContainer .= "</ul>";
-
-    return $menuContainer;
-}
 /*--------------------------------------------------------------------------------*/
 /*
 public function WC_generateMenu_2($menuData_1, $containerClass, $submenuClass) {
