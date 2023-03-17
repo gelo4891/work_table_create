@@ -134,8 +134,40 @@ private function WC_generateAttrs($attrs) {
     return $attributes;
 }
 /*--------------------------------------------------------------------------------*/
-
+/*--формування меню з двома параметрами 1-назва меню, 2-посилання взятих із полів link і title-*/
 public function WC_generateMenu_4($menuData, $containerClass, $accessLevel, $level = 0, $isSubmenu = false) {
+    $menuContainer = "";
+
+    // Add class for main menu container
+    if (!$isSubmenu) {
+        $menuContainer .= "<ul class='$containerClass'>";
+    } else {
+        $menuContainer .= "<ul class='submenu'>";
+    }
+
+    foreach ($menuData as $menuItem) {
+        // Check if the menu item should be displayed based on the access level
+        if (isset($menuItem["accessLevel"]) && $menuItem["accessLevel"] > $accessLevel) {
+            continue;
+        }
+        $menu = "<li>";
+        $menuLink = "<a href='"  . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+        $menu .= $menuLink;
+
+        // Check if sub-menu exists
+        if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
+            // Generate sub-menu recursively and add class for sub-menu container
+            $menu .= $this->WC_generateMenu_4($menuItem["submenu"], "", $accessLevel, $level + 1, true);
+        }
+        $menu .= "</li>";
+        $menuContainer .= $menu;
+    }
+    $menuContainer .= "</ul>";
+    return $menuContainer;
+}
+
+
+public function WC_generateMenu_5($menuData, $containerClass, $accessLevel, $linkField = 'link', $titleField = 'title', $level = 0, $isSubmenu = false, $childParams = array()) {
     $menuContainer = "";
 
     // Add class for main menu container
@@ -152,13 +184,13 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel, $lev
         }
 
         $menu = "<li>";
-        $menuLink = "<a href='" . $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+        $menuLink = "<a href='" . $menuItem[$linkField] . "' target='_blank'>" . $menuItem[$titleField] . "</a>";
         $menu .= $menuLink;
 
         // Check if sub-menu exists
         if (isset($menuItem["submenu"]) && !empty($menuItem["submenu"])) {
             // Generate sub-menu recursively and add class for sub-menu container
-            $menu .= $this->WC_generateMenu_4($menuItem["submenu"], "", $accessLevel, $level + 1, true);
+            $menu .= $this->WC_generateMenu_5($menuItem["submenu"], "", $accessLevel, $linkField, $titleField, $level + 1, true, $childParams);
         }
 
         $menu .= "</li>";
@@ -219,15 +251,22 @@ public function WC_generateMenu_2($menuData_1, $containerClass, $submenuClass) {
         return $this->WCA_PDO_conn;
     }
 
-/*------------------------NEW-------connect Base PDO-------------------------------------*/
-public function WC_connect_to_base_PDO() {
+/*------------------------NEW-------connect Base PDO------GOOOOD-------------------------------*/
+public function WC_connect_to_base_PDO($dbType, $host, $dbName, $user, $password, $port = null) {
     try {
-        if ($this->WCA_dbType == 'mysql') {
-            $this->WCA_conn = new PDO("mysql:host={$this->WCA_host};dbname={$this->WCA_dbName}", $this->WCA_user, $this->WCA_password);
-            return $this->WCA_conn;
-        } elseif ($this->WCA_dbType == 'oracle') {
-            $this->WCA_conn= new PDO("oci:dbname={$this->WCA_host}:{$this->WCA_port}/{$this->WCA_dbName}", $this->WCA_user, $this->WCA_password);
-            return $this->WCA_conn;
+        if ($dbType == 'mysql') {
+            $dsn = "mysql:host={$host};dbname={$dbName}";
+            if ($port) {
+                $dsn .= ";port={$port}";
+            }
+            $conn = new PDO($dsn, $user, $password);
+            return $conn;
+        } elseif ($dbType == 'oracle') {
+            $dsn = "oci:dbname={$host}:{$port}/{$dbName}";
+            $conn= new PDO($dsn, $user, $password);
+            return $conn;
+        } else {
+            throw new Exception('Invalid database type');
         }
     } catch (PDOException $e) {
         echo "Could not connect to database: " . $e->getMessage();
@@ -323,24 +362,24 @@ public function WC_connect_to_base_PDO() {
 	/*--------------------------------END------------------------------------*/
 /*=====================================================================================================================*/
 	/*---------------------------Query Sql-----------------------------------*/
-		public function WC_query_sql($sql) {
-			if (!$this->conn) {
-				throw new Exception('Not connected to database');
-			}
-			$result = mysqli_query($this->conn, $sql);
-			if (!$result) {
-				throw new Exception(mysqli_error($this->conn));
-			}
-			if (strpos(strtolower($sql), 'select') === 0) {
-				$rows = array();
-				while ($row = mysqli_fetch_assoc($result)) {
-					$rows[] = $row;
-				}
-				return $rows;
-			} else {
-				return mysqli_affected_rows($this->conn);
-			}
-		}
+    public function WC_query_sql($pdo, $sql) {
+        if (!$pdo) {
+            throw new Exception('Not connected to database');
+        }
+        $result = $pdo->query($sql);
+        if (!$result) {
+            throw new Exception($pdo->errorInfo()[2]);
+        }
+        if (strpos(strtolower($sql), 'select') === 0) {
+            $rows = array();
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $rows[] = $row;
+            }
+            return $rows;
+        } else {
+            return $result->rowCount();
+        }
+    }
 	/*--------------------------------END------------------------------------*/
 /*=====================================================================================================================*/
 	/*----------------------------Bild Table----------------------------------------*/
@@ -385,7 +424,7 @@ public function WC_buildQuery_system($dbType, $table, $data = array(), $conditio
     }
 }
 
-private function WC_buildQuery_MySql($table, $data = array(), $conditions = array(), $orderBy = '', $limit = '') {
+public function WC_buildQuery_MySql($table, $data = array(), $conditions = array(), $orderBy = '', $limit = '') {
     $queryType = 'SELECT';
     $selectFields = isset($data['fields']) ? $data['fields'] : '*';
     $insertFields = implode(',', array_keys($data));

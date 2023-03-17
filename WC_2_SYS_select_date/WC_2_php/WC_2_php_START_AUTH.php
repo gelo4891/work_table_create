@@ -8,9 +8,9 @@ require_once ($WC_2_config);
 /*--------------підключаємося до бази даних----------------- */
 
 try {
-    $WCA_connect = new WorkClassAll('mysql', $WC_2_config_MySql_servername, $WC_2_config_MySql_port, $WC_2_config_MySql_base_user, $WC_2_config_MySql_base_pass, $WC_2_config_MySql_base_name, $WC_2_config_MySql_table_name);
+    $WCA_connect = new WorkClassAll();
    // $WCA_connect = new WorkClassAll('oracle', $WC_2_config_servername, $WC_2_config_port, $WC_2_config_base_user, $WC_2_config_base_pass, $WC_2_config_base_name, $WC_2_config_table_name);
-    $conn = $WCA_connect->WC_connect_to_base_PDO();
+    $conn = $WCA_connect->WC_connect_to_base_PDO('mysql',$WC_2_config_MySql_servername,$WC_2_config_MySql_base_name,$WC_2_config_MySql_base_user,$WC_2_config_MySql_base_pass,$WC_2_config_MySql_port);
     if (!$conn) {
       echo die("Failed to connect to database");
     }
