@@ -443,21 +443,21 @@ public function WC_buildQuery_MySql($table, $data = array(), $conditions = array
 /*=====================================================================================================================*/
 
 
-static function WC_2_JS_PutToDiv($div_name,$class_name) {
+public static function WC_2_JS_PutToDiv($class_name,$div_name) {
     echo '<script src="/jQuery/jquery-3.6.4.js"></script>
           <script>
           $(document).ready(function() {
               // Обробник події при кліку на елемент меню
-              $(".'.$class_name.'").on("click", function(event) {
+              $(".'.$class_name.' a").on("click", function(event) {
                   event.preventDefault();
                   // Отримуємо адресу сторінки, яку потрібно відобразити у правому div-елементі
                   var pageUrl = $(this).attr("href");
                   // Виконуємо AJAX-запит і вставляємо відповідь у правий div-елемент
-                  $("#'.$div_name.'").load(pageUrl);
+                  $(".'.$div_name.'").load(pageUrl);
               });
           });
           </script>';
-  }
+}
 
 
 
