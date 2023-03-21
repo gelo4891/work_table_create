@@ -18,4 +18,22 @@
   text-align: center;
 }
 
+
 /*-------------------WC_2_start.php END----------------------*/
+
+
+/*-------------------WC_2_menu_create----------------------*/
+.WC_2_menu_create_container {
+  display: flex;
+  height: 100vh;
+}
+.WC_2_menu_create_sidebar {
+  width: 10%;
+  background-color: #f2f2f2;
+  border:2px solid red;
+}
+.WC_2_menu_create_content {
+  width: 90%;
+  background-color: #fff;
+  border:2px solid red;
+}

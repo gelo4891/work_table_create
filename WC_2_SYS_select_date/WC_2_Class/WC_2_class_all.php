@@ -135,7 +135,7 @@ private function WC_generateAttrs($attrs) {
 }
 /*--------------------------------------------------------------------------------*/
 /*--формування меню з двома параметрами 1-назва меню, 2-посилання взятих із полів -*/
-public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_AccessLevel, $level = 0, $isSubmenu = false) {
+public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_AccessLevel,$http_blank='_blank', $level = 0, $isSubmenu = false) {
 
     $menuContainer = "";
 
@@ -152,16 +152,16 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_
         }       
       
         //echo $path = 'http://' . $_SERVER['HTTP_HOST'] . '/' . basename($_SERVER['DOCUMENT_ROOT']) . $menuItem["link"] ;
-        $menu = "<li>";
+        $menu = "<li class='tesssssssss' >";
 
 
         if (strtolower(substr($menuItem["link"], 0, 4)) === 'http') {
             // виконується коли перші чотири символи рядка рівні 'http'
             echo ('test');
-            $menuLink='0';
+            $menuLink=' 0';
         } else {
             // виконується коли перші чотири символи рядка не рівні 'http'
-            $menuLink = "<a href='" . 'http://' . $_SERVER['HTTP_HOST'] . '/' .  $menuItem["link"] . "' target='_blank'>" . $menuItem["title"] . "</a>";
+            $menuLink = "<a href='" . 'http://' . $_SERVER['HTTP_HOST'] . '/' .  $menuItem["link"] . "' target='".$http_blank."'>" . $menuItem["title"] . "</a>";
         }
         
         
@@ -439,6 +439,27 @@ public function WC_buildQuery_MySql($table, $data = array(), $conditions = array
     }
     return $query;
 }
+/*--------------------------------END------------------------------------*/
+/*=====================================================================================================================*/
+
+
+static function WC_2_JS_PutToDiv($div_name,$class_name) {
+    echo '<script src="/jQuery/jquery-3.6.4.js"></script>
+          <script>
+          $(document).ready(function() {
+              // Обробник події при кліку на елемент меню
+              $(".'.$class_name.'").on("click", function(event) {
+                  event.preventDefault();
+                  // Отримуємо адресу сторінки, яку потрібно відобразити у правому div-елементі
+                  var pageUrl = $(this).attr("href");
+                  // Виконуємо AJAX-запит і вставляємо відповідь у правий div-елемент
+                  $("#'.$div_name.'").load(pageUrl);
+              });
+          });
+          </script>';
+  }
+
+
 
 
 	}
