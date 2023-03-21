@@ -26,14 +26,15 @@
 .WC_2_menu_create_container {
   display: flex;
   height: 100vh;
+  background-color: darkslategray;
 }
-.WC_2_menu_create_sidebar {
+.WC_2_menu_create_Menu {
   width: 10%;
-  background-color: #f2f2f2;
+  background-color: cadetblue;
   border:2px solid red;
 }
 .WC_2_menu_create_content {
   width: 90%;
-  background-color: #fff;
+  background-color: aquamarine;
   border:2px solid red;
 }
