@@ -37,29 +37,18 @@ if ($chek_auh==true){
 else {
 
 // Виводимо сформований запит
-  //GOOD/// $WC_query= $WCA_connect->WC_buildQuery_MySql("boz_am_menu", array(), array(),'id ',10);
-
-  $WC_query="SELECT m.id, m.title, m.link, m.order, m.BOZ_AccessLevel, m.has_submenu, s.id as menu_id, s.title as sub_title, s.link as sub_link, s.order as sub_order, s.access_level as sub_access_level
-  FROM boz_am_menu m 
-  LEFT JOIN boz_am_submenu s ON m.id = s.menu_id
-   ORDER BY m.order, m.id, s.order, s.id; ";
+  $WC_query= $WCA_connect->WC_buildQuery_MySql("boz_am_menu", array(), array(),'id ',10);
   
-
   // виконання запиту
   $results = $WCA_connect->WC_query_sql($WC_conn,$WC_query);
-//print_r ($results);
+
   // виведення результатів запиту
   //echo $WC_Menu_array= $WCA_connect->WC_BuildTable($results,'Class_menu');
 
   $WCA_connect->WC_disconnect_from_base();
 
-
-
-  $ECHO_MENU_55=$WCA_connect-> WC_generateMenu_5($results);
-  echo $ECHO_MENU_55;
-
-  //GOOD///   $ECHO_MENU_4=$WCA_connect->WC_generateMenu_4($results, 'button-container', 2,'BOZ_AccessLevel','_self');
-  //GOOD///echo $ECHO_MENU_4;
+  $ECHO_MENU_4=$WCA_connect->WC_generateMenu_4($results, 'button-container', 2,'BOZ_AccessLevel','_self');
+  echo $ECHO_MENU_4;
 }
 } else{
   echo "You are not logged in. Please log in to continue.";

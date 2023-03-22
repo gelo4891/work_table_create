@@ -179,40 +179,120 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_
     $menuContainer .= "</ul>";
     return $menuContainer;
 }
-
-
-
-/*--------------------------------------------------------------------------------*/
-/*
-public function WC_generateMenu_2($menuData_1, $containerClass, $submenuClass) {
-    $menuContainer = "<ul class='$containerClass'>";
-
-    foreach ($menuData_1 as $menuItem) {
-        $menu = "<li>";
-        $menuLinkAttrs = "href='" . $menuItem["link"] . "'";
-
-        // Check if submenu exists and is not empty
-        if (is_array($menuItem["submenu"]) && count($menuItem["submenu"]) > 0) {
-            $menuLinkAttrs .= " class='$submenuClass'";
+/*---------------GOOOD-----------------------------*/
+public function WC_generateMenu_5($menuData) {
+    // Initialize variables for tracking menu level
+    $currentMenuId = null;
+    $currentSubMenuId = null;
+    $currentMenuLevel = 0;
+  
+    // Start building the menu HTML
+    $menuHTML = '<ul>';
+  
+    // Loop through each row of the menu data
+    foreach ($menuData as $row) {
+      // Check if this row is a new menu item
+      if ($row['has_submenu'] == 0) {
+        // If we were previously building a sub-menu, close it out
+        if ($currentSubMenuId !== null) {
+          $menuHTML .= '</ul></li>';
+          $currentSubMenuId = null;
         }
-
-        $menuLink = "<a $menuLinkAttrs>" . $menuItem["title"] . "</a>";
-        $menu .= $menuLink;
-
-        // Generate submenu recursively if it exists and is not empty
-        if (is_array($menuItem["submenu"]) && count($menuItem["submenu"]) > 0) {
-            $menu .= $this->WC_generateMenu_2($menuItem["submenu"], "", $submenuClass);
+  
+        // Check if we're starting a new top-level menu item
+        if ($row['id'] !== $currentMenuId) {
+          // If we were previously building a top-level menu item, close it out
+          if ($currentMenuId !== null) {
+            $menuHTML .= '</li>';
+          }
+  
+          // Start a new top-level menu item
+          $menuHTML .= '<li><a href="' . $row['link'] . '">' . $row['title'] . '</a>';
+          $currentMenuId = $row['id'];
+          $currentMenuLevel = 0;
         }
+      }
 
-        $menu .= "</li>";
-        $menuContainer .= $menu;
+      if ($currentMenuLevel == 0) {
+        $menuHTML .= '</li>';
+      }
+  
+      // Check if this row is a sub-menu item
+      if ($row['has_submenu'] == 1) {
+        // Check if we're starting a new sub-menu
+        if ($row['id'] !== $currentSubMenuId) {
+          // If we were previously building a sub-menu, close it out
+          if ($currentSubMenuId !== null) {
+            $menuHTML .= '</ul></li>';
+          }
+      
+          // Start a new sub-menu
+          $menuHTML .= '<li><a href="' . $row['link'] . '">' . $row['title'] . '</a><ul>';
+          $currentSubMenuId = $row['menu_id'];
+          $currentMenuLevel = 1;
+        }
+      }
+
+      if ($row['has_submenu'] == 0 && $currentSubMenuId !== null) {
+        // If we were previously building a sub-menu, close it out
+        $menuHTML .= '</ul></li>';
+        $currentSubMenuId = null;
+      }
+
+      
+  
+      // If this row is neither a top-level menu item nor a sub-menu item, skip it
+      if ($row['has_submenu'] != 0 && $row['has_submenu'] != 1) {
+        continue;
+      }
+  
+      // Add the current row's sub-menu item to the current sub-menu
+      if ($currentSubMenuId !== null && $currentMenuLevel == 1) {
+        $menuHTML .= '<li><a href="' . $row['sub_link'] . '">' . $row['sub_title'] . '</a></li>';
+      }
+    }
+  
+    // Close out any open sub-menu or top-level menu item
+    if ($currentSubMenuId !== null) {
+      $menuHTML .= '</ul></li>';
     }
 
-    $menuContainer .= "</ul>";
+    if ($currentMenuId !== null) {
 
-    echo $menuContainer;
+      $menuHTML .= '</ul></li>';
+    }
+    $menuHTML .= '</ul>';
+    
+    // Return the completed menu HTML
+    return $menuHTML;
+    }
+
+
+
+/*------------------------Create menu as KnpMenu--------------------------------------------------------*/
+
+public function WC_generateMenu_6_KnpMenu(array $menuData, FactoryInterface $factory): string
+{
+    $menu = $factory->createItem('root');
+
+    // Loop through each row of the menu data
+    foreach ($menuData as $row) {
+        // Check if this row is a new menu item
+        if ($row['has_submenu'] == 0) {
+            $menu->addChild($row['title'], ['uri' => $row['link']]);
+        }
+
+        // Check if this row is a sub-menu item
+        if ($row['has_submenu'] == 1) {
+            $menu[$row['title']]->addChild($row['sub_title'], ['uri' => $row['sub_link']]);
+        }
+    }
+
+    return $menu->render('knp_menu.html.twig', [
+        'currentClass' => 'active',
+    ]);
 }
-*/
+
 /*--------------------------------END-----create menu-------------------------------*/
   
 /*=====================================================================================================================*/
@@ -439,6 +519,104 @@ public function WC_buildQuery_MySql($table, $data = array(), $conditions = array
     }
     return $query;
 }
+
+
+
+public function WC_buildQuery_MySql2($table, $WC_data = array(), $WC_conditions = array(), $WC_groupBy = '', $WC_having = '', $WC_join = '', $WC_orderBy = '', $WC_limit = '') {
+    // Select Fields
+    if(!empty($WC_data)) {
+        $selectFields = $WC_data['fields'];
+    } else {
+        $selectFields = '*';
+    }
+
+    // Where Clause
+    $whereClause = '';
+    if(!empty($WC_conditions)) {
+        $whereClause = ' WHERE ';
+        $conditions = array();
+        foreach($WC_conditions as $key => $value) {
+            $conditions[] = "$key = '$value'";
+        }
+        $whereClause .= implode(' AND ', $conditions);
+    }
+
+    // Group By Clause
+    $groupByClause = '';
+    if(!empty($WC_groupBy)) {
+        $groupByClause = ' GROUP BY ' . $WC_groupBy;
+    }
+
+    // Having Clause
+    $havingClause = '';
+    if(!empty($WC_having)) {
+        $havingClause = ' HAVING ' . $WC_having;
+    }
+
+    // Join Clause
+    $joinClause = '';
+    if(!empty($WC_join)) {
+        $joinClause = ' ' . $WC_join;
+    }
+
+    // Order By Clause
+    $orderByClause = '';
+    if(!empty($WC_orderBy)) {
+        $orderByClause = ' ORDER BY ' . $WC_orderBy;
+    }
+
+    // Limit Clause
+    $limitClause = '';
+    if(!empty($WC_limit)) {
+        $limitClause = ' LIMIT ' . $WC_limit;
+    }
+
+    // Query Type
+    $queryType = 'SELECT';
+    if(empty($WC_data) && empty($WC_conditions)){
+        $queryType = 'SELECT';
+    }
+    // Query
+    $query = "SELECT $selectFields FROM $table $joinClause $whereClause $groupByClause $havingClause $orderByClause $limitClause";
+
+    // Check if query should be an INSERT or UPDATE
+    if (!empty($WC_data)) {
+        if (!empty($WC_conditions)) {
+            $queryType = 'UPDATE';
+            // Update Fields and Query for UPDATE Query Type
+        $updateFields = '';
+        if ($queryType == 'UPDATE') {
+        foreach ($WC_data as $key => $value) {
+        if ($key == 'fields') {
+        continue;
+        }
+        $updateFields .= "$key = '$value', ";
+        }
+        $updateFields = rtrim($updateFields, ', ');
+        $query = "UPDATE $table SET $updateFields $whereClause";
+    }
+        // Insert Fields and Query for INSERT Query Type
+    $insertFields = '';
+    $insertValues = '';
+    if ($queryType == 'INSERT') {
+        foreach ($WC_data as $key => $value) {
+    if ($key == 'fields') {
+    continue;
+    }
+    $insertFields .= "$key, ";
+    $insertValues .= "'$value', ";
+    }
+    $insertFields = rtrim($insertFields, ', ');
+    $insertValues = rtrim($insertValues, ', ');
+    $query = "INSERT INTO $table ($insertFields) VALUES ($insertValues)";
+    }
+    // Return the Query
+    return $query;
+    }
+}
+}
+    
+
 /*--------------------------------END------------------------------------*/
 /*=====================================================================================================================*/
 
