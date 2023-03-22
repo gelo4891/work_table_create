@@ -16,7 +16,7 @@
     $WC_2_config_MySql_table_name="boz_user";
     $WC_2_config_MySql_tname_menu="boz_am_menu";
 
-    $WC_2_config_table_colum =array('BOZ_user_login', 'BOZ_user_pass');
+    $WC_2_config_table_colum =array('BOZ_user_login', 'BOZ_user_pass','boz_riven_dostyp');
     
     
     $class_Name="BT_Class_Name";
@@ -29,7 +29,7 @@
     );
 
     $WC_2_config_select_users = array(
-        'fields' => 'BOZ_user_login, BOZ_user_pass'
+        'fields' => 'BOZ_user_login, BOZ_user_pass',
     );
 
     

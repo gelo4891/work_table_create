@@ -8,4 +8,21 @@
     $WC_2_menu_CreateInFtame= $_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_php/WC_2_php_menu/Menu_1_admin/WC_2_menu_CreateInFtame.php';
     $WC_2_test              = '/WC_2_SYS_select_date/WC_2_php/WC_2_php_menu/Menu_1_admin/Menu_1_test.php';
     $WC_2_CSS_all           = '/WC_2_SYS_select_date/WC_2_css/WC_2_file_start.css';
+    
 ?>
+
+
+<?php
+ require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_Path.php');
+ require_once ($WC_2_class_auth);
+ require_once ($WC_2_class_all);
+ require_once ($WC_2_menu_php);
+ require_once ($WC_2_config);
+
+
+?>
+	<title>My page</title>
+  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">
+
+  <?php 
+  ?>

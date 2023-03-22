@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-<?php
+  <?php
  require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_Path.php');
  require_once ($WC_2_class_auth);
  require_once ($WC_2_class_all);
  require_once ($WC_2_menu_php);
  require_once ($WC_2_config);
+
+
+ $riven_dostypu=($_SESSION['boz_riven_dostyp']);
+ echo $riven_dostypu;
+
+ /*
+ echo $_SESSION['last_activity'];
+ echo $_SESSION['boz_riven_dostyp'];
+*/
+ //session_destroy();
+
 ?>
+<head>
+
 
 	<title>Моя сторінка</title>
   <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">
-	<!-- Підключення бібліотеки jQuery -->
+	
+  
+  
+  <!-- Підключення бібліотеки jQuery -->
 <?php
+
+
   $WCA_connect = new WorkClassAll();
   WorkClassAll::WC_2_JS_PutToDiv('WC_2_menu_create_Menu','WC_2_menu_create_content' );
 ?>
