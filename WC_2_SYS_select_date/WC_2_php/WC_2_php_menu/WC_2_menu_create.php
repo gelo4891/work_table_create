@@ -8,14 +8,12 @@
  require_once ($WC_2_config);
 
 
- $riven_dostypu=($_SESSION['boz_riven_dostyp']);
- echo $riven_dostypu;
 
  /*
  echo $_SESSION['last_activity'];
  echo $_SESSION['boz_riven_dostyp'];
 */
- //session_destroy();
+///session_destroy();
 
 ?>
 <head>
@@ -56,11 +54,19 @@ else {
 // Виводимо сформований запит
   //GOOD/// $WC_query= $WCA_connect->WC_buildQuery_MySql("boz_am_menu", array(), array(),'id ',10);
 
-  $WC_query="SELECT m.id, m.title, m.link, m.order, m.BOZ_AccessLevel, m.has_submenu, s.id as menu_id, s.title as sub_title, s.link as sub_link, s.order as sub_order, s.access_level as sub_access_level
+  /*$WC_query="SELECT m.id, m.title, m.link, m.order, m.BOZ_AccessLevel, m.has_submenu, s.id as menu_id, s.title as sub_title, s.link as sub_link, s.order as sub_order, s.access_level as sub_access_level
   FROM boz_am_menu m 
   LEFT JOIN boz_am_submenu s ON m.id = s.menu_id
    ORDER BY m.order, m.id, s.order, s.id; ";
-  
+  */
+
+   $riven_dostypu=($_SESSION['boz_riven_dostyp']);
+  $WC_query = "SELECT m.id, m.title, m.link, m.order, m.BOZ_AccessLevel, m.has_submenu, s.id as menu_id, s.title as sub_title, s.link as sub_link, s.order as sub_order, s.access_level as sub_access_level
+FROM boz_am_menu m 
+LEFT JOIN boz_am_submenu s ON m.id = s.menu_id
+WHERE $riven_dostypu <=m.BOZ_AccessLevel  AND (s.access_level IS NULL OR $riven_dostypu <=s.access_level )
+ORDER BY m.order, m.id, s.order, s.id";
+
 
   // виконання запиту
   $results = $WCA_connect->WC_query_sql($WC_conn,$WC_query);
