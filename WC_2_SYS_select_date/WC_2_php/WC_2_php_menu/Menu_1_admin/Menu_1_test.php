@@ -2,15 +2,20 @@
 
 
 // Підключаємося до бази даних
-$conn = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+$conn = new PDO('oci:dbname=//10.6.108.18:1521/dell720', 'test_c', 'test_c');
 
-if ($conn->getAttribute(PDO::ATTR_CONNECTION_STATUS)) {
-    // Виконання запиту
-    $stmt = $conn->query('SELECT * FROM users');
+if ($conn) {
+    echo 'Connected<br>';
 
-    // Виведення результату запиту на екран
-    while ($row = $stmt->fetch()) {
-        echo $row['id'] . ' ' . $row['name'] . ' ' . $row['email'] . '<br>';
+    $query = 'SELECT * FROM cioc_conf';
+    $result = $conn->query($query);
+
+    if ($result) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            echo $row['login'] . ' ' . $row['pass'] . '<br>';
+        }
+    } else {
+        echo 'Query failed';
     }
 } else {
     echo 'Connection failed';
