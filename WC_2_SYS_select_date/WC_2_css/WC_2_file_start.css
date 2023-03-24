@@ -29,12 +29,12 @@
   background-color: darkslategray;
 }
 .WC_2_menu_create_Menu {
-  width: 50%;
+  width: 30%;
   background-color: cadetblue;
   border:2px solid red;
 }
 .WC_2_menu_create_content {
-  width: 50%;
+  width: 70%;
   background-color: aquamarine;
   border:2px solid red;
 }

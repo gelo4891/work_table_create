@@ -10,8 +10,11 @@ class WorkClassAll {
 		private $WCA_conn;
 		private $BT_class_Name;
 		private	$WCA_table;		
+       // private $fileInput;
+       // private $submitBtn;
 	
-		public function __construct($WCA_dbType = 'mysql', $WCA_host = 'localhost', $WCA_port = 3306, $WCA_user = '', $WCA_password = '', $WCA_dbName = '', $WCA_table = '') {
+		public function __construct($WCA_dbType = 'mysql', $WCA_host = 'localhost', $WCA_port = 3306, $WCA_user = '',
+         $WCA_password = '', $WCA_dbName = '', $WCA_table = '', $fileInput='', $submitBtn='') {
             $this->WCA_dbType = $WCA_dbType;
             $this->WCA_host = $WCA_host;
             $this->WCA_port = $WCA_port;
@@ -19,6 +22,9 @@ class WorkClassAll {
             $this->WCA_password = $WCA_password;
             $this->WCA_dbName = $WCA_dbName;
             $this->WCA_WCA_table= $WCA_table;
+          //  $this->fileInput = document.querySelector('input[type="'.$fileInputName.'"]');
+          //  $this->submitBtn = document.querySelector('input[type="'.$submitBtnName.'"]');
+        
         }
 	/*-----------------------------OLD--connect Base Oracle or MySQL-------------------------------------*/
         public function WC_connect_to_base() {
@@ -636,11 +642,20 @@ public static function WC_2_JS_PutToDiv($class_name,$div_name) {
           });
           </script>';
 }
+/*======================================переві===============================================================================*/
+/*
+public function checkFile() {
+    if ($this->fileInput->value) {
+      $this->submitBtn->disabled = false;
+    } else {
+      $this->submitBtn->disabled = true;
+    }
+  }
+*/
+/*=====================================================================================================================*/
 
 
-
-
-	}
+}
 /*--------------------------------END------------------------------------*/
 /*=====================================================================================================================*/
 

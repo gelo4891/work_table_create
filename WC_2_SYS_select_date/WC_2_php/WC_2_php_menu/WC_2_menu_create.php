@@ -8,7 +8,6 @@
  require_once ($WC_2_config);
 
 
-
  /*
  echo $_SESSION['last_activity'];
  echo $_SESSION['boz_riven_dostyp'];
@@ -17,17 +16,12 @@
 
 ?>
 <head>
-
-
 	<title>Моя сторінка</title>
   <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">
-	
-  
+	  
   
   <!-- Підключення бібліотеки jQuery -->
 <?php
-
-
   $WCA_connect = new WorkClassAll();
   WorkClassAll::WC_2_JS_PutToDiv('WC_2_menu_create_Menu','WC_2_menu_create_content' );
 ?>
