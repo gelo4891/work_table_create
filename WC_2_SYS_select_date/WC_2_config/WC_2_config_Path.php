@@ -14,19 +14,3 @@
     $WC_2_class_load_XLS    = $_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_Class/WC_2_class_load_XLS.php';
 /*-----------------------------------------------------------------------------------------------------------------------*/
 ?>
-
-
-<?php
- require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_Path.php');
- require_once ($WC_2_class_auth);
- require_once ($WC_2_class_all);
- require_once ($WC_2_menu_php);
- require_once ($WC_2_config);
-
-
-?>
-	<title>My page</title>
-  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">
-
-  <?php 
-  ?>
