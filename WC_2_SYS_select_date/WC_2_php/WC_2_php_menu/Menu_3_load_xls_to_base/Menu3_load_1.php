@@ -29,19 +29,20 @@ if (class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
 // Ім'я файлу Excel
 
 /*-----------------------------------------------------------*/
-/*
+
 // Підключаємося до бази даних
-$conn = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+//$conn = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
+$conn = new PDO('odbc:ODBS_dell720','test_c','test_c');
 
 // Створюємо об'єкт класу XlsUploader
 $xlsUploader = new XlsUploader($conn);
-*/
-/*-----------------------------------------------------------*/
-
-
 
 /*-----------------------------------------------------------*/
-/*
+
+
+
+/*-----------------------------------------------------------*/
+
 // Ім'я таблиці, в яку будемо завантажувати дані
 $tablename = 'students';
 
@@ -51,6 +52,6 @@ $xlsUploader->createTableFromXls($filename, $tablename);
 // Завантажуємо дані з файлу Excel в таблицю бази даних
 $xlsUploader->uploadXlsToTable($filename, $tablename);
 
-*/
+
 ?>
 
