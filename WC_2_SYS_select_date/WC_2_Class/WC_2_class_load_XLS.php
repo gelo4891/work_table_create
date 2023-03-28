@@ -11,45 +11,65 @@ class XlsUploader {
         $this->connection = $conn;
     }
     
-    public function createTableFromXls(string $filename, string $tablename): void {
-        $spreadsheet = IOFactory::load($filename);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $columns = $worksheet->toArray()[0];
-        
-        $query = "CREATE TABLE $tablename (";
-        foreach ($columns as $col) {
-            $query .= "$col VARCHAR(255), ";
-        }
-        $query = rtrim($query, ', ');
-        $query .= ")";
-        
+public function createTableFromXls(string $filename, string $tablename): void {
+    $spreadsheet = IOFactory::load($filename);
+    $worksheet = $spreadsheet->getActiveSheet();
+    $columns = $worksheet->toArray()[0];
+    
+    $query = "CREATE TABLE $tablename (";
+    foreach ($columns as $col) {
+        $query .= "$col VARCHAR(255), ";
+    }
+    $query = rtrim($query, ', ');
+    $query .= ")";
+    
+    $stmt = $this->connection->prepare("SELECT table_name FROM user_tables WHERE table_name = :tablename");
+    $stmt->execute(['tablename' => strtoupper($tablename)]);
+    $tableExists = ($stmt->fetchColumn() > 0);
+
+    if (!$tableExists) {
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
+        echo "Table $tablename created successfully";
+    } else {
+        echo "Table $tablename already exists";
     }
+}
+
+
+
+
     
-    public function uploadXlsToTable(string $filename, string $tablename): void {
-        $spreadsheet = IOFactory::load($filename);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $rows = $worksheet->toArray();
-        
-        $columns = implode(",", $worksheet->toArray()[0]);
-        $values = "";
-        
-        foreach ($rows as $row) {
-            $values .= "(";
-            foreach ($row as $cell) {
-                $values .= "'" . addslashes($cell) . "', ";
-            }
-            $values = rtrim($values, ', ');
-            $values .= "), ";
+public function uploadXlsToTable(string $filename, string $tablename): void {
+    $spreadsheet = IOFactory::load($filename);
+    $worksheet = $spreadsheet->getActiveSheet();
+    $rows = array_slice($worksheet->toArray(), 1);
+
+    $columns = implode(",", $worksheet->toArray()[0]);
+    $values = "";
+    
+    foreach ($rows as $row) {
+        $values .= " INTO $tablename (";
+        foreach ($row as $index => $cell) {
+            $values .= $worksheet->toArray()[0][$index] . ",";
+        }
+        $values = rtrim($values, ',');
+        $values .= ") VALUES (";
+        foreach ($row as $cell) {
+            $values .= "'" . addslashes($cell) . "', ";
         }
         $values = rtrim($values, ', ');
-        
-        $query = "INSERT INTO $tablename ($columns) VALUES $values";
-        
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute();
+        $values .= ")";
     }
+    
+    echo $query = "INSERT ALL $values SELECT * FROM dual";
+    
+    $stmt = $this->connection->prepare($query);
+    $stmt->execute();
+}
+
+
+
     
     public function readXlsFile(string $filename): Worksheet {
         $spreadsheet = IOFactory::load($filename);
@@ -90,7 +110,7 @@ class XlsUploader {
         }
         $values = rtrim($values, ', ');
         
-        $query = "INSERT INTO $tablename ($columns) VALUES $values";
+       echo  $query = "INSERT INTO $tablename ($columns) VALUES $values";
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
     }

@@ -3,7 +3,7 @@
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_Path.php');
 
 // Підключаємо необхідні файли і класи
-require 'o:/xampp/vendor/autoload.php';
+require 'c:/xampp/vendor/autoload.php';
 require_once ($WC_2_class_load_XLS);
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -44,13 +44,13 @@ $xlsUploader = new XlsUploader($conn);
 /*-----------------------------------------------------------*/
 
 // Ім'я таблиці, в яку будемо завантажувати дані
-$tablename = 'students';
+$tablename = 'ole_2023_XLS';
 
 // Створюємо таблицю з полями, що відповідають заголовкам стовпців у файлі Excel
-$xlsUploader->createTableFromXls($filename, $tablename);
+$xlsUploader->createTableFromXls($file_name, $tablename);
 
 // Завантажуємо дані з файлу Excel в таблицю бази даних
-$xlsUploader->uploadXlsToTable($filename, $tablename);
+$xlsUploader->uploadXlsToTable($file_name, $tablename);
 
 
 ?>
