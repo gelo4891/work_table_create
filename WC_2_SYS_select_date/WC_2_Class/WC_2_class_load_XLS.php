@@ -35,11 +35,11 @@ public function createTableFromXls(string $filename, string $tablename): void {
         echo "Table $tablename already exists";
     }
 }
+	
 
 
 
-
-    
+/*--------------------------------------------------------------------------------------------*/    
 public function uploadXlsToTable(string $filename, string $tablename): void {
     $spreadsheet = IOFactory::load($filename);
     $worksheet = $spreadsheet->getActiveSheet();
@@ -47,7 +47,7 @@ public function uploadXlsToTable(string $filename, string $tablename): void {
 
     $columns = implode(",", $worksheet->toArray()[0]);
     $values = "";
-    
+
     foreach ($rows as $row) {
         $values .= " INTO $tablename (";
         foreach ($row as $index => $cell) {
@@ -56,19 +56,19 @@ public function uploadXlsToTable(string $filename, string $tablename): void {
         $values = rtrim($values, ',');
         $values .= ") VALUES (";
         foreach ($row as $cell) {
-            $values .= "'" . addslashes($cell) . "', ";
+            $cell_cp1251 = iconv("UTF-8", "CP1251//TRANSLIT", $cell);
+            $cell_escaped = str_replace("'", "''", $cell_cp1251);
+            $values .= "'" . $cell_escaped . "', ";
         }
         $values = rtrim($values, ', ');
         $values .= ")";
     }
-    
-    echo $query = "INSERT ALL $values SELECT * FROM dual";
-    
+
+    $query = "INSERT ALL $values SELECT * FROM dual";
     $stmt = $this->connection->prepare($query);
     $stmt->execute();
 }
-
-
+/*--------------------------------------------------------------------------------------------*/    
 
     
     public function readXlsFile(string $filename): Worksheet {
