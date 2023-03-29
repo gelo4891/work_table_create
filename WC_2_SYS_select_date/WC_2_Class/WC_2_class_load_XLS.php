@@ -88,28 +88,26 @@ public function uploadXlsToTable(string $directory, string $filename, string $ta
     $worksheet = $spreadsheet->getActiveSheet();
     $rows = array_slice($worksheet->toArray(), 1);
 
+    // Remove empty rows
+    $rows = array_filter($rows, function($row) {
+        return !empty(array_filter($row));
+    });
+
     $columns = implode(",", $worksheet->toArray()[0]);
-    $values = "";
+    $rowsToInsert = array();
 
     foreach ($rows as $row) {
-        $values .= " INTO $tablename (";
-        foreach ($row as $index => $cell) {
-            $values .= $worksheet->toArray()[0][$index] . ",";
-        }
-        $values = rtrim($values, ',');
-        $values .= ") VALUES (";
+        $rowToInsert = array();
         foreach ($row as $cell) {
             $cell_cp1251 = iconv("UTF-8", "CP1251//TRANSLIT", $cell);
             $cell_escaped = str_replace("'", "''", $cell_cp1251);
-            $values .= "'" . $cell_escaped . "', ";
+            $rowToInsert[] = "'" . $cell_escaped . "'";
         }
-        $values = rtrim($values, ', ');
-        $values .= ")";
+        $values = implode(',', $rowToInsert);
+        $query = "INSERT INTO $tablename ($columns) VALUES ($values)";
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute();
     }
-
-     $query = "INSERT ALL $values SELECT * FROM dual";
-    $stmt = $this->connection->prepare($query);
-    $stmt->execute();
 }
 
 /*--------------------------------------------------------------------------------------------*/    
