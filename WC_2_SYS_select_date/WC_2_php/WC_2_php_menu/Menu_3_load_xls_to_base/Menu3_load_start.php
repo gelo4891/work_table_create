@@ -18,7 +18,7 @@
 	</script>
 </head>
 <body>
-	<form action="<?php echo $Menu_3_load_xls_to_base_2;?>" method="POST" enctype="multipart/form-data" target="_self">
+	<form action="<?php echo $Menu_3_load_xls_to_base_1;?>" method="POST" enctype="multipart/form-data" target="_self">
 		<input type="file" name="Menu3_load_file" onchange="checkFile()">
 		<input type="submit" value="Upload" disabled>
 	</form>
