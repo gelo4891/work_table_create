@@ -132,9 +132,9 @@ public function WC_Auth_login_and_update_PDO_universal($WC_Auth_conn, $WC_Auth_l
             $stmt->bindParam(':WC_Auth_login', $WC_Auth_login_adm);
             $stmt->bindParam(':WC_Auth_pass', $WC_Auth_pass_adm);
             $stmt->execute();
-            echo ('New user created!');
+            echo ('<a class="Class_Testusser">New user created!</a>');
         } else {
-            echo ('Login failed!');
+            echo ('<a class="Class_Testusser">Login failed!</a>');
         }
     }
     

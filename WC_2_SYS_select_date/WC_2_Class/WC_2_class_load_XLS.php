@@ -74,12 +74,15 @@ public function uploadXlsToTable1(string $filename, string $tablename,string $di
 /*------------------------------New created now GOOD--------------------------------------------------------------*/    
 public function uploadXlsToTable(string $directory, string $filename, string $tablename): void {
     echo $filePath = $directory . '/' . $filename;
+    echo '<br>';
     echo '<br>'.$filePath.'<br>';
+    echo '<br>';
+   
     if (!file_exists($filePath)) {
         throw new \Exception('File does not exist');
     }
 
-    $fileExt = pathinfo($filePath, PATHINFO_EXTENSION);
+   echo $fileExt = pathinfo($filePath, PATHINFO_EXTENSION);
     if ($fileExt != 'xls' && $fileExt != 'xlsx') {
         throw new \Exception('Invalid file extension. Only XLS and XLSX files are allowed.');
     }

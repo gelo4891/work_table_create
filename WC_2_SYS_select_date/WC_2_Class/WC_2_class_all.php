@@ -185,6 +185,10 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_
     $menuContainer .= "</ul>";
     return $menuContainer;
 }
+
+
+
+
 /*---------------GOOOD-----------------------------*/
 public function WC_generateMenu_5($menuData) {
     // Initialize variables for tracking menu level
@@ -254,7 +258,7 @@ public function WC_generateMenu_5($menuData) {
   
       // Add the current row's sub-menu item to the current sub-menu
       if ($currentSubMenuId !== null && $currentMenuLevel == 1) {
-        $menuHTML .= '<li><a href="' . $row['sub_link'] . '">' . $row['sub_title'] . '</a></li>';
+        $menuHTML .= '<li tabindex="0"><a href="' . $row['sub_link'] . '">' . $row['sub_title'] . '</a></li>';
       }
     }
   
@@ -447,6 +451,38 @@ public function WC_connect_to_base_PDO($dbType, $host, $dbName, $user, $password
             return $result->rowCount();
         }
     }
+
+    /*
+        echo "<pre>";
+echo $stmt->queryString;
+echo "</pre>";*/
+
+
+public function WC_query_sql2($pdo, $sql, $params) {
+    if (!$pdo) {
+        throw new Exception('Not connected to database');
+    }
+    $stmt = $pdo->prepare($sql);
+    foreach ($params as $key => $value) {
+        $stmt->bindParam($key, $value);
+    }
+    $stmt->execute();
+    if (strpos(strtolower($sql), 'select') === 0) {
+        $rows = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    } else {
+        return $stmt->rowCount();
+    }
+}
+
+
+    
+    
+    
+    
 	/*--------------------------------END------------------------------------*/
 /*=====================================================================================================================*/
 	/*----------------------------Bild Table----------------------------------------*/

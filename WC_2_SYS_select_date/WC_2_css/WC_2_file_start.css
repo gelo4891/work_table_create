@@ -22,20 +22,12 @@
 /*-------------------WC_2_start.php END----------------------*/
 
 
-/*-------------------WC_2_menu_create----------------------*/
-.WC_2_menu_create_container {
+/*-------------------WC_2_php_START_AUTH.php----------------------*/
+
+.Class_Testusser{
   display: flex;
-  height: 100vh;
-  background-color: darkslategray;
+  justify-content: center;
+  font-size: 75px;
+  color: red;
 }
-.WC_2_menu_create_Menu {
-  width: 30%;
-  background-color: cadetblue;
-  border:2px solid red;
-}
-.WC_2_menu_create_content {
-  width: 70%;
-  background-color: aquamarine;
-  border:2px solid red;
-}
-/*-------------------WC_2_menu_create----------------------*/
+/*-------------------WC_2_php_START_AUTH.php END----------------------*/

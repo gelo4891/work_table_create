@@ -1,0 +1,75 @@
+.WC_2_menu_create_container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+  background-color: darkslategray;
+  }
+  
+  .WC_2_menu_create_Menu {
+  width: 25%;
+  background-color: cadetblue;
+  padding: 20px 0 0 20px ;
+  position: relative;
+  }
+  
+  .WC_2_menu_create_Menu ul {
+  list-style-type: none;
+  width: 85%;
+  background-color: #f1f1f1;
+  padding: 0;
+  margin: 0;
+  }
+  
+  .WC_2_menu_create_Menu li a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid blueviolet;
+  }
+  
+  .WC_2_menu_create_Menu li a:hover {
+  background-color: #555;
+  color: chartreuse;
+  }
+  
+  .WC_2_menu_create_Menu ul ul li a {
+  font-size: 14px;
+  font-weight: normal;
+  }
+  
+  .WC_2_menu_create_content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: aquamarine;
+  border: 2px solid red;
+  }
+  
+  .WC_2_menu_create_Menu ul ul {
+  position: absolute;
+  left: 86%;
+  margin-left: 0;
+  display: none;
+  width: 200px;
+  margin-top: -36px;
+  }
+  
+  .WC_2_menu_create_Menu ul li:hover > ul {
+  display: block;
+  }
+  
+  .WC_2_menu_create_Menu li ul {
+  display: none;
+  }
+  
+  .WC_2_menu_create_Menu li ul li {
+  display: block;
+  /*padding: 8px 16px;*/
+  border: 1px solid brown;
+  background-color: deepskyblue;
+  }
+  
+  .WC_2_menu_create_Menu li ul li a {
+  padding: 9px 16px;
+  border: none;
+  }
