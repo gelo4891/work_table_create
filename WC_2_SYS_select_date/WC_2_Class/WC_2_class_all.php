@@ -190,7 +190,7 @@ public function WC_generateMenu_4($menuData, $containerClass, $accessLevel,$BOZ_
 
 
 /*---------------GOOOD-----------------------------*/
-public function WC_generateMenu_5($menuData) {
+public function WC_generateMenu_5($menuData,$JS_class_menu='JS_class_menu') {
     // Initialize variables for tracking menu level
     $currentMenuId = null;
     $currentSubMenuId = null;
@@ -217,7 +217,7 @@ public function WC_generateMenu_5($menuData) {
           }
   
           // Start a new top-level menu item
-          $menuHTML .= '<li><a href="' . $row['link'] . '">' . $row['title'] . '</a>';
+          $menuHTML .= '<li><a href="' . $row['link'] . '" class="'.$JS_class_menu.'" >' . $row['title'] . '</a>';
           $currentMenuId = $row['id'];
           $currentMenuLevel = 0;
         }
@@ -237,7 +237,7 @@ public function WC_generateMenu_5($menuData) {
           }
       
           // Start a new sub-menu
-          $menuHTML .= '<li><a href="' . $row['link'] . '">' . $row['title'] . '</a><ul>';
+          $menuHTML .= '<li><a href="' . $row['link'] . '" class="'.$JS_class_menu.'">' . $row['title'] . '</a><ul>';
           $currentSubMenuId = $row['menu_id'];
           $currentMenuLevel = 1;
         }
@@ -258,7 +258,7 @@ public function WC_generateMenu_5($menuData) {
   
       // Add the current row's sub-menu item to the current sub-menu
       if ($currentSubMenuId !== null && $currentMenuLevel == 1) {
-        $menuHTML .= '<li tabindex="0"><a href="' . $row['sub_link'] . '">' . $row['sub_title'] . '</a></li>';
+        $menuHTML .= '<li tabindex="0"><a href="' . $row['sub_link'] . '" class="'.$JS_class_menu.'">' . $row['sub_title'] . '</a></li>';
       }
     }
   
@@ -664,6 +664,7 @@ public function WC_buildQuery_MySql2($table, $WC_data = array(), $WC_conditions 
 
 
 public static function WC_2_JS_PutToDiv($class_name,$div_name) {
+
     echo '<script src="/jQuery/jquery-3.6.4.js"></script>
           <script>
           $(document).ready(function() {
@@ -678,6 +679,64 @@ public static function WC_2_JS_PutToDiv($class_name,$div_name) {
           });
           </script>';
 }
+
+public static function WC_2_JS_PutToDiv1($class_name,$div_name) {
+    echo 'C_2_JS_PutToDiv1'; 
+    echo '<script src="/jQuery/jquery-3.6.4.js"></script>
+          <script>
+          $(document).ready(function() {
+              // Обробник події при кліку на елемент меню
+              $(".'.$class_name.' a").on("click", function(event) {
+                  event.preventDefault();
+                  // Отримуємо адресу сторінки, яку потрібно відобразити у правому div-елементі
+                  var pageUrl = $(this).attr("href");
+                  // Виконуємо AJAX-запит і вставляємо відповідь у правий div-елемент
+                  $(".'.$div_name.'").load(pageUrl);
+              });
+          });
+          </script>';
+}
+
+
+public static function WC_2_JS_PutToDiv2($class_name,$div_name) {
+    echo '<script src="/jQuery/jquery-3.6.4.js"></script>
+          <script>
+          $(document).ready(function() {
+              // Обробник події при кліку на елемент меню
+              $(".'.$class_name.' a").on("click", function(event) {
+                  event.preventDefault();
+                  // Отримуємо адресу сторінки, яку потрібно відобразити у правому div-елементі
+                  var pageUrl = $(this).attr("href");
+                  // Виконуємо AJAX-запит і вставляємо відповідь у правий div-елемент
+                  $(".'.$div_name.'").load(pageUrl, function() {
+                      // Додаємо обробник подій на всі посилання в елементі WC_2_menu_create_content
+                      $(".'.$div_name.'").on("click", "a", function(event) {
+                          event.preventDefault();
+                          var pageUrl = $(this).attr("href");
+                          $(".'.$div_name.'").load(pageUrl);
+                      });
+                  });
+              });
+          });
+          </script>';
+  }
+
+  public static function loadContent($url, $div_name) {
+    echo '<script src="/jQuery/jquery-3.6.4.js"></script>
+          <script>
+          $(document).ready(function() {
+              // Виконуємо AJAX-запит і вставляємо відповідь у вказаний div-елемент
+              $.ajax({
+                url: "'.$url.'",
+                success: function(data) {
+                  $(".'.$div_name.'").html(data);
+                }
+              });
+          });
+          </script>';
+  }
+  
+  
 /*======================================переві===============================================================================*/
 /*
 public function checkFile() {

@@ -8,7 +8,7 @@
   .WC_2_menu_create_Menu {
   width: 25%;
   background-color: cadetblue;
-  padding: 20px 0 0 20px ;
+  padding: 10px 0 0 10px ;
   position: relative;
   }
   
@@ -43,6 +43,7 @@
   padding: 20px;
   background-color: aquamarine;
   border: 2px solid red;
+  width: 69%;
   }
   
   .WC_2_menu_create_Menu ul ul {

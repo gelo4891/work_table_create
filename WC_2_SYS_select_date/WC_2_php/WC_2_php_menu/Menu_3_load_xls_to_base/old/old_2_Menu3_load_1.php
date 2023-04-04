@@ -20,26 +20,22 @@ $Bibl_composer=$WCA_connect->WC_CL_conn_query_sql($WC_conn, 'Bibl_composer');
 $WC_2_class_all=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_all');
 
 
-$dell720_ODBC=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$dell720_ODBC');
-$dell720_test_c_user=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$dell720_test_c_user');
-$dell720_test_c_pass=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$dell720_test_c_pass');
-
-// дані для FTP підключення
-$ftp_server=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_server');
-$ftp_port=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_port');
-$ftp_username=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_username');
-$ftp_password=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_password');
-
 require_once ($WC_2_class_auth);
 require_once ($WC_2_class_load_XLS);
 require_once ($WC_2_class_all);
 require ($Bibl_composer);
-
 /*===========================================================================================================*/
+
   $WCA_WorkClassAll = new WorkClassAll();
   WorkClassAll::WC_2_JS_PutToDiv1('WC_2_menu_create_Menu','WC_2_menu_create_content' );
 
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
+// дані для FTP підключення
+$ftp_server = "10.6.128.63";
+$ftp_port = 21;
+$ftp_username = "FZ_Oleg_User";
+$ftp_password = "FZ_Oleg_User";
 
 /*----------------------перевіряємо чи підключено клас з бібліотеки-------------------------------------*/
 
@@ -62,7 +58,7 @@ if ($ftp_conn && $login) {
    
    /*-----------------------------------------------------------*/
 // Підключаємося до бази даних
-$conn = new PDO("odbc:$dell720_ODBC","$dell720_test_c_user","$dell720_test_c_pass");
+$conn = new PDO('odbc:ODBS_dell720','test_c','test_c');
 
 // Створюємо об'єкт класу XlsUploader
 $xlsUploader = new XlsUploader($conn);
@@ -76,22 +72,16 @@ $tablename = 'ole_'.$filename_without_extension . '_' . $current_time_1 ;
 
 $menu_3_path_file = $_SERVER['DOCUMENT_ROOT'] . '/Download_date';
 
-/*---------------------------окремо дві функції
-------------------------------------створення таблиці ------------------------------
 $xlsUploader->createTableFromXls($menu_3_path_file,$file_name, $tablename);
-------------------------------------завантаження даних ------------------------------
+
+
+echo $menu_3_path_file;
+
 // Завантажуємо дані з файлу Excel в таблицю бази даних
 $xlsUploader->uploadXlsToTable($menu_3_path_file,$file_name, $tablename);
-  */ 
-    try {
-      //  print_r($_SESSION);
-
-     // $xlsUploader->CreateImportDataFromXls($menu_3_path_file,$file_name, $tablename,'0');
-    } catch (\Exception $e) {
-     echo "Error: " . $e->getMessage();
-    }
-
-     } else {
+   
+  
+    } else {
         echo "File transfer failed!";
     }
 } else {

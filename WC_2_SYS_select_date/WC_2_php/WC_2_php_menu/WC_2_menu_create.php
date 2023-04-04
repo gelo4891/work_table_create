@@ -2,12 +2,14 @@
 <html>
   <?php
 
+
+/*=============================================підключення параметрів з БАЗИ==============================================================*/
   require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_BAse.php');
   require_once ($WC_2_config_base_CL);
   
   $WCA_connect = new WC_CL_Conn_Base(); 
-    // Підключення до бази даних параметри по замовчуванню  
   $WC_conn = $WCA_connect->WC_CL_conn_base_func();    
+
 
   $WC_2_class_auth=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_auth');
   $WC_2_class_all=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_all');
@@ -18,19 +20,24 @@
 
   require_once ($WC_2_class_auth);
   require_once ($WC_2_class_all);
-
+/*===========================================================================================================*/
 ?>
 
 <head>
 	<title>Моя сторінка</title>
   <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_menu_create;  ?>">
-  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">
+  <!--<link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">-->
     <!-- Підключення бібліотеки jQuery -->
 <?php
-  $WCA_WorkClassAll = new WorkClassAll();
-  WorkClassAll::WC_2_JS_PutToDiv('WC_2_menu_create_Menu','WC_2_menu_create_content' );
-?>
 
+
+  $WCA_WorkClassAll = new WorkClassAll();
+  //WorkClassAll::WC_2_JS_PutToDiv('WC_2_menu_create_Menu','WC_2_menu_create_content' );
+  WorkClassAll::WC_2_JS_PutToDiv2('WC_2_menu_create_Menu','WC_2_menu_create_content' );
+ 
+
+
+?>
 
 
 </head>
@@ -57,7 +64,7 @@ else {
       
   $WCA_WorkClassAll->WC_disconnect_from_base();
 
-  $ECHO_MENU_55=$WCA_WorkClassAll-> WC_generateMenu_5($results);
+  $ECHO_MENU_55=$WCA_WorkClassAll-> WC_generateMenu_5($results,'JS_class_menu');
   echo $ECHO_MENU_55;
 }
 } else{
