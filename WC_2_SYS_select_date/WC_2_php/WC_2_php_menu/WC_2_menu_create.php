@@ -2,6 +2,11 @@
 <html>
   <?php
 
+/**===================================================================== */
+require_once ($_SERVER['DOCUMENT_ROOT'] .'/session/WC_2_check_sesion.php');
+$session_checker = new SessionChecker();
+$session_checker->checkSession_button();
+/**===================================================================== */
 
 /*=============================================підключення параметрів з БАЗИ==============================================================*/
   require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_BAse.php');
