@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <?php
 
-/**===================================================================== */
+<?php
+/*===================================================================== */
 require_once ($_SERVER['DOCUMENT_ROOT'] .'/session/WC_2_check_sesion.php');
-$session_checker = new SessionChecker();
-$session_checker->checkSession_button();
+$session_checker1 = new SessionChecker();
+$chek_auh=$session_checker1->WC_Auth_check_session(false,'/WC_2_SYS_select_date/WC_2_start.php');
+
 /**===================================================================== */
 
 /*=============================================підключення параметрів з БАЗИ==============================================================*/
@@ -25,41 +26,35 @@ $session_checker->checkSession_button();
 
   require_once ($WC_2_class_auth);
   require_once ($WC_2_class_all);
-/*===========================================================================================================*/
+  /*===========================================================================================================*/
 ?>
 
 <head>
-	<title>Моя сторінка</title>
-  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_menu_create;  ?>">
-  <!--<link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_all;  ?>">-->
-    <!-- Підключення бібліотеки jQuery -->
-<?php
-
+  <title>Моя сторінка</title> 
+  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_menu_create;?>">;
+  
+  <?php
+   
+  //  <!-- Підключення бібліотеки jQuery -->
 
   $WCA_WorkClassAll = new WorkClassAll();
-  //WorkClassAll::WC_2_JS_PutToDiv('WC_2_menu_create_Menu','WC_2_menu_create_content' );
   WorkClassAll::WC_2_JS_PutToDiv2('WC_2_menu_create_Menu','WC_2_menu_create_content' );
- 
-
-
-?>
-
+   ?>
 
 </head>
 <body class="WC_2_menu_create_container">
 	<div class="WC_2_menu_create_Menu">
-		<!-- Меню -->
-
-<?php 
+   <?php 
+		//<!-- Меню -->
+/*
 $WC_class_Auth_connest = new WC_class_Auth('');
-$chek_auh=$WC_class_Auth_connest->WC_Auth_check_session("", false, '<a>You are not logged in. Please log in to continue.</a>');
+$chek_auh=$WC_class_Auth_connest->WC_Auth_check_session("", false, '<a>funck--->>>You are not logged in. Please log in to continue111.</a>');
+*/
 if ($chek_auh==true){
   if (!$WC_conn) {
     echo die("Failed to connect to database");
   }
 else {
-
-
 
 // Виводимо сформований запит
   $riven_dostypu = $_SESSION['boz_riven_dostyp'];
@@ -72,13 +67,14 @@ else {
   $ECHO_MENU_55=$WCA_WorkClassAll-> WC_generateMenu_5($results,'JS_class_menu');
   echo $ECHO_MENU_55;
 }
-} else{
+ }else{
   echo "You are not logged in. Please log in to continue.";
-}      
- ?>
+}   
+ 
+?>
 
-	</div>
-	<div class="WC_2_menu_create_content">
+</div>
+	<div class='WC_2_menu_create_content'>
 		<!-- Зміст правого div-елемента буде змінюватися AJAX-запитами -->
 		<p>Виберіть пункт меню, щоб відобразити вміст сторінки тут.</p>
 	</div>

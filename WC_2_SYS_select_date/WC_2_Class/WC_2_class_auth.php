@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 
 class WC_class_Auth {
  private $BASE_Date_Users;
@@ -7,76 +7,6 @@ class WC_class_Auth {
  public function __construct($BASE_Date_Users) {
     $this->BASE_Date_Users = $BASE_Date_Users;
  }
-
-
- /*-----------------------------------old----------------------------------------------*/
- /*public function WC_Auth_login($WC_username, $WC_password, $Auth_Header) {
-    foreach ($this->BASE_Date_Users as $user) {
-      if($WC_username === $user['BOZ_user_login'] && $WC_password === $user['BOZ_user_pass']) {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['BOZ_user_login'] = $WC_username;
-        echo 'Login successful!';
-        header('Location: ' . $Auth_Header);
-        
-        exit;
-      }
-    }
-    echo 'Invalid login credentials';
-    exit;
- }
-*/
-/*-------------------Check session--------------------------old function------------------------------------------------------*/
-/*
- public function WC_check_session($WC_check_ses_redirect_url, $WC_check_ses_should_redirect = true) {
-    if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-      if ($WC_check_ses_should_redirect) {
-        header('Location: ' . $WC_check_ses_redirect_url);
-        exit;
-      }
-    } else {
-      if ($WC_check_ses_should_redirect) {
-        header('Location: ../start.php');
-        exit;
-      }
-    }
-  }
-
-  public function WC_check_auth($WC_check_ses_should_redirect = true) {
-    if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-        return true;
-    } else {
-        if ($WC_check_ses_should_redirect) {
-            die('Помилка: ви не увійшли в систему або ваша сесія не дійсна');
-        }
-        return false;
-    }
-}
-*/
-/*--------Check session--------------------------new function---------*/
-function WC_Auth_check_session($redirect_url = '', $should_redirect = true, $error_message = 'Your session is not reliable.') {
-    $reliable_session = false;
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-
-        // Check if session has not expired and user agent has not changed
-      if (isset($_SESSION['user_agent']) && $_SESSION['user_agent'] === $_SERVER['HTTP_USER_AGENT'] &&
-            isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) < 3600) {
-            $reliable_session = true;
-            $_SESSION['last_activity'] = time();
-        }
-    }    
-    
-    if (!$reliable_session && $should_redirect) {
-        if (!empty($redirect_url)) {
-            header('Location: ' . $redirect_url);
-            exit;
-        } else {
-            echo $error_message;
-        }
-    }
-    
-    return $reliable_session;
-}
-/*---------------------------------------------------------------------------------------------------*/
 
 
 public function WC_Auth_login_and_update_PDO_universal($WC_Auth_conn, $WC_Auth_login, $WC_Auth_pass, $WC_Auth_table_name = 'boz_user', $WC_2_config_table_colum = array('BOZ_user_login', 'BOZ_user_pass','boz_riven_dostyp'), $WC_Auth_Header = '') {
