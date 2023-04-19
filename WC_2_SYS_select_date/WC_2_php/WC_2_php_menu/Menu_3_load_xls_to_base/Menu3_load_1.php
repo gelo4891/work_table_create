@@ -62,10 +62,7 @@ if ($ftp_conn && $login) {
    
    /*-----------------------------------------------------------*/
 // Підключаємося до бази даних
-<<<<<<< Updated upstream
 $conn = new PDO("odbc:$dell720_ODBC","$dell720_test_c_user","$dell720_test_c_pass");
-=======
-//$conn = new PDO('mysql:host=localhost;dbname=test', 'username', 'password');
 
 
 /*$conn = new PDO('odbc:ODBS_dell720','test_c','test_c');
@@ -75,7 +72,6 @@ $conn = new PDO("odbc:$dell720_ODBC","$dell720_test_c_user","$dell720_test_c_pas
 $xlsUploader = new XlsUploader($conn);
 // Ganarete Ім'я таблиці, в яку будемо завантажувати дані
 
-<<<<<<< Updated upstream
 $filename_without_extension = pathinfo($file_name, PATHINFO_FILENAME);
 $current_time_1 = date('Ymd_His');
 $tablename = 'ole_'.$filename_without_extension . '_' . $current_time_1 ; 
@@ -99,7 +95,6 @@ $menu_3_path_file = $_SERVER['DOCUMENT_ROOT'] . '/Download_date';
 $xlsUploader->createTableFromXls($menu_3_path_file,$file_name, $tablename);
 ------------------------------------завантаження даних ------------------------------
 // Завантажуємо дані з файлу Excel в таблицю бази даних
-<<<<<<< Updated upstream
 $xlsUploader->uploadXlsToTable($menu_3_path_file,$file_name, $tablename);
   */ 
     try {
@@ -120,10 +115,9 @@ $xlsUploader->uploadXlsToTable($menu_3_path_file,$file_name, $tablename);
 // закриття з'єднання
 ftp_close($ftp_conn);
 
-=======
+
 $xlsUploader->uploadXlsToTable($filename, $tablename);
-*/
->>>>>>> Stashed changes
+
 
 }
 } else {
