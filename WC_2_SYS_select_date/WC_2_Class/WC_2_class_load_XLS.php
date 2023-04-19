@@ -121,7 +121,6 @@ public function uploadXlsToTable(string $directory, string $filename, string $ta
 public function CreateImportDataFromXls(string $directory, string $filename, string $tablename, int $operationType = 0): void {
     $fileExt = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = $directory . '/' . $filename; 
-
     if (!file_exists($filename)) {
         throw new \Exception('File does not exist');
     }

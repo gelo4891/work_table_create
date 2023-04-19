@@ -45,10 +45,11 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if (class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
     if(isset($_FILES['Menu3_load_file'])) {
-  // завантаження файлу на сервер      
-        $local_file = $_FILES['Menu3_load_file']['tmp_name'];
-        $file_name = $_FILES['Menu3_load_file']['name'];
-        $content = file_get_contents($local_file);
+  // завантаження файлу на сервер    
+
+       $local_file = $_FILES['Menu3_load_file']['tmp_name'];
+       $file_name = $_FILES['Menu3_load_file']['name'];
+       $content = file_get_contents($local_file);
 
 // встановлення з'єднання та авторизація на сервері FTP
 $ftp_conn = ftp_connect($ftp_server, $ftp_port) or die("Could not connect to $ftp_server");
@@ -67,7 +68,7 @@ $conn = new PDO("odbc:$dell720_ODBC","$dell720_test_c_user","$dell720_test_c_pas
 
 /*$conn = new PDO('odbc:ODBS_dell720','test_c','test_c');
 >>>>>>> Stashed changes
-
+*/
 // Створюємо об'єкт класу XlsUploader
 $xlsUploader = new XlsUploader($conn);
 // Ganarete Ім'я таблиці, в яку будемо завантажувати дані
@@ -75,7 +76,7 @@ $xlsUploader = new XlsUploader($conn);
 $filename_without_extension = pathinfo($file_name, PATHINFO_FILENAME);
 $current_time_1 = date('Ymd_His');
 $tablename = 'ole_'.$filename_without_extension . '_' . $current_time_1 ; 
-=======
+
 /*-----------------------------------------------------------*/
 
 
@@ -83,8 +84,7 @@ $tablename = 'ole_'.$filename_without_extension . '_' . $current_time_1 ;
 /*-----------------------------------------------------------*/
 
 // Ім'я таблиці, в яку будемо завантажувати дані
-/*$tablename = 'students';
->>>>>>> Stashed changes
+
 
 // Створюємо таблицю з полями, що відповідають заголовкам стовпців у файлі Excel
 
@@ -100,7 +100,7 @@ $xlsUploader->uploadXlsToTable($menu_3_path_file,$file_name, $tablename);
     try {
       //  print_r($_SESSION);
 
-     // $xlsUploader->CreateImportDataFromXls($menu_3_path_file,$file_name, $tablename,'0');
+       $xlsUploader->CreateImportDataFromXls($menu_3_path_file,$file_name, $tablename,'0');
     } catch (\Exception $e) {
      echo "Error: " . $e->getMessage();
     }
@@ -116,7 +116,7 @@ $xlsUploader->uploadXlsToTable($menu_3_path_file,$file_name, $tablename);
 ftp_close($ftp_conn);
 
 
-$xlsUploader->uploadXlsToTable($filename, $tablename);
+////$xlsUploader->uploadXlsToTable($filename, $tablename);
 
 
 }
