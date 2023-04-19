@@ -31,7 +31,7 @@ $chek_auh=$session_checker1->WC_Auth_check_session(false,'/WC_2_SYS_select_date/
 
 <head>
   <title>Моя сторінка</title> 
-  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_menu_create;?>">;
+  <link  type="text/css"  rel="stylesheet" href="<?php echo $WC_2_CSS_menu_create;?>">
   
   <?php
    

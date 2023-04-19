@@ -1,5 +1,4 @@
 <?php
-//echo 'file sessin connect';
         session_start();
 
 class SessionChecker {

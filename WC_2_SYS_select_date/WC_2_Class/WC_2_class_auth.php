@@ -9,7 +9,7 @@ class WC_class_Auth {
  }
 
 
-public function WC_Auth_login_and_update_PDO_universal($WC_Auth_conn, $WC_Auth_login, $WC_Auth_pass, $WC_Auth_table_name = 'boz_user', $WC_2_config_table_colum = array('BOZ_user_login', 'BOZ_user_pass','boz_riven_dostyp'), $WC_Auth_Header = '') {
+public function WC_Auth_login_and_update_PDO_universal_md5($WC_Auth_conn, $WC_Auth_login, $WC_Auth_pass, $WC_Auth_table_name = 'boz_user', $WC_2_config_table_colum = array('BOZ_user_login', 'BOZ_user_pass','boz_riven_dostyp'), $WC_Auth_Header = '') {
 
     // Перевірка, чи є дані в таблиці
     $query_select_all = "SELECT * FROM $WC_Auth_table_name";
@@ -72,7 +72,63 @@ public function WC_Auth_login_and_update_PDO_universal($WC_Auth_conn, $WC_Auth_l
 
 
 /*------------------------------------------------------------------------------*/
+public function WC_Auth_login_and_update_PDO_universal_hash($WC_Auth_conn, $WC_Auth_login, $WC_Auth_pass, $WC_Auth_table_name = 'boz_user', $WC_2_config_table_colum = array('BOZ_user_login', 'BOZ_user_pass','boz_riven_dostyp'), $WC_Auth_Header = '') {
 
+    // Перевірка, чи є дані в таблиці
+    $query_select_all = "SELECT * FROM $WC_Auth_table_name";
+    $result = $WC_Auth_conn->query($query_select_all);
+    if (!$result) {
+        echo ("Помилка запиту до бази даних: " . $WC_Auth_conn->error );         
+        return false;
+    }
+    $table_empty = ($result->rowCount() == 0);
+
+    // Перевірка, чи є користувач з такими полями в таблиці
+    $WC_2_config_table_colum_str = implode(",", $WC_2_config_table_colum);
+     $query_select_user = "SELECT $WC_2_config_table_colum_str FROM $WC_Auth_table_name WHERE $WC_2_config_table_colum[0] = :WC_Auth_login";
+                                          
+    $stmt = $WC_Auth_conn->prepare($query_select_user);
+    $stmt->bindParam(':WC_Auth_login', $WC_Auth_login);
+    $stmt->execute();
+    $user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   // print_r ($user_data);
+    if (count($user_data) > 0) {
+        $user_data = $user_data[0];
+        if (password_verify($WC_Auth_pass, $user_data["BOZ_user_pass"])) {
+            session_start();
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+            $_SESSION['last_activity'] = time();       
+
+            foreach ($WC_2_config_table_colum as $field) {
+                $_SESSION[$field] = $user_data[$field];            
+            }
+            if (!empty($WC_Auth_Header)) {
+                header('Location: ' . $WC_Auth_Header);
+                exit;
+            } else {
+                echo ('Login successful!');
+            } 
+        } else {
+            echo ('<a class="Class_Testusser">Login failed!</a>');
+        }
+    } else {
+        // Якщо жодного запису в таблиці не знайдено, створюємо новий запис
+        if ($table_empty) {
+            $query_insert_user = "INSERT INTO $WC_Auth_table_name (". implode(",", $WC_2_config_table_colum) .") VALUES (:WC_Auth_login, :WC_Auth_pass,'0')";
+            $stmt = $WC_Auth_conn->prepare($query_insert_user);
+            $WC_Auth_login_adm='admin';
+            $WC_Auth_pass_adm = password_hash('admin', PASSWORD_DEFAULT);
+            $stmt->bindParam(':WC_Auth_login', $WC_Auth_login_adm);
+            $stmt->bindParam(':WC_Auth_pass', $WC_Auth_pass_adm);
+            $stmt->execute();
+            echo ('<a class="Class_Testusser">New user created!</a>');
+        } else {
+            echo ('<a class="Class_Testusser">Login failed!</a>');
+        }
+    }
+    
+}
 /*---------------------------------------------------------------------------------------------------*/
 
 

@@ -33,7 +33,7 @@ try {
         if(isset($_POST['WC_username']) && isset($_POST['WC_password'])) {
           $WC_2_start_login = $_POST['WC_username'];
           $WC_2_start_pass  = $_POST['WC_password'];           
-          $WC_class_Auth_connest->WC_Auth_login_and_update_PDO_universal($WC_conn, $WC_2_start_login, $WC_2_start_pass, $WC_2_config_MySql_table_name, $WC_2_config_table_colum, $WC_2_menu_create);
+          $WC_class_Auth_connest->WC_Auth_login_and_update_PDO_universal_hash($WC_conn, $WC_2_start_login, $WC_2_start_pass, $WC_2_config_MySql_table_name, $WC_2_config_table_colum, $WC_2_menu_create);
         }
     }
     else {
