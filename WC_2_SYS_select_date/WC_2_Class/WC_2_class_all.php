@@ -9,7 +9,7 @@ class WorkClassAll {
 		private $WCA_dbName;
 		private $WCA_conn;
 		private $BT_class_Name;
-		private	$WCA_table;		
+		//private	$WCA_table;		
        // private $fileInput;
        // private $submitBtn;
 	
@@ -21,7 +21,7 @@ class WorkClassAll {
             $this->WCA_user = $WCA_user;
             $this->WCA_password = $WCA_password;
             $this->WCA_dbName = $WCA_dbName;
-            $this->WCA_WCA_table= $WCA_table;
+          //  $this->WCA_WCA_table= $WCA_table;
           //  $this->fileInput = document.querySelector('input[type="'.$fileInputName.'"]');
           //  $this->submitBtn = document.querySelector('input[type="'.$submitBtnName.'"]');
         

@@ -1,39 +1,8 @@
 <?php
 
-//require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_Path.php');
+/*=============================================підключення основної бібліотеки==============================================================*/
 
-// Підключаємо необхідні файли і класи
-//require 'c:/xampp/vendor/autoload.php';
-//require_once ($WC_2_class_load_XLS);
-
-
-/*=============================================підключення параметрів з БАЗИ==============================================================*/
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_BAse.php');
-require_once ($WC_2_config_base_CL);
-
-$WCA_connect = new WC_CL_Conn_Base(); 
-$WC_conn = $WCA_connect->WC_CL_conn_base_func();    
-
-$WC_2_class_auth=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_auth');
-$WC_2_class_load_XLS=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_load_XLS');
-$Bibl_composer=$WCA_connect->WC_CL_conn_query_sql($WC_conn, 'Bibl_composer');
-$WC_2_class_all=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_all');
-
-
-$dell720_ODBC=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$dell720_ODBC');
-$dell720_test_c_user=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$dell720_test_c_user');
-$dell720_test_c_pass=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$dell720_test_c_pass');
-
-// дані для FTP підключення
-$ftp_server=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_server');
-$ftp_port=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_port');
-$ftp_username=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_username');
-$ftp_password=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$ftp_password');
-
-require_once ($WC_2_class_auth);
-require_once ($WC_2_class_load_XLS);
-require_once ($WC_2_class_all);
-require ($Bibl_composer);
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_first_include.php');
 
 /*===========================================================================================================*/
   $WCA_WorkClassAll = new WorkClassAll();

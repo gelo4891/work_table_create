@@ -95,7 +95,9 @@ public function WC_Auth_login_and_update_PDO_universal_hash($WC_Auth_conn, $WC_A
     if (count($user_data) > 0) {
         $user_data = $user_data[0];
         if (password_verify($WC_Auth_pass, $user_data["BOZ_user_pass"])) {
-            session_start();
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+                     
             $_SESSION['loggedin'] = true;
             $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
             $_SESSION['last_activity'] = time();       
@@ -103,6 +105,7 @@ public function WC_Auth_login_and_update_PDO_universal_hash($WC_Auth_conn, $WC_A
             foreach ($WC_2_config_table_colum as $field) {
                 $_SESSION[$field] = $user_data[$field];            
             }
+             }  
             if (!empty($WC_Auth_Header)) {
                 header('Location: ' . $WC_Auth_Header);
                 exit;
