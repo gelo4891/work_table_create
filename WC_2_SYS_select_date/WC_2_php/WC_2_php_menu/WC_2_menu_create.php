@@ -2,7 +2,31 @@
 <html>
 
 <?php
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_first_include.php');
+/*===================================================================== */
+require_once ($_SERVER['DOCUMENT_ROOT'] .'/session/WC_2_check_sesion.php');
+$session_checker1 = new SessionChecker();
+$chek_auh=$session_checker1->WC_Auth_check_session(false,'/WC_2_SYS_select_date/WC_2_start.php');
+
+/**===================================================================== */
+
+/*=============================================підключення параметрів з БАЗИ==============================================================*/
+  require_once ($_SERVER['DOCUMENT_ROOT'] . '/WC_2_SYS_select_date/WC_2_config/WC_2_config_BAse.php');
+  require_once ($WC_2_config_base_CL);
+  
+  $WCA_connect = new WC_CL_Conn_Base(); 
+  $WC_conn = $WCA_connect->WC_CL_conn_base_func();    
+
+
+  $WC_2_class_auth=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_auth');
+  $WC_2_class_all=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_class_all');
+  $WC_2_CSS_all=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_CSS_all');
+  $SQL_create_menu=$WCA_connect->WC_CL_conn_query_sql($WC_conn, 'SQL_create_menu');
+  $WC_2_CSS_menu_create=$WCA_connect->WC_CL_conn_query_sql($WC_conn, '$WC_2_CSS_menu_create');
+
+
+  require_once ($WC_2_class_auth);
+  require_once ($WC_2_class_all);
+  /*===========================================================================================================*/
 ?>
 
 <head>

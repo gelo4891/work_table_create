@@ -107,8 +107,9 @@ class SessionChecker {
     return $reliable_session;
 }
 /**====================================================================================================================== */
-
+/*
 /*=============================отримання помилок в роботі программи======================================== */
+/*
 public function session_errorHandler($errno, $errstr, $errfile, $errline) {
     $log_file = $_SERVER['DOCUMENT_ROOT'] . '/error_log/error_log.txt';
     $error_data = date('Y-m-d H:i:s') . " - Помилка: $errstr в файлі $errfile на рядку $errline\n";
@@ -116,7 +117,7 @@ public function session_errorHandler($errno, $errstr, $errfile, $errline) {
     //header("HTTP/1.0 500 Internal Server Error");
     //echo "<html><body><h1>Помилка на сервері</h1><p>Помилка: $errstr в файлі $errfile на рядку $errline</p></body></html>";
 }
-
+*/
 
 }
 
