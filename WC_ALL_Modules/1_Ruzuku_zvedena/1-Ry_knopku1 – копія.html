@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Кругла кнопка з рухаючоюся полоскою</title>
+	<style>
+		.button {
+			width: 180px;
+			height: 180px;
+			border-radius: 50%;
+			background-color: #4CAF50;
+			position: relative;
+			margin: 150px;
+			overflow: hidden;
+			cursor: pointer;
+		}
+
+		.border {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			pointer-events: none;
+		}
+
+		.progress {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: -100%;
+			background-color: blue;
+			transform-origin: 50% 50%;
+			animation: progress 2s linear infinite;
+		}
+
+		@keyframes progress {
+			from {
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="button">
+		<div class="border"></div>
+		<div class="progress"></div>
+	</div>
+
+	<script>
+		let button = document.querySelector('.button');
+		let progress = document.querySelector('.progress');
+		let border = document.querySelector('.border');
+		let radius = parseInt(getComputedStyle(button).getPropertyValue('border-radius'));
+		let borderThickness = 2;
+
+		border.style.border = `${borderThickness}px solid blue`;
+
+		progress.style.width = `${2 * Math.PI * (radius - borderThickness)}px`;
+		progress.style.height = `${2 * Math.PI * (radius - borderThickness)}px`;
+
+		button.addEventListener('mouseover', () => {
+			progress.style.animationPlayState = 'paused';
+		});
+
+		button.addEventListener('mouseout', () => {
+			progress.style.animationPlayState = 'running';
+		});
+	</script>
+</body>
+</html>
+
