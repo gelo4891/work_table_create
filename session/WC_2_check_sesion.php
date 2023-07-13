@@ -3,7 +3,7 @@
 
 class SessionChecker {
     /*------------------------------------------check session and create button----------------------------------------------------------------------*/
-    function WC_Auth_check_session($should_redirect = '', $redirect_url='' ,  $error_message = 'Your session is not reliable.') {
+    function WC_Auth_check_session($should_redirect = '', $redirect_url='' ,  $error_message = 'Your session is not reliable11111111.') {
 
         $reliable_session = false;
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
@@ -47,7 +47,7 @@ class SessionChecker {
     }
 
     /**====================================================================================================================== */
-    public function checkSession($redirect_url = '', $should_redirect = true, $error_message = 'Your session is not reliable.') {
+    public function checkSession($redirect_url = '', $should_redirect = true, $error_message = 'Your session is not reliable222222.') {
         $reliable_session = false;
         
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
@@ -77,7 +77,7 @@ class SessionChecker {
     
     /**====================================================================================================================== */
     /**----------------Laravel-----------check session and create button----------------------------------------------------- */
-    public function Laravel_checkSession_button($should_redirect = false, $redirect_url = '/WC_2_SYS_select_date/WC_2_start.php', $error_message = 'Your session is not reliable.')
+    public function Laravel_checkSession_button($should_redirect = false, $redirect_url = '/WC_2_SYS_select_date/WC_2_start.php', $error_message = 'Your session is not reliable33333333.')
 {
     $reliable_session = false;
 
@@ -113,8 +113,8 @@ public function session_errorHandler($errno, $errstr, $errfile, $errline) {
     $log_file = $_SERVER['DOCUMENT_ROOT'] . '/error_log/error_log.txt';
     $error_data = date('Y-m-d H:i:s') . " - Помилка: $errstr в файлі $errfile на рядку $errline\n";
     file_put_contents($log_file, $error_data, FILE_APPEND);
-    header("HTTP/1.0 500 Internal Server Error");
-    echo "<html><body><h1>Помилка на сервері</h1><p>Помилка: $errstr в файлі $errfile на рядку $errline</p></body></html>";
+    //header("HTTP/1.0 500 Internal Server Error");
+    //echo "<html><body><h1>Помилка на сервері</h1><p>Помилка: $errstr в файлі $errfile на рядку $errline</p></body></html>";
 }
 
 

@@ -21,7 +21,7 @@
             echo $WC_class_Auth_connest;
         }
 
-      // $WCA_connect->WC_CL_conn_disconnect_from_base();
+       $WCA_connect->WC_CL_conn_disconnect_from_base();
     } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     die();
