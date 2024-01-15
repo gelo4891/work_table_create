@@ -43,17 +43,18 @@ if (isset($_POST['codes'])) {
 
     // Виводимо випадаюче меню
         echo '<div id="div-select">';
-        echo '<select id="PhpSelectMenu" name="select-menu">';
-        echo '<option value="select_start" selected disabled>Оберіть працівника</option>';// Зміна значення на пустий рядок
+        echo '<select id="PhpSelectMenu">';
+        echo '<option value="select_start">Оберіть працівника</option>';// Зміна значення на пустий рядок
         foreach ($data as $row) {
             echo '<option value="' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]])). '">';
             echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]]));
             echo '</option>';
         }
-        echo '</select>';
-        
+        echo '</select>';        
         echo '<div>';
 
+
+        
     }
 
 } else {
