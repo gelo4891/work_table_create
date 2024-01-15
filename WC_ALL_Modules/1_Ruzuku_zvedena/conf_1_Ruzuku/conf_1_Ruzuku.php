@@ -8,9 +8,9 @@ $chek_auh=$session_checker1->WC_Auth_check_session(false,'/WC_2_SYS_select_date/
 /**===================================================================== */
 
 
-  $dbDsn = 'odbc:ODBS_dell720';
-  $dbUser = 'analiz';
-  $dbPass = 'reg_analiz';  
+  $dbDsn = '#############';
+  $dbUser = '#############';
+  $dbPass = '###############';  
   
   
   // Функція для формування SQL запиту
