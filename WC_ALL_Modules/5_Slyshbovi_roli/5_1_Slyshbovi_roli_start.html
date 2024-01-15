@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Перевірка кодів</title>
+  <link type="text/css" rel="stylesheet" href="/WC_ALL_Modules/5_Slyshbovi_roli/5_2_Slyshbovi_roli_CSS_all.css">
+</head>
+<body>
+  <div>
+    <h1 id="name-h1">Внесення даних по службових<br>
+                    ІКС "Податковий блок" або ІКС "Управління документами"
+    </h1> 
+     <p><h2>Крок 1</h2>Спочатку Виберіть систему</p>
+     <select id="html-select-PB-YDO">
+        <option disabled selected value="">Натисніть та виберіть ІКС</option>
+        <option value="1">ІКС "Податковий Блок"</option>
+        <option value="2">ІКС "Управління документами"</option>
+        <option value="3">TEST NULL</option>  
+     </select>  
+  </div> 
+
+  <div id="loading-krok2" style="display: none;">    
+    <p><h2>Крок 2</h2>Через пошук або із списку виберіть працівника</p>
+    <div id="html-loading-krok2-select" > </div>
+  </div>
+  
+
+  <div id="html-input-date" style="display: none;">
+    <p><h2>Крок 3</h2>Внесіть нані про службву і у разі наявності датих кнопка зберегти стане активною</p> 
+
+    <label for="php-krok2-data">Введіть дату</label>
+    <input type="date" id="krok2-data" name="krok2-data_name">
+
+    <label for="php-krok2-nomer">Введіть номер</label>
+    <input type="text" id="krok2-nomer" name="krok2-nomer_name">
+
+    <button id="php-submit-btn">Зберегти дані</button>
+  </div>
+
+
+  <script src="/WC_ALL_Modules/5_Slyshbovi_roli/5_3_Slyshbovi_roli_JS_Script.js"></script>
+</body>
+</html>
+
