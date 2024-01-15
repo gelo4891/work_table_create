@@ -1,0 +1,36 @@
+    #code-input {
+      width: 400px;
+      height: 200px;
+    }
+
+    #code-table {
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    #code-table th,
+    #code-table td {
+      padding: 5px;
+      border: 1px solid black;
+    }
+
+    #error-code-table {
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    #error-code-table th,
+    #error-code-table td {
+      padding: 5px;
+      border: 1px solid black;
+    }
+
+
+    #table-good{
+      background-color: aqua;
+
+    }
+
+    #table-error{
+      background-color: red;
+    }

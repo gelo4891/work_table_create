@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Перевірка кодів</title>
+  <link type="text/css" rel="stylesheet" href="/WC_ALL_Modules/1_Ruzuku_zvedena/Css_1_Ruzuku_start.css">
+</head>
+<body>
+  <div>
+    <h1 id="name-h1">Впишіть перелік кодів платників для перевірки та вибірки даних<br>
+                    (коди платників можна вносити через , або ; або з нового рядка)
+    </h1>   
+    <textarea id="code-input" placeholder="Введіть коди платників через ; або з нового рядка"></textarea>
+    <br>
+    <button id="submit-btn">Розпочати вибір даних з бази даних</button>
+  </div> 
+  <br>
+  <button id="export-btn" style="display: none;">Вивантаження в Excel</button>
+  <div id="code-table"></div>
+
+
+  <div id="loading-overlay">
+    <div id="loading-spinner"></div>
+    <div id="loading-message">Зачекайте, виконується запит...</div>
+  </div>
+
+  <script src="/WC_ALL_Modules/1_Ruzuku_zvedena/JS_1_Ruzuku_Script.js"></script>
+</body>
+</html>
+

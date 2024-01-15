@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Сторінка з JS, PHP та CSS</title>
+    <link type="text/css" rel="stylesheet" href="/WC_ALL_Modules/2_ERPN_Test_Load/2_2_ERPN_CSS.css">
+</head>
+<body> 
+
+    <div id="upperDiv">
+        <!-- Поля для вибору дат -->
+        <input type="date" id="startDate" min="2020-01-01" max="2030-12-31">
+        <!-- Кнопка для запуску JS-функції -->
+        <button onclick="fetchData()">Отримати результат</button>
+    </div>
+    <div id="lowerDiv">
+        <!-- Сюди буде виведений результат з PHP -->
+        
+    </div>
+    <div id="loading-overlay">
+        <div id="loading-spinner"></div>
+        <div id="loading-message">Зачекайте, виконується запит...</div>
+      </div>
+    
+
+    <!-- Підключення файлу з JS -->
+    <script src="/WC_ALL_Modules/2_ERPN_Test_Load/2_3_ERPN_JS_Script.js"></script>
+</body>
+</html>

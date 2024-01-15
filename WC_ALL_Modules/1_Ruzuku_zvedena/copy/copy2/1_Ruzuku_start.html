@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Перевірка кодів</title>
+  <link type="text/css" rel="stylesheet" href="Css_1_Ruzuku_start.css">
+  <script src="JS_1_Ruzuku_Script.js"></script>
+  <script src="JS_2_Ruzuku_Script.js"></script> <!-- Доданий новий JavaScript файл -->
+</head>
+<body>
+  <div>
+    <h1>Перевірка кодів</h1>   
+    <textarea id="code-input" placeholder="Введіть коди платників через ; або з нового рядка"></textarea>
+    <br>
+    <button id="submit-btn">Перевірити</button>
+  </div> 
+  <div id="code-table"></div>
+  <div id="rez-select"></div>
+  <button id="export-btn" style="display: none;">Вивантаження Excel</button> <!-- Додана кнопка "Вивантаження Excel" зі стилевим атрибутом display: none; -->
+  <script>
+    window.addEventListener('load', function() {
+      var submitBtn = document.getElementById('submit-btn');
+      var codeInput = document.getElementById('code-input');
+      var codeTable = document.getElementById('code-table');
+      var exportBtn = document.getElementById('export-btn'); // Додана кнопка "Вивантаження Excel"
+  
+      submitBtn.addEventListener('click', function() {
+        var codes = codeInput.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'PHP_1_Ruzuku.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = xhr.responseText;
+            codeTable.innerHTML = response;
+            exportBtn.style.display = 'block'; // Відображення кнопки "Вивантаження Excel" після отримання результатів
+          }
+        };
+        xhr.send('codes=' + encodeURIComponent(codes));
+      });
+  
+      exportBtn.addEventListener('click', function() {
+        window.location.href = 'export_excel.php'; // Перехід на сторінку "export_excel.php" для вивантаження Excel
+      });
+    });
+  </script>
+</body>
+</html>

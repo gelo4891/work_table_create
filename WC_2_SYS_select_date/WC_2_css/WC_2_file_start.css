@@ -1,5 +1,9 @@
 /*-----------------WC_2_start.php-----------------------------*/
-.WC_2_start_class_html{
+body{
+  font-size: 30px;
+}
+
+.WC_2_start_class_html {
   display: flex;
   background-color: aqua;
   justify-content: center;
@@ -8,21 +12,20 @@
   flex-direction: column;
 }
 
-.WC_2_start_class_html form{ 
-    border: 2px solid red;
+.WC_2_start_class_html form { 
+  border: 2px solid blue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.WC_2_start_class_html div:nth-child(1){
+/* Застосовуємо стилі для <label> і <input> */
+.WC_2_start_class_html form label,
+.WC_2_start_class_html form input {
+  margin-bottom: 10px;
+}
+
+.WC_2_start_class_html div:nth-child(1) {
   text-align: center;
 }
 /*-------------------WC_2_start.php END----------------------*/
-
-
-/*-------------------WC_2_php_START_AUTH.php----------------------*/
-.Class_Testusser{
-  display: flex;
-  justify-content: center;
-  font-size: 75px;
-  color: red;
-}
-/*-------------------WC_2_php_START_AUTH.php END----------------------*/

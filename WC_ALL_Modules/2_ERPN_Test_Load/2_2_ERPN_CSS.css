@@ -1,0 +1,100 @@
+#upperDiv{
+  padding-top: 5%;
+  /*border: 5px solid blue;*/
+  text-align: center;
+ /* height: 10%;*/
+}
+#upperDiv a{
+  font-size: 40px;
+  color: darkblue;
+}
+
+#startDate{
+  height: 30px;
+  background-color: aqua;
+}
+
+ #fetch-button{
+  height: 30px;
+  background-color: chartreuse;
+}
+
+
+#lowerDiv {
+  display: flex;
+  flex-direction: column;
+ /* justify-content: center;*/
+  align-items: center;
+  height: 75vh; /* Встановіть висоту, що вам потрібна */
+}
+
+#EchoDate {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+
+#table-data td{
+  border: 2px solid blue;
+  /*background-color: cadetblue;*/
+  vertical-align: middle; /* Вирівнюйте текст по вертикалі по центру */
+}
+
+/*============================================================*/
+#table-data {
+  border-collapse: collapse;
+  max-width: 100%;
+  max-width: 60%;
+  overflow-x: auto;
+ /* width: 100%;*/
+}
+
+#table-data th, #table-data td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+#table-data th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* Додайте більший зазор між комірками */
+#table-data tr {
+  margin-bottom: 10px;
+}
+.a_fontSize{
+  font-size: 24px;
+  color: red;
+}
+.b_fontSize{
+  font-size: 24px;
+  color: blue;
+}
+
+/*============================================================*/
+
+/* Style for the missing data message */
+.missing-data td{
+  background-color: bisque; /* Light gray background */
+  color: blue; /* Blue text color */
+}
+
+/* Style for the missing weekdays message */
+.missing-weekdays td{
+  background-color: brown; /* Light red background */
+  color: aqua; /* Red text color */
+}
+
+/* Style for the missing weekends message */
+.missing-weekends td {
+  background-color: #e8f5e9; /* Light green background */
+  color: green; /* Green text color */
+}
+
+.CssStatustuka td{
+  background-color: aqua;
+}

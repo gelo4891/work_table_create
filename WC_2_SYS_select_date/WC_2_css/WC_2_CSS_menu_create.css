@@ -1,20 +1,51 @@
 .WC_2_menu_create_container {
   display: flex;
   flex-wrap: wrap;
-  height: 100vh;
+  height: 95vh;
   background-color: darkslategray;
+  }
+
+
+  #WC_2_menu_All{
+    width: 20%;
+   
   }
   
   .WC_2_menu_create_Menu {
-  width: 25%;
   background-color: cadetblue;
   padding: 10px 0 0 10px ;
   position: relative;
+  height: 90%;
   }
+
+  /* Стилі для кнопки #exit-btn */
+
+
+
+.WC_2_menu_create_EXIT{
+  padding: 8% 5% 1% 5%;
+}
+
+
+
+  #exit-btn {
+    width: 100%;
+    height: 10%;
+    font-size: 24px;
+    color: blue;
+  }
+
+#exit-btn:hover {
+  background-color: #45a049;
+  border-radius: 1%;
+  color: red;
+}
+
+
   
   .WC_2_menu_create_Menu ul {
   list-style-type: none;
-  width: 85.5%;
+  width: 98%;
   background-color: #f1f1f1;
   padding: 0;
   margin: 0;
@@ -48,7 +79,7 @@
   
   .WC_2_menu_create_Menu ul ul {
   position: absolute;
-  left: 86%;
+  left: 98%;
   margin-left: 0;
   display: none;
   width: 200px;
@@ -74,3 +105,6 @@
   padding: 9px 16px;
   border: none;
   }
+
+  /* styles.css */
+

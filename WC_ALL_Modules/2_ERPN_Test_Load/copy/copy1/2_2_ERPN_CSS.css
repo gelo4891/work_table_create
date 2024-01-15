@@ -1,0 +1,23 @@
+#upperDiv{
+  padding-top: 5%;
+  border: 5px solid blue;
+  text-align: center;
+  justify-content: center;
+  height: 10%;
+}
+
+
+#lowerDiv {
+  display: flex;
+  flex-direction: column;
+ /* justify-content: center;*/
+  align-items: center;
+  height: 100vh; /* Встановіть висоту, що вам потрібна */
+}
+
+#EchoDate {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}

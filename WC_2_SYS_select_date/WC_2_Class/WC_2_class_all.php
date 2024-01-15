@@ -721,6 +721,38 @@ public static function WC_2_JS_PutToDiv2($class_name,$div_name) {
           </script>';
   }
 
+  public static function WC_2_JS_EXIT($buttonId)
+  {
+      echo '<script src="/jQuery/jquery-3.6.4.js"></script>
+            <script>
+            // Додайте обробник події для кнопки після завантаження сторінки
+            $(document).ready(function() {
+                $("#'.$buttonId.'").on("click", function() {
+                    // Перенаправлення на стартову сторінку
+                    window.location.href = "/WC_2_SYS_select_date/WC_2_start.php";
+                    // Завершення сесії
+                    $.ajax({
+                        url: "/session/WC_2_end_sesion.php",
+                        type: "POST",
+                        success: function(response) {
+                            console.log("Сесію завершено.");
+                        },
+                        error: function(error) {
+                            console.log("Помилка під час завершення сесії.");
+                        }
+                    });
+                });
+            });
+            </script>';
+  }
+  
+
+
+
+
+
+
+
   public static function loadContent($url, $div_name) {
     echo '<script src="/jQuery/jquery-3.6.4.js"></script>
           <script>

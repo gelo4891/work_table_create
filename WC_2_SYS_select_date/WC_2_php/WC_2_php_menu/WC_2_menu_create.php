@@ -39,10 +39,12 @@ $chek_auh=$session_checker1->WC_Auth_check_session(false,'/WC_2_SYS_select_date/
 
   $WCA_WorkClassAll = new WorkClassAll();
   WorkClassAll::WC_2_JS_PutToDiv2('WC_2_menu_create_Menu','WC_2_menu_create_content' );
+  WorkClassAll::WC_2_JS_EXIT('exit-btn'); // Передаємо ідентифікатор кнопки
    ?>
 
 </head>
 <body class="WC_2_menu_create_container">
+<div ID="WC_2_menu_All">
 	<div class="WC_2_menu_create_Menu">
    <?php 
 		//<!-- Меню -->
@@ -72,7 +74,10 @@ else {
 }   
  
 ?>
-
+</div>
+<div class="WC_2_menu_create_EXIT">
+  <button id="exit-btn">EXIT</button>
+</div>
 </div>
 	<div class='WC_2_menu_create_content'>
 		<!-- Зміст правого div-елемента буде змінюватися AJAX-запитами -->

@@ -1,0 +1,56 @@
+#upperDiv{
+  padding-top: 5%;
+  border: 5px solid blue;
+  text-align: center;
+  justify-content: center;
+  height: 10%;
+}
+
+
+#lowerDiv {
+  display: flex;
+  flex-direction: column;
+ /* justify-content: center;*/
+  align-items: center;
+  height: 100vh; /* Встановіть висоту, що вам потрібна */
+}
+
+#EchoDate {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+
+#table-data td{
+  border: 2px solid blue;
+}
+
+/*============================================================*/
+#table-data {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#table-data th, #table-data td {
+  border: 1px solid red;
+  padding: 8px;
+  text-align: center;
+}
+
+#table-data td {
+  vertical-align: middle; /* Вирівнюйте текст по вертикалі по центру */
+}
+
+#table-data th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* Додайте більший зазор між комірками */
+#table-data tr {
+  margin-bottom: 10px;
+}
+
+/*============================================================*/
