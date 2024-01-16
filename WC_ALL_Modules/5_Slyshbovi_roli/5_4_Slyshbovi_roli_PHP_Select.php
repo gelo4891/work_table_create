@@ -43,14 +43,17 @@ if (isset($_POST['codes'])) {
 
     // Виводимо випадаюче меню
        // echo '<div id="div-select">';
-        echo '<select id="PhpSelectMenu">';
-        echo '<option disabled selected value="">Оберіть працівника</option>';
-        foreach ($data as $row) {
-            echo '<option value="' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]])). '">';
-            echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]]));
-            echo '</option>';
-        }
-        echo '</select>';        
+       echo '<input type="text" id="searchInput" placeholder="Пошук працівника">';
+
+       echo '<select id="PhpSelectMenu">';
+       echo '<option disabled selected value="">Оберіть працівника</option>';
+       foreach ($data as $row) {
+           $value = htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]]));
+           echo '<option class="select-option" value="' . $value . '">';
+           echo $value;
+           echo '</option>';
+       }
+       echo '</select>';       
         //echo '<div>';     
         
     }
