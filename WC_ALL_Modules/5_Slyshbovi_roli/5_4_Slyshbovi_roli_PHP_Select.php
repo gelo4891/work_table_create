@@ -22,7 +22,7 @@ if (isset($_POST['codes'])) {
     if($codes=='rozblok-loading-krok2'){
 
  
-    echo '___________'.$codes.'_______';
+    echo '___________'.$codes.'_______<br>';
 
     // Підготовлюємо запит
     $query_SQL = getQuerySQL_PIB();
@@ -42,18 +42,16 @@ if (isset($_POST['codes'])) {
     $data = $stmt_test_c->fetchAll(PDO::FETCH_ASSOC);
 
     // Виводимо випадаюче меню
-        echo '<div id="div-select">';
+       // echo '<div id="div-select">';
         echo '<select id="PhpSelectMenu">';
-        echo '<option value="select_start">Оберіть працівника</option>';// Зміна значення на пустий рядок
+        echo '<option disabled selected value="">Оберіть працівника</option>';
         foreach ($data as $row) {
             echo '<option value="' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]])). '">';
             echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]]));
             echo '</option>';
         }
         echo '</select>';        
-        echo '<div>';
-
-
+        //echo '<div>';     
         
     }
 
