@@ -31,5 +31,15 @@ FROM UPR28.IP_2021_SHTAT
 where IP_SHTAT_MONTH= (select distinct(max(IP_SHTAT_MONTH)) from UPR28.IP_2021_SHTAT )
 order by IP_SHTAT_PIB";
 }
+
+function getQuerySQL_PIB_one($UserPib) {
+  return " SELECT 
+  IP_SHTAT_MONTH, IP_SHTAT_INDEX, IP_SHTAT_PIB,  
+ IP_SHTAT_NAME_PIDR, IP_SHTAT_POSADA, IP_SHTAT_NAPRYAM
+FROM UPR28.IP_2021_SHTAT
+where IP_SHTAT_MONTH= (select distinct(max(IP_SHTAT_MONTH)) from UPR28.IP_2021_SHTAT ) 
+and IP_SHTAT_PIB='$UserPib'
+order by IP_SHTAT_PIB";
+}
   
 ?>

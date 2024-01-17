@@ -42,19 +42,17 @@ if (isset($_POST['codes'])) {
     $data = $stmt_test_c->fetchAll(PDO::FETCH_ASSOC);
 
     // Виводимо випадаюче меню
-       // echo '<div id="div-select">';
-       echo '<input type="text" id="searchInput" placeholder="Пошук працівника">';
-
+       echo '<div id="div-select">';
        echo '<select id="PhpSelectMenu">';
        echo '<option disabled selected value="">Оберіть працівника</option>';
        foreach ($data as $row) {
            $value = htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]]));
            echo '<option class="select-option" value="' . $value . '">';
-           echo $value;
+           echo 'Штатка за-->'.htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[0]])).'  ||  '.$value;
            echo '</option>';
        }
        echo '</select>';       
-        //echo '<div>';     
+       echo '<div>';     
         
     }
 

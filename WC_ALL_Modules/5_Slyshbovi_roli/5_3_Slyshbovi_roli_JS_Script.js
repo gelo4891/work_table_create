@@ -1,24 +1,3 @@
-function initializeEventHandlers() {
-  const elements = {
-    select_PB_YDO: document.getElementById('html-select-PB-YDO'),
-    loadingKrok2: document.getElementById('loading-krok2'),
-    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),
-    krok2Data: document.getElementById('php-krok2-data'),
-    krok2Nomer: document.getElementById('php-krok2-nomer'),
-    submitBtn: document.getElementById('php-submit-btn'),
-    hiddenBlockHtml: document.getElementById('html-input-date'),
-  };
-
-  elements.select_PB_YDO.addEventListener('input', () => {
-    const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
-    showHide(elements.loadingKrok2, isOption1or2);
-
-    if (isOption1or2) {
-      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2');
-    }
-  });
-}
-
 function sendRequestAndUpdate(updateElement, codesValue) {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
@@ -32,8 +11,38 @@ function sendRequestAndUpdate(updateElement, codesValue) {
   xhr.send('codes=' + encodeURIComponent(codesValue));
 }
 
-function showHide(element, show) {
-  element.style.display = show ? 'block' : 'none';
+function initializeEventHandlers() {
+  const elements = {
+    select_PB_YDO: document.getElementById('html-select-PB-YDO'),
+    loadingKrok2: document.getElementById('loading-krok2'),
+    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),
+    krok2Data: document.getElementById('php-krok2-data'),
+    krok2Nomer: document.getElementById('php-krok2-nomer'),
+    submitBtn: document.getElementById('php-submit-btn'),
+    hiddenBlockHtml: document.getElementById('html-input-date'),
+    searchInput: document.getElementById('searchInput'),
+  };
+
+  elements.select_PB_YDO.addEventListener('input', () => {
+    const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
+    showHide(elements.loadingKrok2, isOption1or2);
+
+    if (isOption1or2) {
+      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2');
+    }
+  });
+
+  elements.searchInput.addEventListener('input', filterSelectOptions);
+  elements.searchInput.addEventListener('focus', openSelectOptions); // Додаємо обробник події для відкриття select при фокусі
+  elements.submitBtn.addEventListener('click', submitHandler);
+  initializeDynamicSelect();
+}
+
+function openSelectOptions() {
+  var dynamicSelect = document.getElementById('PhpSelectMenu');
+  if (dynamicSelect) {
+    dynamicSelect.size = 7; // Збільшуємо розмір select, щоб він був видимим
+  }
 }
 
 function initializeDynamicSelect() {
@@ -43,28 +52,21 @@ function initializeDynamicSelect() {
     dynamicSelect.addEventListener('input', function () {
       var selectedDynamicValue = this.value;
       console.log('Обрано в динамічному select: ' + selectedDynamicValue);
-    
-      // Викликаємо функцію для ініціалізації обробника подій для нового select 
+
+      // Викликаємо функцію для ініціалізації обробника подій для нового select
       showHideHiddenBlock(selectedDynamicValue);
-      document.getElementById('searchInput').addEventListener('input', filterSelectOptions);
     });
   }
+}
+
+function showHide(element, show) {
+  element.style.display = show ? 'block' : 'none';
 }
 
 function showHideHiddenBlock(selectedDynamicValue) {
   var hiddenBlock = document.getElementById('html-input-date');
   hiddenBlock.style.display = selectedDynamicValue !== '' ? 'block' : 'none';
-
-  document.getElementById('searchInput').addEventListener('input', function() {
-    var searchTerm = this.value.toLowerCase();
-    var options = document.querySelectorAll('.select-option');
-
-    options.forEach(function(option) {
-        var text = option.textContent.toLowerCase();
-        var isMatch = text.includes(searchTerm);
-        option.style.display = isMatch ? 'block' : 'none';
-    });
-});
+  filterSelectOptions(); // Оновлюємо фільтр опцій при зміні вмісту блоку
 }
 
 function filterSelectOptions() {
@@ -81,8 +83,3 @@ function filterSelectOptions() {
 /*----------------------------------------------------------------------------*/
 // Викликаємо ініціалізацію для першого select
 initializeEventHandlers();
-
-
-
-
-
