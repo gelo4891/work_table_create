@@ -27,7 +27,7 @@ function initializeEventHandlers() {
     const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
     showHide(elements.loadingKrok2, isOption1or2);
 
-    HideHtmlinputdate();
+    hideHtmlInputDate();
 
     if (isOption1or2) {
       sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2');
@@ -35,70 +35,58 @@ function initializeEventHandlers() {
   });
 
   elements.searchInput.addEventListener('input', filterSelectOptions);
-  elements.searchInput.addEventListener('focus', openSelectOptions); // Додаємо обробник події для відкриття select при фокусі
-  //elements.submitBtn.addEventListener('click', submitHandler);
-  //initializeDynamicSelect();
+  elements.searchInput.addEventListener('focus', openSelectOptions);
 
 }
 
-function HideHtmlinputdate() {
-  var hiddenBlock1 = document.getElementById('html-input-date');
-    hiddenBlock1.style.display =  'none';
-    clearTextInputs();
+function hideHtmlInputDate() {
+  const hiddenBlock = document.getElementById('html-input-date');
+  hiddenBlock.style.display = 'none';
+  clearTextInputs();
 }
 
-// Функція для очищення полів
 function clearTextInputs() {
-  var textInputs = document.querySelectorAll('input[type="text"]');
-  textInputs.forEach(function (input) {
-    input.value = '';
-  });
+  document.querySelectorAll('input[type="text"]').forEach(input => (input.value = ''));
 }
-
 
 function openSelectOptions() {
-  var dynamicSelect = document.getElementById('PhpSelectMenu');
+  const dynamicSelect = document.getElementById('PhpSelectMenu');
   if (dynamicSelect) {
-    dynamicSelect.size = 5; // Збільшуємо розмір select, щоб він був видимим
+    dynamicSelect.size = 5;
   }
 }
+
 function showHide(element, show) {
   element.style.display = show ? 'block' : 'none';
 }
 
 function initializeDynamicSelect() {
-  var dynamicSelect = document.getElementById('PhpSelectMenu');
+  const dynamicSelect = document.getElementById('PhpSelectMenu');
 
   if (dynamicSelect) {
-    dynamicSelect.addEventListener('input', function () {
-      var selectedDynamicValue = this.value;
+    dynamicSelect.addEventListener('input', () => {
+      const selectedDynamicValue = dynamicSelect.value;
       console.log('Обрано в динамічному select: ' + selectedDynamicValue);
     
-      // Викликаємо функцію для ініціалізації обробника подій для нового select 
       showHideHiddenBlock(selectedDynamicValue);
     });
   }
 }
 
 function showHideHiddenBlock(selectedDynamicValue) {
-  
-  var hiddenBlock = document.getElementById('html-input-date');
+  const hiddenBlock = document.getElementById('html-input-date');
   hiddenBlock.style.display = selectedDynamicValue !== '' ? 'block' : 'none';
- 
-  filterSelectOptions(); // Оновлюємо фільтр опцій при зміні вмісту блоку
+  filterSelectOptions();
 }
 
 function filterSelectOptions() {
-  var searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  var options = document.querySelectorAll('.select-option');
-
-  options.forEach(function(option) {
-    var text = option.textContent.toLowerCase();
-    var isMatch = text.includes(searchTerm);
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.select-option').forEach(option => {
+    const text = option.textContent.toLowerCase();
+    const isMatch = text.includes(searchTerm);
     option.style.display = isMatch ? 'block' : 'none';
   });
 }
 
-/*----------------------------------------------------------------------------*/
 // Викликаємо ініціалізацію для першого select
 initializeEventHandlers();
