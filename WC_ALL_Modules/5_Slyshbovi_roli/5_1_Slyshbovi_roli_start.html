@@ -9,7 +9,9 @@
   <div>
     <h1 id="name-h1">Внесення даних по службових<br>
                     ІКС "Податковий блок" або ІКС "Управління документами"
-    </h1> 
+    </h1>
+    
+    <div> 
      <p><h2>Крок 1</h2>Спочатку Виберіть систему</p>
      <select id="html-select-PB-YDO">
         <option disabled selected value="">Натисніть та виберіть ІКС</option>
@@ -26,21 +28,35 @@
   </div>
   
 
-  <div id="html-input-date" style="display: none;">
-    <p><h2>Крок 3</h2>Внесіть дані про службву і у разі наявності даних кнопка зберегти стане активною</p> 
+  <div id="html-input-date" style="display: none;  border: 1px solid blueviolet;">
+     <p><h2>Крок 3</h2>Внесіть дані про службву і у разі наявності даних кнопка зберегти стане активною</p> 
 
+      <select id="html-select-PID-sys">
+        <option disabled selected value="">Системи</option>
+        <option value="ІКС Управління документами">ІКС "Управління документами"</option>
+        <option value="ІКС Податковий Блок(основна)">ІКС "Податковий Блок"(основна)</option>
+        <option value="ІКС Податковий Блок (додаткові ролі)">ІКС "Податковий Блок"(додаткові ролі)</option>
+        <option value="ІКС Єдине вікно подання звітності">ІКС "Єдине вікно подання звітності (Архів)"</option>
+        <option value="ІКС Адміністративне та судове оскарження">ІКС "Адміністративне та судове оскарження"</option> 
+        <option value="Електронний кабінет платника">"Електронний кабінет платника"</option>  
+        <option value="АС Акцизні марки">АС "Акцизні марки"</option> 
+        <option value="ІКС Міжнародний автосатичний обмін">ІКС "Міжнародний автосатичний обмін (-450006)"</option> 
+    </select> 
+    <br>
+    
     <label for="php-krok2-data">Введіть дату</label>
     <input type="date" id="krok2-data" >
 
     <label for="php-krok2-nomer">Введіть номер</label>
     <input type="text" id="krok2-nomer" >
-
-    <button id="php-submit-btn">Зберегти дані</button> 
+    <br>
     
-     <div id="resultDiv" style="width: 100%; height: 200px;"></div>  
+    <button id="php-submit-btn">Зберегти дані</button> 
+  </div>
+     
   
     </div> 
-        
+      <div id="resultDiv" style="width: 100%;"></div>    
 
 
   <script src="/WC_ALL_Modules/5_Slyshbovi_roli/5_3_Slyshbovi_roli_JS_Script.js"></script>

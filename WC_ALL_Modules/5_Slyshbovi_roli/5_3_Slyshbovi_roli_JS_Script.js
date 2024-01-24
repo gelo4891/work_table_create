@@ -1,4 +1,4 @@
-function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue) {
+function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue,selectPidSys) {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -8,7 +8,7 @@ function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue) 
       initializeDynamicSelect();
     }
   };
-  xhr.send(`codes=${encodeURIComponent(codesValue)}&date=${encodeURIComponent(dateValue)}&nomer=${encodeURIComponent(nomerValue)}`);
+  xhr.send(`codes=${encodeURIComponent(codesValue)}&date=${encodeURIComponent(dateValue)}&nomer=${encodeURIComponent(nomerValue)}&selectPidSys=${encodeURIComponent(selectPidSys)}`);
 }
 
 function initializeEventHandlers() {
@@ -75,15 +75,18 @@ function clickButton() {
     inputeDate: document.getElementById('krok2-data'),
     inputeNomer: document.getElementById('krok2-nomer'),
     resultDiv: document.getElementById('resultDiv'),
+    selectPidSys: document.getElementById('html-select-PID-sys'),  // Додайте визначення для selectPidSys  
   };
 
   elements.inputeDate.addEventListener('input', checkButtonState);
   elements.inputeNomer.addEventListener('input', checkButtonState);
-
+  elements.selectPidSys.addEventListener('change', checkButtonState);
+ 
   elements.submitBtn.addEventListener('click', () => {
-    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', elements.inputeDate.value, elements.inputeNomer.value);
+    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', elements.inputeDate.value, elements.inputeNomer.value,elements.selectPidSys.value);
     elements.inputeDate.value = '';
     elements.inputeNomer.value = '';
+    elements.selectPidSys.value = '';
     elements.submitBtn.disabled = true;
   });
 
@@ -95,9 +98,13 @@ function checkButtonState() {
     inputeDate: document.getElementById('krok2-data'),
     inputeNomer: document.getElementById('krok2-nomer'),
     submitBtn: document.getElementById('php-submit-btn'),
+    selectPidSys: document.getElementById('html-select-PID-sys'),
   };
 
-  const bothInputsFilled = elements.inputeDate.value.trim() !== '' && elements.inputeNomer.value.trim() !== '';
+  const bothInputsFilled = elements.inputeDate.value.trim() !== '' &&
+                           elements.inputeNomer.value.trim() !== '' &&
+                           elements.selectPidSys.value !== '';
+
   elements.submitBtn.disabled = !bothInputsFilled;
 }
 

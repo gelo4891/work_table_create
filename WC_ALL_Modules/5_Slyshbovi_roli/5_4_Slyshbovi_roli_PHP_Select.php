@@ -63,9 +63,12 @@ if (isset($_POST['codes'])) {
             case 'insert-upadate-date':
                 $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
                 $nomerValue = isset($_POST['nomer']) ? $_POST['nomer'] : '';
+                $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';
+
+                
         
                 echo '___________' . $codes . '_______<br>';
-                echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue;
+                echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue.' and selectPidSys: ' . $selectPidSys;
                 break;
     
         default:
