@@ -1,4 +1,4 @@
-function sendRequestAndUpdate(updateElement, codesValue) {
+function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue){
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -8,18 +8,14 @@ function sendRequestAndUpdate(updateElement, codesValue) {
       initializeDynamicSelect();
     }
   };
-  xhr.send('codes=' + encodeURIComponent(codesValue));
+  xhr.send('codes=' + encodeURIComponent(codesValue) + '&date=' + encodeURIComponent(dateValue) + '&nomer=' + encodeURIComponent(nomerValue));
 }
 
 function initializeEventHandlers() {
   const elements = {
     select_PB_YDO: document.getElementById('html-select-PB-YDO'),
     loadingKrok2: document.getElementById('loading-krok2'),
-    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),
-    krok2Data: document.getElementById('php-krok2-data'),
-    krok2Nomer: document.getElementById('php-krok2-nomer'),
-    submitBtn: document.getElementById('php-submit-btn'),
-    hiddenBlockHtml: document.getElementById('html-input-date'),
+    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),    
     searchInput: document.getElementById('searchInput'),
   };
 
@@ -46,8 +42,9 @@ function hideHtmlInputDate() {
 }
 
 function clearTextInputs() {
-  document.querySelectorAll('input[type="text"]').forEach(input => (input.value = ''));
+  document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => (input.value = ''));
 }
+
 
 function openSelectOptions() {
   const dynamicSelect = document.getElementById('PhpSelectMenu');
@@ -88,5 +85,67 @@ function filterSelectOptions() {
   });
 }
 
+/*----------------------------------------------------------------------------------------*/
+
+
+function clickButton() {
+  const elements = {   
+    submitBtn: document.getElementById('php-submit-btn'),
+    inputeDate: document.getElementById('krok2-data'),
+    inputeNomer: document.getElementById('krok2-nomer'),
+    resultDiv: document.getElementById('resultDiv'),  // Додайте блок результатів
+    // Додайте інші елементи, якщо потрібно
+  };  
+
+  // Додайте слухача події для поля inputeDate
+  elements.inputeDate.addEventListener('input', function() {
+    checkButtonState(elements);
+  });
+
+  // Додайте слухача події для поля inputeNomer
+  elements.inputeNomer.addEventListener('input', function() {
+    checkButtonState(elements);
+  });
+
+  // Додайте слухача події для кнопки submitBtn
+  elements.submitBtn.addEventListener('click', function() {
+    const dateValue = elements.inputeDate.value;
+    const nomerValue = elements.inputeNomer.value;
+
+    // Передача значень до функції sendRequestAndUpdate
+    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', dateValue, nomerValue);
+
+    // Очищення полів після відправки
+    elements.inputeDate.value = '';
+    elements.inputeNomer.value = '';
+
+    // Встановлення кнопці disabled після відправки
+    elements.submitBtn.disabled = true;
+  });
+
+  // Початкова перевірка стану кнопки
+  checkButtonState(elements);
+}
+
+// Функція для перевірки стану кнопки
+function checkButtonState(elements) {
+  const dateValue = elements.inputeDate.value.trim();
+  const nomerValue = elements.inputeNomer.value.trim();
+
+  // Перевірка, чи обидва поля не порожні
+  const bothInputsFilled = dateValue !== '' && nomerValue !== '';
+
+  // Встановлення властивості disabled в залежності від умови
+  elements.submitBtn.disabled = !bothInputsFilled;
+}
+/*----------------------------------------------------------------------------------------*/
+
+
 // Викликаємо ініціалізацію для першого select
 initializeEventHandlers();
+clickButton();
+
+
+
+
+
