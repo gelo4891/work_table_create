@@ -86,7 +86,7 @@ function clickButton() {
     sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', elements.inputeDate.value, elements.inputeNomer.value,elements.selectPidSys.value);
     elements.inputeDate.value = '';
     elements.inputeNomer.value = '';
-    elements.selectPidSys.value = '';
+    elements.selectPidSys.value = '0';
     elements.submitBtn.disabled = true;
   });
 
@@ -103,7 +103,7 @@ function checkButtonState() {
 
   const bothInputsFilled = elements.inputeDate.value.trim() !== '' &&
                            elements.inputeNomer.value.trim() !== '' &&
-                           elements.selectPidSys.value !== '';
+                           elements.selectPidSys.value !== '0';
 
   elements.submitBtn.disabled = !bothInputsFilled;
 }
