@@ -1,4 +1,4 @@
-function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue){
+function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue) {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -8,23 +8,21 @@ function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue){
       initializeDynamicSelect();
     }
   };
-  xhr.send('codes=' + encodeURIComponent(codesValue) + '&date=' + encodeURIComponent(dateValue) + '&nomer=' + encodeURIComponent(nomerValue));
+  xhr.send(`codes=${encodeURIComponent(codesValue)}&date=${encodeURIComponent(dateValue)}&nomer=${encodeURIComponent(nomerValue)}`);
 }
 
 function initializeEventHandlers() {
   const elements = {
     select_PB_YDO: document.getElementById('html-select-PB-YDO'),
     loadingKrok2: document.getElementById('loading-krok2'),
-    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),    
+    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),
     searchInput: document.getElementById('searchInput'),
   };
 
   elements.select_PB_YDO.addEventListener('input', () => {
     const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
     showHide(elements.loadingKrok2, isOption1or2);
-
     hideHtmlInputDate();
-
     if (isOption1or2) {
       sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2');
     }
@@ -32,19 +30,16 @@ function initializeEventHandlers() {
 
   elements.searchInput.addEventListener('input', filterSelectOptions);
   elements.searchInput.addEventListener('focus', openSelectOptions);
-
 }
 
 function hideHtmlInputDate() {
-  const hiddenBlock = document.getElementById('html-input-date');
-  hiddenBlock.style.display = 'none';
+  document.getElementById('html-input-date').style.display = 'none';
   clearTextInputs();
 }
 
 function clearTextInputs() {
-  document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => (input.value = ''));
+  document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => input.value = '');
 }
-
 
 function openSelectOptions() {
   const dynamicSelect = document.getElementById('PhpSelectMenu');
@@ -59,93 +54,52 @@ function showHide(element, show) {
 
 function initializeDynamicSelect() {
   const dynamicSelect = document.getElementById('PhpSelectMenu');
-
   if (dynamicSelect) {
-    dynamicSelect.addEventListener('input', () => {
-      const selectedDynamicValue = dynamicSelect.value;
-      console.log('Обрано в динамічному select: ' + selectedDynamicValue);
-    
-      showHideHiddenBlock(selectedDynamicValue);
-    });
+    dynamicSelect.addEventListener('input', () => showHideHiddenBlock(dynamicSelect.value));
   }
 }
 
 function showHideHiddenBlock(selectedDynamicValue) {
-  const hiddenBlock = document.getElementById('html-input-date');
-  hiddenBlock.style.display = selectedDynamicValue !== '' ? 'block' : 'none';
+  document.getElementById('html-input-date').style.display = selectedDynamicValue !== '' ? 'block' : 'none';
   filterSelectOptions();
 }
 
 function filterSelectOptions() {
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  document.querySelectorAll('.select-option').forEach(option => {
-    const text = option.textContent.toLowerCase();
-    const isMatch = text.includes(searchTerm);
-    option.style.display = isMatch ? 'block' : 'none';
-  });
+  document.querySelectorAll('.select-option').forEach(option => option.style.display = option.textContent.toLowerCase().includes(searchTerm) ? 'block' : 'none');
 }
 
-/*----------------------------------------------------------------------------------------*/
-
-
 function clickButton() {
-  const elements = {   
+  const elements = {
     submitBtn: document.getElementById('php-submit-btn'),
     inputeDate: document.getElementById('krok2-data'),
     inputeNomer: document.getElementById('krok2-nomer'),
-    resultDiv: document.getElementById('resultDiv'),  // Додайте блок результатів
-    // Додайте інші елементи, якщо потрібно
-  };  
+    resultDiv: document.getElementById('resultDiv'),
+  };
 
-  // Додайте слухача події для поля inputeDate
-  elements.inputeDate.addEventListener('input', function() {
-    checkButtonState(elements);
-  });
+  elements.inputeDate.addEventListener('input', checkButtonState);
+  elements.inputeNomer.addEventListener('input', checkButtonState);
 
-  // Додайте слухача події для поля inputeNomer
-  elements.inputeNomer.addEventListener('input', function() {
-    checkButtonState(elements);
-  });
-
-  // Додайте слухача події для кнопки submitBtn
-  elements.submitBtn.addEventListener('click', function() {
-    const dateValue = elements.inputeDate.value;
-    const nomerValue = elements.inputeNomer.value;
-
-    // Передача значень до функції sendRequestAndUpdate
-    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', dateValue, nomerValue);
-
-    // Очищення полів після відправки
+  elements.submitBtn.addEventListener('click', () => {
+    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', elements.inputeDate.value, elements.inputeNomer.value);
     elements.inputeDate.value = '';
     elements.inputeNomer.value = '';
-
-    // Встановлення кнопці disabled після відправки
     elements.submitBtn.disabled = true;
   });
 
-  // Початкова перевірка стану кнопки
-  checkButtonState(elements);
+  checkButtonState();
 }
 
-// Функція для перевірки стану кнопки
-function checkButtonState(elements) {
-  const dateValue = elements.inputeDate.value.trim();
-  const nomerValue = elements.inputeNomer.value.trim();
+function checkButtonState() {
+  const elements = {
+    inputeDate: document.getElementById('krok2-data'),
+    inputeNomer: document.getElementById('krok2-nomer'),
+    submitBtn: document.getElementById('php-submit-btn'),
+  };
 
-  // Перевірка, чи обидва поля не порожні
-  const bothInputsFilled = dateValue !== '' && nomerValue !== '';
-
-  // Встановлення властивості disabled в залежності від умови
+  const bothInputsFilled = elements.inputeDate.value.trim() !== '' && elements.inputeNomer.value.trim() !== '';
   elements.submitBtn.disabled = !bothInputsFilled;
 }
-/*----------------------------------------------------------------------------------------*/
 
-
-// Викликаємо ініціалізацію для першого select
 initializeEventHandlers();
 clickButton();
-
-
-
-
-
