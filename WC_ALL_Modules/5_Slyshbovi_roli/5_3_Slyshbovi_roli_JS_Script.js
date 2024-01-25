@@ -1,22 +1,26 @@
-function sendRequestAndUpdate(updateElement, codesValue, dateValue, nomerValue,selectPidSys) {
+function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       updateElement.innerHTML = xhr.responseText;
-      initializeDynamicSelect();
+      initializeDynamicSelect('PhpSelectMenu');
     }
   };
-  xhr.send(`codes=${encodeURIComponent(codesValue)}&date=${encodeURIComponent(dateValue)}&nomer=${encodeURIComponent(nomerValue)}&selectPidSys=${encodeURIComponent(selectPidSys)}`);
+
+  // Підготовка рядка параметрів з масиву
+  const paramsString = paramsArray.map(param => `${param.name}=${encodeURIComponent(param.value)}`).join('&');
+
+  xhr.send(`codes=${encodeURIComponent(codesValue)}&${paramsString}`);
 }
 
 function initializeEventHandlers() {
   const elements = {
-    select_PB_YDO: document.getElementById('html-select-PB-YDO'),
-    loadingKrok2: document.getElementById('loading-krok2'),
-    loadingKrok2Select: document.getElementById('html-loading-krok2-select'),
-    searchInput: document.getElementById('searchInput'),
+    select_PB_YDO: getElementById('html-select-PB-YDO'),
+    loadingKrok2: getElementById('loading-krok2'),
+    loadingKrok2Select: getElementById('html-loading-krok2-select'),
+    searchInput: getElementById('searchInput'),
   };
 
   elements.select_PB_YDO.addEventListener('input', () => {
@@ -24,16 +28,22 @@ function initializeEventHandlers() {
     showHide(elements.loadingKrok2, isOption1or2);
     hideHtmlInputDate();
     if (isOption1or2) {
-      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2');
+      const paramsArray = []; // Опціонально, якщо є параметри для передачі
+      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
     }
   });
 
   elements.searchInput.addEventListener('input', filterSelectOptions);
-  elements.searchInput.addEventListener('focus', openSelectOptions);
+  elements.searchInput.addEventListener('focus', openSelectOptions,'PhpSelectMenu');
+}
+
+// Одноразова функція для отримання елемента за ID
+function getElementById(id) {
+  return document.getElementById(id);
 }
 
 function hideHtmlInputDate() {
-  document.getElementById('html-input-date').style.display = 'none';
+  getElementById('html-input-date').style.display = 'none';
   clearTextInputs();
 }
 
@@ -41,8 +51,8 @@ function clearTextInputs() {
   document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => input.value = '');
 }
 
-function openSelectOptions() {
-  const dynamicSelect = document.getElementById('PhpSelectMenu');
+function openSelectOptions(SIZE_PhpSelectMenu) {
+  const dynamicSelect = getElementById(SIZE_PhpSelectMenu);
   if (dynamicSelect) {
     dynamicSelect.size = 5;
   }
@@ -52,38 +62,76 @@ function showHide(element, show) {
   element.style.display = show ? 'block' : 'none';
 }
 
-function initializeDynamicSelect() {
-  const dynamicSelect = document.getElementById('PhpSelectMenu');
-  if (dynamicSelect) {
-    dynamicSelect.addEventListener('input', () => showHideHiddenBlock(dynamicSelect.value));
+
+
+function initializeDynamicSelect(ID_PhpSelectMenu) {
+  const IdSelectValue = getElementById(ID_PhpSelectMenu);
+  if (IdSelectValue) {
+    IdSelectValue.addEventListener('input', () => {
+    
+    
+      const selectedValue = IdSelectValue.value;
+      console.log('Ви вибрали:', selectedValue);
+
+
+      const elements = {
+
+        krok2SQL: getElementById('html-krok2-SQL'),
+      };
+
+
+      const paramsArrayPib = [
+        { name: 'PIB', value: selectedValue },
+      ];
+  
+      sendRequestAndUpdate(elements.krok2SQL, 'selept-date-pib', paramsArrayPib);
+
+
+
+      // Викликати функцію showHideHiddenBlock зі значенням
+      showHideHiddenBlock(IdSelectValue);
+
+    });
   }
 }
 
+
 function showHideHiddenBlock(selectedDynamicValue) {
-  document.getElementById('html-input-date').style.display = selectedDynamicValue !== '' ? 'block' : 'none';
+  getElementById('html-input-date').style.display = selectedDynamicValue !== '' ? 'block' : 'none';
+  const paramsArray = []; // Опціонально, якщо є параметри для передачі
+  
+ // sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
+
   filterSelectOptions();
 }
 
 function filterSelectOptions() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const searchTerm = getElementById('searchInput').value.toLowerCase();
   document.querySelectorAll('.select-option').forEach(option => option.style.display = option.textContent.toLowerCase().includes(searchTerm) ? 'block' : 'none');
 }
 
 function clickButton() {
   const elements = {
-    submitBtn: document.getElementById('php-submit-btn'),
-    inputeDate: document.getElementById('krok2-data'),
-    inputeNomer: document.getElementById('krok2-nomer'),
-    resultDiv: document.getElementById('resultDiv'),
-    selectPidSys: document.getElementById('html-select-PID-sys'),  // Додайте визначення для selectPidSys  
+    submitBtn: getElementById('php-submit-btn'),
+    inputeDate: getElementById('krok2-data'),
+    inputeNomer: getElementById('krok2-nomer'),
+    resultDiv: getElementById('resultDiv'),
+    selectPidSys: getElementById('html-select-PID-sys'),  
   };
 
   elements.inputeDate.addEventListener('input', checkButtonState);
   elements.inputeNomer.addEventListener('input', checkButtonState);
   elements.selectPidSys.addEventListener('change', checkButtonState);
- 
+
   elements.submitBtn.addEventListener('click', () => {
-    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', elements.inputeDate.value, elements.inputeNomer.value,elements.selectPidSys.value);
+    const paramsArray = [
+      { name: 'date', value: elements.inputeDate.value },
+      { name: 'nomer', value: elements.inputeNomer.value },
+      { name: 'selectPidSys', value: elements.selectPidSys.value },
+    ];
+
+    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', paramsArray);
+
     elements.inputeDate.value = '';
     elements.inputeNomer.value = '';
     elements.selectPidSys.value = '0';
@@ -95,10 +143,10 @@ function clickButton() {
 
 function checkButtonState() {
   const elements = {
-    inputeDate: document.getElementById('krok2-data'),
-    inputeNomer: document.getElementById('krok2-nomer'),
-    submitBtn: document.getElementById('php-submit-btn'),
-    selectPidSys: document.getElementById('html-select-PID-sys'),
+    inputeDate: getElementById('krok2-data'),
+    inputeNomer: getElementById('krok2-nomer'),
+    submitBtn: getElementById('php-submit-btn'),
+    selectPidSys: getElementById('html-select-PID-sys'),
   };
 
   const bothInputsFilled = elements.inputeDate.value.trim() !== '' &&

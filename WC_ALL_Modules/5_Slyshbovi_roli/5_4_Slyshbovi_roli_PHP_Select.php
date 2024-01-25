@@ -61,6 +61,7 @@ if (isset($_POST['codes'])) {
             break;
     
             case 'insert-upadate-date':
+                echo '------------------Результат-------------------------<br>';
                 $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
                 $nomerValue = isset($_POST['nomer']) ? $_POST['nomer'] : '';
                 $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';
@@ -70,7 +71,17 @@ if (isset($_POST['codes'])) {
                 echo '___________' . $codes . '_______<br>';
                 echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue.' and selectPidSys: ' . $selectPidSys;
                 break;
-    
+
+                case 'selept-date-pib':
+                    echo '....................Дані про працівника......................';
+                    $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
+                
+                    echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
+                    break;
+                
+
+
+
         default:
             // Якщо параметри не було передано, повертаємо порожню відповідь або виконуємо іншу логіку
             echo 'Invalid request';
