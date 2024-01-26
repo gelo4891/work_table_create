@@ -73,19 +73,17 @@ function initializeDynamicSelect(ID_PhpSelectMenu) {
       const selectedValue = IdSelectValue.value;
       console.log('Ви вибрали:', selectedValue);
 
-
+      /*вибираємо дані про працівника*/
       const elements = {
-
-        krok2SQL: getElementById('html-krok2-SQL'),
+        krok2SQL: getElementById('html-blok3_dani_user'),
       };
-
 
       const paramsArrayPib = [
         { name: 'PIB', value: selectedValue },
       ];
   
       sendRequestAndUpdate(elements.krok2SQL, 'selept-date-pib', paramsArrayPib);
-
+      /*---------------------------------------------------------------------------------*/
 
 
       // Викликати функцію showHideHiddenBlock зі значенням

@@ -11,8 +11,8 @@ $chek_auh=$session_checker1->WC_Auth_check_session(false,'/WC_2_SYS_select_date/
 $dbDsn = 'odbc:ODBS_dell720';
 $dbUser = 'upr28';
 $dbPass = 'upr28';   
-  
-  
+
+ 
   // Функція для формування SQL запиту
   function getQuerySQL($placeholders) {
       return " SELECT 
@@ -33,13 +33,21 @@ order by IP_SHTAT_PIB";
 }
 
 function getQuerySQL_PIB_one($UserPib) {
-  return " SELECT 
-  IP_SHTAT_MONTH, IP_SHTAT_INDEX, IP_SHTAT_PIB,  
- IP_SHTAT_NAME_PIDR, IP_SHTAT_POSADA, IP_SHTAT_NAPRYAM
-FROM UPR28.IP_2021_SHTAT
-where IP_SHTAT_MONTH= (select distinct(max(IP_SHTAT_MONTH)) from UPR28.IP_2021_SHTAT ) 
-and IP_SHTAT_PIB='$UserPib'
-order by IP_SHTAT_PIB";
+  return " SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
+  SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
+  FROM UPR28.OLEG_SL_YDO_BLOK WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$UserPib'), ' ', '')";
 }
-  
+
+function getQuerySQL_PIB_one_test($UserPib) {
+  // Перекодувати $UserPib в WINDOWS-1251
+  $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
+
+  return "SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
+          SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
+          FROM UPR28.OLEG_SL_YDO_BLOK 
+          WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')";
+}
+
+
+
 ?>

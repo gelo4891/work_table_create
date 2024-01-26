@@ -28,7 +28,7 @@ if (isset($_POST['codes'])) {
     switch ($codes) {
         case 'rozblok-loading-krok2':
 
-            echo 'test1____rozblok-loading-krok2====>_______' . $codes . '_______<br>';
+           // echo 'test1____rozblok-loading-krok2====>_______' . $codes . '_______<br>';
             // Підготовлюємо запит
             $query_SQL = getQuerySQL_PIB();
             $stmt_test_c = $conn->prepare($query_SQL);
@@ -50,16 +50,18 @@ if (isset($_POST['codes'])) {
             echo '<div id="div-select">';
             echo '<select id="PhpSelectMenu">';
             echo '<option disabled selected value="">Оберіть працівника</option>';
+           
             foreach ($data as $row) {
                 $value = htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[2]]));
                 echo '<option class="select-option" value="' . $value . '">';
                 echo 'Штатка за-->' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $row[$columns[0]])) . '  ||  ' . $value;
                 echo '</option>';
             }
+
             echo '</select>';
             echo '<div>';
             break;
-    
+    /*---------------------------------------------------------------------------------------------------------*/
             case 'insert-upadate-date':
                 echo '------------------Результат-------------------------<br>';
                 $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
@@ -72,13 +74,62 @@ if (isset($_POST['codes'])) {
                 echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue.' and selectPidSys: ' . $selectPidSys;
                 break;
 
+
+
+
+   /*---------------------------------------------------------------------------------------------------------*/
                 case 'selept-date-pib':
-                    echo '....................Дані про працівника......................';
-                    $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
+                    try {
+                        echo '....................Дані про працівника......................<br>';
+                        $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
+                    
+                       // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
+    
+                         $query_SQL_date = getQuerySQL_PIB_one_test($dateValue);
+                        $stmt_upr28_date = $conn->prepare($query_SQL_date);
                 
-                    echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
+                        // Виконуємо запит
+                        $stmt_upr28_date->execute();
+    
+                        // Отримуємо дані з запиту
+                      //  $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);
+
+                        // Перевірка помилок
+                        $errorInfo = $stmt_upr28_date->errorInfo();
+                        if ($errorInfo[0] !== PDO::ERR_NONE) {
+                            echo 'Помилка виконання запиту: ' . $errorInfo[2];
+                        } else {
+
+                            $columns = [];
+                            for ($i = 0; $i < $stmt_upr28_date->columnCount(); $i++) {
+                                $colMeta = $stmt_upr28_date->getColumnMeta($i);
+                                $columns[] = $colMeta['name'];
+                            }
+
+                            // Отримуємо дані з запиту
+                            $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($data_upr28 as $row) {
+                                foreach ($row as $column => $value) {
+                                    //echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ' . 
+                                    echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '<br>';
+                                }
+                                echo '<hr>';
+                            }
+                            
+
+                        }
+
+
+
+
+                    } catch (PDOException $e) {
+                        echo 'Помилка: ' . $e->getMessage();
+                    }
+
+
                     break;
-                
+    /*---------------------------------------------------------------------------------------------------------*/         
 
 
 
