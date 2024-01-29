@@ -27,8 +27,7 @@ if (isset($_POST['codes'])) {
     
     switch ($codes) {
         case 'rozblok-loading-krok2':
-
-           // echo 'test1____rozblok-loading-krok2====>_______' . $codes . '_______<br>';
+           
             // Підготовлюємо запит
             $query_SQL = getQuerySQL_PIB();
             $stmt_test_c = $conn->prepare($query_SQL);
@@ -61,7 +60,10 @@ if (isset($_POST['codes'])) {
             echo '</select>';
             echo '<div>';
             break;
-    /*---------------------------------------------------------------------------------------------------------*/
+    
+    
+    
+            /*---------------------------------------------------------------------------------------------------------*/
             case 'insert-upadate-date':
                 echo '------------------Результат-------------------------<br>';
                 $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
@@ -89,7 +91,7 @@ if (isset($_POST['codes'])) {
                     
                        // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
     
-                        $query_SQL_date = getQuerySQL_PIB_one_test($dateValue);
+                        $query_SQL_date = getQuerySQL_PIB_all($dateValue);
                         $stmt_upr28_date = $conn->prepare($query_SQL_date);
                 
                         // Виконуємо запит
@@ -124,6 +126,53 @@ if (isset($_POST['codes'])) {
                     }
 
                     break;
+ /*------------------------------------------------------------------------------------------------------------------------------ */ 
+                    case 'select-date-pidrozdil':
+                        try {
+                            $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
+                        
+                            $query_SQL_date1 = getQuerySQL_PIB_date($dateValue);
+                            $stmt_upr28_date1 = $conn->prepare($query_SQL_date1);
+                        
+                            // Виконуємо запит
+                            $stmt_upr28_date1->execute();
+                        
+                            // Перевірка помилок
+                            $errorInfo = $stmt_upr28_date1->errorInfo();
+                            if ($errorInfo[0] !== PDO::ERR_NONE) {
+                                echo 'Помилка виконання запиту: ' . $errorInfo[2];
+                            } else {
+                                $data_upr28 = $stmt_upr28_date1->fetchAll(PDO::FETCH_ASSOC);
+                        
+                                echo '<table id="phpTableUserDate">';
+                                
+                                // Визначення власних заголовків
+                                $customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада']; // Замініть це на власні назви
+                                
+                                // Виведення заголовків
+                                echo '<tr>';
+                                foreach ($customHeaders as $header) {
+                                    echo '<th>' .  $header . '</th>';
+                                }
+                                echo '</tr>';
+                        
+                                // Виведення даних
+                                foreach ($data_upr28 as $row) {
+                                    echo '<tr>';
+                                    foreach ($row as $value) {
+                                        echo '<td>' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '</td>';
+                                    }
+                                    echo '</tr>';
+                                }
+                                echo '</table>';
+                            }
+                        } catch (PDOException $e) {
+                            echo 'Помилка бази даних: ' . $e->getMessage();
+                        }
+                        
+
+                    break;   
+                    
     /*---------------------------------------------------------------------------------------------------------*/         
 
         default:

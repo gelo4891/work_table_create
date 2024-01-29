@@ -25,18 +25,18 @@ function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
 }
 
 function initializeEventHandlers() {
-  elements.select_PB_YDO.addEventListener('input', () => {
+  /*elements.select_PB_YDO.addEventListener('input', () => {
     const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
     showHide(elements.loadingKrok2, isOption1or2);
     hideHtmlInputDate();
     if (isOption1or2) {
-      const paramsArray = [];
+     */ const paramsArray = [];
       sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
       initializeDynamicSelect('PhpSelectMenu');
-      openSelectOptions('PhpSelectMenu');
-    }
+      //openSelectOptions('PhpSelectMenu');
+  /* }
   });
-
+*/
   elements.searchInput.addEventListener('input', filterSelectOptions);
   elements.searchInput.addEventListener('focus', () => openSelectOptions('PhpSelectMenu'));
 }
@@ -76,12 +76,14 @@ function initializeDynamicSelect(ID_PhpSelectMenu) {
       /*вибираємо дані про працівника*/
       const elements = {
         krok2SQL: getElementById('html-blok3_dani_user'),
+        HtmlUserInfo: getElementById('UserInfo'),
       };
 
       const paramsArrayPib = [
         { name: 'PIB', value: selectedValue },
       ];
   
+      sendRequestAndUpdate(elements.HtmlUserInfo, 'select-date-pidrozdil', paramsArrayPib);
       sendRequestAndUpdate(elements.krok2SQL, 'selept-date-pib', paramsArrayPib);
       /*---------------------------------------------------------------------------------*/
 

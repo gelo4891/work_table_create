@@ -38,7 +38,7 @@ function getQuerySQL_PIB_one($UserPib) {
   FROM UPR28.OLEG_SL_YDO_BLOK WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$UserPib'), ' ', '')";
 }
 
-function getQuerySQL_PIB_one_test($UserPib) {
+function getQuerySQL_PIB_all($UserPib) {
   // Перекодувати $UserPib в WINDOWS-1251
   $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
 
@@ -46,6 +46,18 @@ function getQuerySQL_PIB_one_test($UserPib) {
           SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
           FROM UPR28.OLEG_SL_YDO_BLOK 
           WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  order by sl_date desc";
+}
+
+function getQuerySQL_PIB_date($UserPib) {
+  // Перекодувати $UserPib в WINDOWS-1251
+  $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
+
+  return " SELECT 
+  IP_SHTAT_MONTH, IP_SHTAT_INDEX, IP_SHTAT_PIB, IP_SHTAT_NAME_PIDR, IP_SHTAT_POSADA
+  FROM UPR28.IP_2021_SHTAT
+  where IP_SHTAT_MONTH= (select distinct(max(IP_SHTAT_MONTH)) from UPR28.IP_2021_SHTAT )
+  and REPLACE(UPPER(IP_SHTAT_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '') 
+  order by IP_SHTAT_PIB";
 }
 
 /*

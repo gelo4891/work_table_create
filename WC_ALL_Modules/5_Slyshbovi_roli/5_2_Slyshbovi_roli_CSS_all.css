@@ -43,6 +43,33 @@ body {
   height: 15%;
 }
 
+#html-input-date{
+  text-align: center;
+}
+
+#divSelectKrok2 table {
+  margin: 0 auto;
+}
+
+#divSelectKrok2 select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+#phpTableUserDate{
+   background-color: #f2f2f2; /* Колір фону для заголовків (необов'язково) */ 
+   border-collapse: collapse;
+}
+
+#phpTableUserDate th,#phpTableUserDate td {
+  border: 1px solid darkblue; /* Товщина і колір меж для комірок */
+  padding: 8px; /* Додайте внутрішній відступ для тексту у комірках */
+
+}
+
+
+
 
 
 

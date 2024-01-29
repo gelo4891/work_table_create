@@ -15,6 +15,7 @@
 
   <div id="html-blok2_vnesennya">
     
+    <!--
     <div> 
      <p><h2>Крок 1</h2>Спочатку Виберіть систему</p>
      <select id="html-select-PB-YDO">
@@ -24,9 +25,10 @@
         <option value="3">TEST NULL</option>  
      </select>  
     </div> 
-
-    <div id="loading-krok2" style="display: none;">    
-      <p><h2>Крок 2</h2>Через пошук або із списку виберіть працівника</p>
+  -->
+  
+    <div id="loading-krok2" ">    
+      <p><h2>Крок 1</h2>Через пошук або із списку виберіть працівника</p>
       <input type="text" id="searchInput" placeholder="Пошук працівника">
       <div id="html-loading-krok2-select"> </div>
     </div>  
@@ -34,31 +36,57 @@
     <div id="html-input-date" style="display: none;">
       <div  id="html-krok2-SQL">
         <h2>Дані про користувача</h2>
+        <p id="UserInfo"></p>
       </div>
 
 
-      <p><h2>Крок 3</h2>Внесіть дані про службву і у разі наявності даних кнопка зберегти стане активною</p> 
+      <p><h2>------------------Крок 2--------------------</h2>Внесіть дані про службву і у разі наявності даних кнопка зберегти стане активною</p> 
 
-      <select id="html-select-PID-sys">
-          <option disabled selected value="0">Системи</option>
-          <option value="ІКС Управління документами">ІКС "Управління документами"</option>
-          <option value="ІКС Податковий Блок(основна)">ІКС "Податковий Блок"(основна)</option>
-          <option value="ІКС Податковий Блок (додаткові ролі)">ІКС "Податковий Блок"(додаткові ролі)</option>
-          <option value="ІКС Єдине вікно подання звітності">ІКС "Єдине вікно подання звітності (Архів)"</option>
-          <option value="ІКС Адміністративне та судове оскарження">ІКС "Адміністративне та судове оскарження"</option> 
-          <option value="Електронний кабінет платника">"Електронний кабінет платника"</option>  
-          <option value="АС Акцизні марки">АС "Акцизні марки"</option> 
-          <option value="ІКС Міжнародний автосатичний обмін">ІКС "Міжнародний автосатичний обмін (-450006)"</option> 
-      </select> 
-      <br>
-      
-      <label for="php-krok2-data">Введіть дату</label>
-      <input type="date" id="krok2-data" >
+      <div id="divSelectKrok2">
+        <table>
+          <tr>
+            <td colspan="2">
+              <select id="html-select-PID-sys">
+                  <option disabled selected value="0">Системи</option>
+                  <option value="ІКС Управління документами">ІКС "Управління документами"</option>
+                  <option value="ІКС Податковий Блок(основна)">ІКС "Податковий Блок"(основна)</option>
+                  <option value="ІКС Податковий Блок (додаткові ролі)">ІКС "Податковий Блок"(додаткові ролі)</option>
+                  <option value="ІКС Єдине вікно подання звітності">ІКС "Єдине вікно подання звітності (Архів)"</option>
+                  <option value="ІКС Адміністративне та судове оскарження">ІКС "Адміністративне та судове оскарження"</option> 
+                  <option value="Електронний кабінет платника">"Електронний кабінет платника"</option>  
+                  <option value="АС Акцизні марки">АС "Акцизні марки"</option> 
+                  <option value="ІКС Міжнародний автосатичний обмін">ІКС "Міжнародний автосатичний обмін (-450006)"</option> 
+                  <option value="Internet">ІКС "Internet"</option> 
+                  <option value="Локальна Мережа">Локальна Мережа"</option> 
+                  <option value="Черкаська">Черкаська</option> 
+                  <option value="USB-флешки">USB-флешки</option>
+                  <option value="Фоссмаіл (Outlook)">Фоссмаіл (Outlook)</option>
+              </select> 
+            </td>
+            <td>
+            </td>
 
-      <label for="php-krok2-nomer">Введіть номер</label>
-      <input type="text" id="krok2-nomer" >
-      <br>
-      
+          </tr>           
+          <tr>
+            <td>
+              <label for="php-krok2-data">Введіть дату</label>
+            </td>
+            <td>
+              <label for="php-krok2-nomer">Введіть номер</label> 
+            </td>
+          </tr>
+            
+          <tr>
+            <td>
+              <input type="date" id="krok2-data" >
+            </td>
+            <td>
+              <input type="text" id="krok2-nomer" >
+            </td>
+          </tr>
+        </table>    
+
+      </div>
       <button id="php-submit-btn">Зберегти дані</button> 
     </div>
     </div>
