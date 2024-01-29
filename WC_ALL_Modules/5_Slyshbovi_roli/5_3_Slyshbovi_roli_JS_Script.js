@@ -21,6 +21,7 @@ function initializeEventHandlers() {
     loadingKrok2: getElementById('loading-krok2'),
     loadingKrok2Select: getElementById('html-loading-krok2-select'),
     searchInput: getElementById('searchInput'),
+    PhpSelectMenu: getElementById('PhpSelectMenu'),
   };
 
   elements.select_PB_YDO.addEventListener('input', () => {
@@ -28,13 +29,15 @@ function initializeEventHandlers() {
     showHide(elements.loadingKrok2, isOption1or2);
     hideHtmlInputDate();
     if (isOption1or2) {
-      const paramsArray = []; // Опціонально, якщо є параметри для передачі
+      const paramsArray = [];
       sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
+      initializeDynamicSelect('PhpSelectMenu');
+      openSelectOptions('PhpSelectMenu');
     }
   });
 
   elements.searchInput.addEventListener('input', filterSelectOptions);
-  elements.searchInput.addEventListener('focus', openSelectOptions,'PhpSelectMenu');
+  elements.searchInput.addEventListener('focus', () => openSelectOptions('PhpSelectMenu'));
 }
 
 // Одноразова функція для отримання елемента за ID
@@ -51,10 +54,10 @@ function clearTextInputs() {
   document.querySelectorAll('input[type="text"], input[type="date"]').forEach(input => input.value = '');
 }
 
-function openSelectOptions(SIZE_PhpSelectMenu) {
-  const dynamicSelect = getElementById(SIZE_PhpSelectMenu);
-  if (dynamicSelect) {
-    dynamicSelect.size = 5;
+function openSelectOptions(ID_PhpSelectMenu) {
+  const SIZE_PhpSelectMenu = getElementById(ID_PhpSelectMenu);
+  if (SIZE_PhpSelectMenu) {
+    SIZE_PhpSelectMenu.size = 5;
   }
 }
 
@@ -62,14 +65,10 @@ function showHide(element, show) {
   element.style.display = show ? 'block' : 'none';
 }
 
-
-
 function initializeDynamicSelect(ID_PhpSelectMenu) {
   const IdSelectValue = getElementById(ID_PhpSelectMenu);
   if (IdSelectValue) {
     IdSelectValue.addEventListener('input', () => {
-    
-    
       const selectedValue = IdSelectValue.value;
       console.log('Ви вибрали:', selectedValue);
 
@@ -85,7 +84,6 @@ function initializeDynamicSelect(ID_PhpSelectMenu) {
       sendRequestAndUpdate(elements.krok2SQL, 'selept-date-pib', paramsArrayPib);
       /*---------------------------------------------------------------------------------*/
 
-
       // Викликати функцію showHideHiddenBlock зі значенням
       showHideHiddenBlock(IdSelectValue);
 
@@ -93,12 +91,11 @@ function initializeDynamicSelect(ID_PhpSelectMenu) {
   }
 }
 
-
 function showHideHiddenBlock(selectedDynamicValue) {
   getElementById('html-input-date').style.display = selectedDynamicValue !== '' ? 'block' : 'none';
   const paramsArray = []; // Опціонально, якщо є параметри для передачі
   
- // sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
+  sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
 
   filterSelectOptions();
 }

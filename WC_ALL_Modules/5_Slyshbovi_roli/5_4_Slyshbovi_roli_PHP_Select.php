@@ -91,9 +91,6 @@ if (isset($_POST['codes'])) {
                         // Виконуємо запит
                         $stmt_upr28_date->execute();
     
-                        // Отримуємо дані з запиту
-                      //  $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);
-
                         // Перевірка помилок
                         $errorInfo = $stmt_upr28_date->errorInfo();
                         if ($errorInfo[0] !== PDO::ERR_NONE) {
@@ -111,27 +108,19 @@ if (isset($_POST['codes'])) {
 
                             foreach ($data_upr28 as $row) {
                                 foreach ($row as $column => $value) {
-                                    //echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ' . 
+                                 //   echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ' ;
                                     echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '<br>';
                                 }
                                 echo '<hr>';
-                            }
-                            
-
+                            }                         
                         }
-
-
-
 
                     } catch (PDOException $e) {
                         echo 'Помилка: ' . $e->getMessage();
                     }
 
-
                     break;
     /*---------------------------------------------------------------------------------------------------------*/         
-
-
 
         default:
             // Якщо параметри не було передано, повертаємо порожню відповідь або виконуємо іншу логіку

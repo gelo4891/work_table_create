@@ -45,7 +45,7 @@ function getQuerySQL_PIB_one_test($UserPib) {
   return "SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
           SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
           FROM UPR28.OLEG_SL_YDO_BLOK 
-          WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')";
+          WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  order by sl_date desc";
 }
 
 
