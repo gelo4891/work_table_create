@@ -48,6 +48,27 @@ function getQuerySQL_PIB_one_test($UserPib) {
           WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  order by sl_date desc";
 }
 
+/*
+function getQuerySQL_insert_update($Inser_or_update,$user_date) {
+
+switch(){
+  case 'date_insert':
+  break;
+
+  case 'date_update':
+  break;
+  
+}
+
+  // Перекодувати $UserPib в WINDOWS-1251
+  $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
+
+  return "SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
+          SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
+          FROM UPR28.OLEG_SL_YDO_BLOK 
+          WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  order by sl_date desc";
+}
+*/
 
 
 ?>

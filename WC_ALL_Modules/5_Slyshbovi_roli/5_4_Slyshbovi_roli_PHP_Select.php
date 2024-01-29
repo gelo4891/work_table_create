@@ -72,6 +72,10 @@ if (isset($_POST['codes'])) {
         
                 echo '___________' . $codes . '_______<br>';
                 echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue.' and selectPidSys: ' . $selectPidSys;
+
+
+
+
                 break;
 
 
@@ -85,7 +89,7 @@ if (isset($_POST['codes'])) {
                     
                        // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
     
-                         $query_SQL_date = getQuerySQL_PIB_one_test($dateValue);
+                        $query_SQL_date = getQuerySQL_PIB_one_test($dateValue);
                         $stmt_upr28_date = $conn->prepare($query_SQL_date);
                 
                         // Виконуємо запит

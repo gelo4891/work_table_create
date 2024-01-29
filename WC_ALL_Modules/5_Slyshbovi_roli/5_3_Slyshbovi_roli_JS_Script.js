@@ -1,3 +1,12 @@
+// Оголошення об'єкта elements на рівні верхнього рівня
+const elements = {
+  select_PB_YDO: getElementById('html-select-PB-YDO'),
+  loadingKrok2: getElementById('loading-krok2'),
+  loadingKrok2Select: getElementById('html-loading-krok2-select'),
+  searchInput: getElementById('searchInput'),
+  PhpSelectMenu: getElementById('PhpSelectMenu'),
+};
+
 function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
@@ -16,14 +25,6 @@ function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
 }
 
 function initializeEventHandlers() {
-  const elements = {
-    select_PB_YDO: getElementById('html-select-PB-YDO'),
-    loadingKrok2: getElementById('loading-krok2'),
-    loadingKrok2Select: getElementById('html-loading-krok2-select'),
-    searchInput: getElementById('searchInput'),
-    PhpSelectMenu: getElementById('PhpSelectMenu'),
-  };
-
   elements.select_PB_YDO.addEventListener('input', () => {
     const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
     showHide(elements.loadingKrok2, isOption1or2);
