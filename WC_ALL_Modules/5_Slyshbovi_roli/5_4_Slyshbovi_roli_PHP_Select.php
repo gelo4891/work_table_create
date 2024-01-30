@@ -26,7 +26,7 @@ if (isset($_POST['codes'])) {
     /*-----------------------------------------------------------*/
     
     switch ($codes) {
-        case 'rozblok-loading-krok2':
+        case 'rozblok-loading-krok1':
            
             // Підготовлюємо запит
             $query_SQL = getQuerySQL_PIB();
@@ -59,34 +59,25 @@ if (isset($_POST['codes'])) {
 
             echo '</select>';
             echo '<div>';
-            break;
+            break;  
     
     
-    
-            /*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
             case 'insert-upadate-date':
                 echo '------------------Результат-------------------------<br>';
                 $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
                 $nomerValue = isset($_POST['nomer']) ? $_POST['nomer'] : '';
-                $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';
-
-                
+                $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';                
         
                 echo '___________' . $codes . '_______<br>';
                 echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue.' and selectPidSys: ' . $selectPidSys;
 
-
-
-
                 break;
-
-
-
 
    /*---------------------------------------------------------------------------------------------------------*/
                 case 'selept-date-pib':
                     try {
-                        echo '....................Дані про працівника......................<br>';
+                        echo '....................Дані про службові......................<br>';
                         $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
                     
                        // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
@@ -147,7 +138,7 @@ if (isset($_POST['codes'])) {
                                 echo '<table id="phpTableUserDate">';
                                 
                                 // Визначення власних заголовків
-                                $customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада']; // Замініть це на власні назви
+                                $customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада','Прийняття на роботу']; // Замініть це на власні назви
                                 
                                 // Виведення заголовків
                                 echo '<tr>';

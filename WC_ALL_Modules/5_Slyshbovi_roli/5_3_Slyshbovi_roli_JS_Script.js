@@ -1,12 +1,12 @@
 // Оголошення об'єкта elements на рівні верхнього рівня
 const elements = {
   select_PB_YDO: getElementById('html-select-PB-YDO'),
-  loadingKrok2: getElementById('loading-krok2'),
+  loadingKrok2: getElementById('loading-krok1'),
   loadingKrok2Select: getElementById('html-loading-krok2-select'),
   searchInput: getElementById('searchInput'),
   PhpSelectMenu: getElementById('PhpSelectMenu'),
 };
-
+/*
 function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
   const xhr = new XMLHttpRequest();
   xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
@@ -23,6 +23,26 @@ function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
 
   xhr.send(`codes=${encodeURIComponent(codesValue)}&${paramsString}`);
 }
+*/
+
+function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true); // Встановлення третього параметра як true робить запит асинхронним
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      updateElement.innerHTML = xhr.responseText;
+      initializeDynamicSelect('PhpSelectMenu');
+    }
+  };
+
+  // Підготовка рядка параметрів з масиву
+  const paramsString = paramsArray.map(param => `${param.name}=${encodeURIComponent(param.value)}`).join('&');
+
+  xhr.send(`codes=${encodeURIComponent(codesValue)}&${paramsString}`);
+}
+
 
 function initializeEventHandlers() {
   /*elements.select_PB_YDO.addEventListener('input', () => {
@@ -31,7 +51,7 @@ function initializeEventHandlers() {
     hideHtmlInputDate();
     if (isOption1or2) {
      */ const paramsArray = [];
-      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
+      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok1', paramsArray);
       initializeDynamicSelect('PhpSelectMenu');
       //openSelectOptions('PhpSelectMenu');
   /* }
@@ -98,7 +118,7 @@ function showHideHiddenBlock(selectedDynamicValue) {
   getElementById('html-input-date').style.display = selectedDynamicValue !== '' ? 'block' : 'none';
   const paramsArray = []; // Опціонально, якщо є параметри для передачі
   
-  sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok2', paramsArray);
+  sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok1', paramsArray);
 
   filterSelectOptions();
 }

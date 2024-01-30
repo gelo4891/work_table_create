@@ -24,23 +24,29 @@ body {
 }
 
 #html-blok2_vnesennya{
-  width: 50%;
-  background-color: coral;
+  width: 70%;
+  background-color: #e8a6095c;
   height: 70%;
   border: 1px solid blue;
+  overflow-y: auto;
 }
 
 #html-blok3_dani_user{
   border: 1px solid red;
-  width: 49%;
+  width: 29%;
   height: 70%;
   overflow-y: auto;
+  background: #3bcc1d47;
 }
 
 #resultDiv{
   border: 1px solid red;
   width: 100%;
   height: 15%;
+}
+
+#loading-krok2{
+  text-align: center;
 }
 
 #html-input-date{
@@ -57,9 +63,13 @@ body {
   margin-bottom: 10px;
 }
 
-#phpTableUserDate{
-   background-color: #f2f2f2; /* Колір фону для заголовків (необов'язково) */ 
-   border-collapse: collapse;
+#phpTableUserDate {
+  background-color: #f2f2f2; /* Колір фону для заголовків (необов'язково) */ 
+  width: 100%;
+  max-width: 800px; /* Змініть це значення на бажану максимальну ширину */
+  margin: 0 auto; /* Це центрує таблицю в батьківському контейнері */
+  border-collapse: collapse;
+  
 }
 
 #phpTableUserDate th,#phpTableUserDate td {
