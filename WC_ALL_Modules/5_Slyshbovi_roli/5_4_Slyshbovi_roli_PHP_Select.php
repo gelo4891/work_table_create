@@ -29,7 +29,7 @@ if (isset($_POST['codes'])) {
         case 'rozblok-loading-krok1':
            
             // Підготовлюємо запит
-            $query_SQL = getQuerySQL_PIB();
+            $query_SQL = getQueryByType('PIB');
             $stmt_test_c = $conn->prepare($query_SQL);
     
             // Виконуємо запит
@@ -63,26 +63,70 @@ if (isset($_POST['codes'])) {
     
     
 /*---------------------------------------------------------------------------------------------------------*/
-            case 'insert-upadate-date':
-                echo '------------------Результат-------------------------<br>';
+
+ case 'insert-upadate-date':
                 $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
                 $nomerValue = isset($_POST['nomer']) ? $_POST['nomer'] : '';
-                $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';                
-        
+                $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';
+                $IP_SHTAT_INDEX = isset($_POST['IP_SHTAT_INDEX']) ? $_POST['IP_SHTAT_INDEX'] : '';
+                
+                 
+                $IP_SHTAT_MONTH = isset($_POST['IP_SHTAT_MONTH']) ? $_POST['IP_SHTAT_MONTH'] : '';
+                $IP_SHTAT_NAME_PIDR = isset($_POST['IP_SHTAT_NAME_PIDR']) ? $_POST['IP_SHTAT_NAME_PIDR'] : '';
+                $IP_SHTAT_PIB = isset($_POST['IP_SHTAT_PIB']) ? $_POST['IP_SHTAT_PIB'] : '';
+                $IP_SHTAT_POSADA = isset($_POST['IP_SHTAT_POSADA']) ? $_POST['IP_SHTAT_POSADA'] : '';
+                $IP_STAT_DATE_START = isset($_POST['IP_STAT_DATE_START']) ? $_POST['IP_STAT_DATE_START'] : '';
+
+                echo  'Date insert with dateValue:' . $dateValue.'<br>';
+                echo  'nomerValue:' . $nomerValue.'<br>';
+                echo  'selectPidSys:' . $selectPidSys.'<br>';
+                
+                echo  'IP_SHTAT_INDEX:' . $IP_SHTAT_INDEX.'<br>';
+                echo  'IP_SHTAT_MONTH:' .$IP_SHTAT_MONTH.'<br>';
+                echo  'IP_SHTAT_NAME_PIDR:' .$IP_SHTAT_NAME_PIDR.'<br>';
+                echo  'IP_SHTAT_PIB:' .$IP_SHTAT_PIB.'<br>';
+                echo  'IP_SHTAT_POSADA:' .$IP_SHTAT_POSADA .'<br>';
+                echo  'IP_STAT_DATE_START:' .$IP_STAT_DATE_START .'<br>';
+
+
+/*
+            case 'insert-upadate-date':
+                echo '------------------Результат-------------------------<br>';                
+
+                // Отримання додаткових даних з responseData та розбір JSON-рядка
+                $responseDataValue = isset($_POST['responseData']) ? json_decode($_POST['responseData'], true) : [];
+
                 echo '___________' . $codes . '_______<br>';
-                echo 'Date insert with dateValue: ' . $dateValue . ' and nomerValue: ' . $nomerValue.' and selectPidSys: ' . $selectPidSys;
-
+                    echo '<pre>';
+                    var_dump($responseDataValue);
+                    echo '<pre>';
+                
+                // Виведення додаткових даних
+                echo ' and responseDataValue new: ';
+                
+                if (is_array($responseDataValue) || is_object($responseDataValue)) {
+                    foreach ($responseDataValue as $column => $value) {
+                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ';
+                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '<br>';
+                    }
+                
+                    echo '<hr>';
+                }
+                 else {
+                    echo 'Додаткові дані не є масивом або об\'єктом.';
+                } 
+                
                 break;
-
+*/
    /*---------------------------------------------------------------------------------------------------------*/
-                case 'selept-date-pib':
+                case 'select-date-pib':
                     try {
                         echo '....................Дані про службові......................<br>';
                         $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
                     
                        // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
     
-                        $query_SQL_date = getQuerySQL_PIB_all($dateValue);
+                        $query_SQL_date = getQueryByType('PIB_ALL', $dateValue);
                         $stmt_upr28_date = $conn->prepare($query_SQL_date);
                 
                         // Виконуємо запит
@@ -118,11 +162,10 @@ if (isset($_POST['codes'])) {
 
                     break;
  /*------------------------------------------------------------------------------------------------------------------------------ */ 
-                    case 'select-date-pidrozdil':
-                        try {
+                    case 'select-date-pidrozdil':                     
+
                             $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
-                        
-                            $query_SQL_date1 = getQuerySQL_PIB_date($dateValue);
+                            $query_SQL_date1 = getQueryByType('PIB_DATE', $dateValue);
                             $stmt_upr28_date1 = $conn->prepare($query_SQL_date1);
                         
                             // Виконуємо запит
@@ -130,38 +173,23 @@ if (isset($_POST['codes'])) {
                         
                             // Перевірка помилок
                             $errorInfo = $stmt_upr28_date1->errorInfo();
+                        
                             if ($errorInfo[0] !== PDO::ERR_NONE) {
-                                echo 'Помилка виконання запиту: ' . $errorInfo[2];
+                                $response = json_encode(['error' => 'Помилка виконання запиту: ' . $errorInfo[2]]);
                             } else {
-                                $data_upr28 = $stmt_upr28_date1->fetchAll(PDO::FETCH_ASSOC);
-                        
-                                echo '<table id="phpTableUserDate">';
-                                
-                                // Визначення власних заголовків
-                                $customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада','Прийняття на роботу']; // Замініть це на власні назви
-                                
-                                // Виведення заголовків
-                                echo '<tr>';
-                                foreach ($customHeaders as $header) {
-                                    echo '<th>' .  $header . '</th>';
-                                }
-                                echo '</tr>';
-                        
-                                // Виведення даних
-                                foreach ($data_upr28 as $row) {
-                                    echo '<tr>';
-                                    foreach ($row as $value) {
-                                        echo '<td>' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '</td>';
-                                    }
-                                    echo '</tr>';
-                                }
-                                echo '</table>';
-                            }
-                        } catch (PDOException $e) {
-                            echo 'Помилка бази даних: ' . $e->getMessage();
-                        }
-                        
+                                // Отримуємо дані з запиту
+                                $data_upr28 = $stmt_upr28_date1->fetchAll(PDO::FETCH_ASSOC); 
 
+                                $data_upr28_utf8 = array_map(function ($row) {
+                                    return array_map(function ($value) {
+                                        return htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value), ENT_QUOTES, 'UTF-8');
+                                    }, $row);
+                                }, $data_upr28);
+                           }
+
+                        // Повертаємо JSON-рядок для подальшого використання
+                        echo json_encode($data_upr28_utf8);
+                        
                     break;   
                     
     /*---------------------------------------------------------------------------------------------------------*/         

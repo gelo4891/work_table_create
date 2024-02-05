@@ -45,7 +45,7 @@ body {
   height: 15%;
 }
 
-#loading-krok2{
+#loading-krok1{
   text-align: center;
 }
 
@@ -74,7 +74,7 @@ body {
 
 #phpTableUserDate th,#phpTableUserDate td {
   border: 1px solid darkblue; /* Товщина і колір меж для комірок */
-  padding: 8px; /* Додайте внутрішній відступ для тексту у комірках */
+ /* padding: 8px; /* Додайте внутрішній відступ для тексту у комірках */
 
 }
 

@@ -12,83 +12,51 @@ $dbDsn = 'odbc:ODBS_dell720';
 $dbUser = 'upr28';
 $dbPass = 'upr28';   
 
- 
-  // Функція для формування SQL запиту
-  function getQuerySQL($placeholders) {
-      return " SELECT 
-      trunc(e.impdate), count(*) couunt
-      FROM ANALIZ.ERPN_HD e
-      where trunc(e.impdate)>=to_date('$placeholders','yyyy-mm-dd')
-      group by trunc(e.impdate)
-      order by 1 desc";
+function getQueryByType($type, $param = null) {
+  switch ($type) {
+      case 'PIB':
+          return "SELECT 
+                      IP_SHTAT_MONTH, IP_SHTAT_INDEX, IP_SHTAT_PIB,  
+                      IP_SHTAT_NAME_PIDR, IP_SHTAT_POSADA, IP_SHTAT_NAPRYAM
+                  FROM 
+                      UPR28.IP_2021_SHTAT
+                  WHERE 
+                      IP_SHTAT_MONTH = (SELECT DISTINCT(MAX(IP_SHTAT_MONTH)) FROM UPR28.IP_2021_SHTAT )
+                  ORDER BY 
+                      IP_SHTAT_PIB";
+         
+      case 'PIB_ALL':
+          $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
+          return "SELECT 
+                      SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
+                      SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
+                  FROM 
+                      UPR28.OLEG_SL_YDO_BLOK 
+                  WHERE 
+                      REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  
+                  ORDER BY 
+                      sl_date DESC";
+      
+      case 'PIB_DATE':
+          $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
+          //$userPibWindows1251 =  $param;
+          return "SELECT 
+                      IP_SHTAT_MONTH, 
+                      IP_SHTAT_INDEX, 
+                      IP_SHTAT_PIB, 
+                      IP_SHTAT_NAME_PIDR, 
+                      IP_SHTAT_POSADA, 
+                      TO_CHAR(IP_STAT_DATE_START, 'YYYY-MM-DD') AS IP_STAT_DATE_START
+                  FROM 
+                      UPR28.IP_2021_SHTAT
+                  WHERE 
+                      IP_SHTAT_MONTH = (SELECT DISTINCT(MAX(IP_SHTAT_MONTH)) FROM UPR28.IP_2021_SHTAT)
+                      AND REPLACE(UPPER(IP_SHTAT_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')";
+      
+      default:
+          // Handle unknown type
+          return "";
+  }
 }
-
-function getQuerySQL_PIB() {
-  return " SELECT 
-  IP_SHTAT_MONTH, IP_SHTAT_INDEX, IP_SHTAT_PIB,  
- IP_SHTAT_NAME_PIDR, IP_SHTAT_POSADA, IP_SHTAT_NAPRYAM
-FROM UPR28.IP_2021_SHTAT
-where IP_SHTAT_MONTH= (select distinct(max(IP_SHTAT_MONTH)) from UPR28.IP_2021_SHTAT )
-order by IP_SHTAT_PIB";
-}
-
-function getQuerySQL_PIB_one($UserPib) {
-  return " SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
-  SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
-  FROM UPR28.OLEG_SL_YDO_BLOK WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$UserPib'), ' ', '')";
-}
-
-function getQuerySQL_PIB_all($UserPib) {
-  // Перекодувати $UserPib в WINDOWS-1251
-  $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
-
-  return "SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
-          SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
-          FROM UPR28.OLEG_SL_YDO_BLOK 
-          WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  order by sl_date desc";
-}
-
-function getQuerySQL_PIB_date($UserPib) {
-  // Перекодувати $UserPib в WINDOWS-1251
-  $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
-
-  return " SELECT 
-  IP_SHTAT_MONTH, 
-  IP_SHTAT_INDEX, 
-  IP_SHTAT_PIB, 
-  IP_SHTAT_NAME_PIDR, 
-  IP_SHTAT_POSADA, 
-  TO_CHAR(IP_STAT_DATE_START, 'YYYY-MM-DD') AS IP_STAT_DATE_START
-FROM 
-  UPR28.IP_2021_SHTAT
-WHERE 
-  IP_SHTAT_MONTH = (SELECT DISTINCT(MAX(IP_SHTAT_MONTH)) FROM UPR28.IP_2021_SHTAT)
-  AND REPLACE(UPPER(IP_SHTAT_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '') 
-ORDER BY 
-  IP_SHTAT_PIB";
-}
-
-/*
-function getQuerySQL_insert_update($Inser_or_update,$user_date) {
-
-switch(){
-  case 'date_insert':
-  break;
-
-  case 'date_update':
-  break;
-  
-}
-
-  // Перекодувати $UserPib в WINDOWS-1251
-  $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $UserPib);
-
-  return "SELECT SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
-          SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
-          FROM UPR28.OLEG_SL_YDO_BLOK 
-          WHERE REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  order by sl_date desc";
-}
-*/
-
 
 ?>

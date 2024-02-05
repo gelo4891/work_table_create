@@ -1,62 +1,136 @@
-// Оголошення об'єкта elements на рівні верхнього рівня
 const elements = {
   select_PB_YDO: getElementById('html-select-PB-YDO'),
   loadingKrok2: getElementById('loading-krok1'),
   loadingKrok2Select: getElementById('html-loading-krok2-select'),
   searchInput: getElementById('searchInput'),
   PhpSelectMenu: getElementById('PhpSelectMenu'),
+  krok2SQL: getElementById('html-blok3_dani_user'),
+  HtmlUserInfo: getElementById('UserInfo'),
+  resultDiv: getElementById('resultDiv'),
+  url: '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', // Додайте URL як новий параметр  
+  swichKrok1: 'rozblok-loading-krok1',
+  swichKrok2: 'select-date-pib',
+  swichKrok3: 'select-date-pidrozdil',
+  swichKrok4: 'insert-upadate-date',  
 };
-/*
-function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
+
+const elementsClik = {
+  submitBtn: getElementById('php-submit-btn'),
+  inputeDate: getElementById('krok2-data'),
+  inputeNomer: getElementById('krok2-nomer'),    
+  selectPidSys: getElementById('html-select-PID-sys')  
+};
+
+// Зовнішній об'єкт для зберігання стану
+const state = {
+  responseData1: null,
+};
+
+function sendRequestAndUpdate(options) {
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true);
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      updateElement.innerHTML = xhr.responseText;
-      initializeDynamicSelect('PhpSelectMenu');
-    }
-  };
-
-  // Підготовка рядка параметрів з масиву
-  const paramsString = paramsArray.map(param => `${param.name}=${encodeURIComponent(param.value)}`).join('&');
-
-  xhr.send(`codes=${encodeURIComponent(codesValue)}&${paramsString}`);
-}
-*/
-
-function sendRequestAndUpdate(updateElement, codesValue, paramsArray) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/WC_ALL_Modules/5_Slyshbovi_roli/5_4_Slyshbovi_roli_PHP_Select.php', true); // Встановлення третього параметра як true робить запит асинхронним
+  xhr.open('POST', options.url, true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
   xhr.onload = function () {
     if (xhr.status === 200) {
-      updateElement.innerHTML = xhr.responseText;
-      initializeDynamicSelect('PhpSelectMenu');
+      // Перевірка, чи передано функцію для оновлення
+      if (options.updateElement) {
+        if (options.handleJsonResponse) {
+          try {
+            const responseData = JSON.parse(xhr.responseText);
+            state.responseData1 = responseData; // Оновлення стану
+            options.handleJsonResponse(responseData);
+          } catch (error) {
+              console.log('Raw response:', xhr.responseText);
+          }
+      } else {
+        options.updateElement.innerHTML = xhr.responseText;
+        initializeDynamicSelect('PhpSelectMenu');
+      }
+      }
     }
   };
 
-  // Підготовка рядка параметрів з масиву
-  const paramsString = paramsArray.map(param => `${param.name}=${encodeURIComponent(param.value)}`).join('&');
+  const paramsArray = options.paramsArr.map(param => `${param.name}=${encodeURIComponent(param.value)}`);
+  const paramsString = paramsArray.join('&');
 
-  xhr.send(`codes=${encodeURIComponent(codesValue)}&${paramsString}`);
+  xhr.send(`codes=${encodeURIComponent(options.codesValue)}&${paramsString}`);
 }
 
+function generateHtmlFromData(data) {
+  // Перевірка, чи data - це масив
+  if (Array.isArray(data)) {
+    // Отримання елементу для виведення даних
+    const userInfoElement = elements.HtmlUserInfo;
+
+    // Перевірка, чи елемент існує
+    if (userInfoElement) {
+      // Отримання таблиці, якщо вона вже існує
+      const existingTable = userInfoElement.querySelector('table');
+
+      // Очищення вмісту таблиці, якщо вона вже існує
+      if (existingTable) {
+        existingTable.innerHTML = '';
+      }
+
+      // Якщо таблиці не існує, то створюємо нову
+      const table = existingTable || document.createElement('table');
+      table.id = 'phpTableUserDate';
+
+      // Створення рядка заголовків
+      const headerRow = document.createElement('tr');
+      const customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада'];
+
+      customHeaders.forEach(headerText => {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+      });
+
+      table.appendChild(headerRow);
+
+      // Прохід по кожному елементу масиву
+      data.forEach(row => {
+        // Створення рядка даних
+        const dataRow = document.createElement('tr');
+
+        // Прохід по кожному полю у рядку
+        for (const column in row) {
+          if (row.hasOwnProperty(column)) {
+            // Створення комірки для кожного поля
+            const dataCell = document.createElement('td');
+            const columnValue = row[column];
+            dataCell.innerHTML = `${columnValue}`;
+            dataRow.appendChild(dataCell);
+          }
+        }
+
+        table.appendChild(dataRow);
+      });
+
+      // Додавання таблиці до елементу
+      userInfoElement.appendChild(table);
+    } else {
+      console.error('Елемент UserInfo не знайдено.');
+    }
+  } else {
+    console.error('Неправильний формат даних. Очікується масив.');
+  }
+}
 
 function initializeEventHandlers() {
-  /*elements.select_PB_YDO.addEventListener('input', () => {
-    const isOption1or2 = ['1', '2'].includes(elements.select_PB_YDO.value);
-    showHide(elements.loadingKrok2, isOption1or2);
-    hideHtmlInputDate();
-    if (isOption1or2) {
-     */ const paramsArray = [];
-      sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok1', paramsArray);
+  const paramsArray = [];
+   
+  sendRequestAndUpdate({
+        url: elements.url, // Використовуйте URL з об'єкта elements
+        updateElement: elements.loadingKrok2Select,
+        codesValue: elements.swichKrok1,
+        paramsArr: paramsArray
+      }
+     );
+
       initializeDynamicSelect('PhpSelectMenu');
-      //openSelectOptions('PhpSelectMenu');
-  /* }
-  });
-*/
+
   elements.searchInput.addEventListener('input', filterSelectOptions);
   elements.searchInput.addEventListener('focus', () => openSelectOptions('PhpSelectMenu'));
 }
@@ -93,23 +167,30 @@ function initializeDynamicSelect(ID_PhpSelectMenu) {
       const selectedValue = IdSelectValue.value;
       console.log('Ви вибрали:', selectedValue);
 
-      /*вибираємо дані про працівника*/
-      const elements = {
-        krok2SQL: getElementById('html-blok3_dani_user'),
-        HtmlUserInfo: getElementById('UserInfo'),
-      };
-
       const paramsArrayPib = [
         { name: 'PIB', value: selectedValue },
       ];
   
-      sendRequestAndUpdate(elements.HtmlUserInfo, 'select-date-pidrozdil', paramsArrayPib);
-      sendRequestAndUpdate(elements.krok2SQL, 'selept-date-pib', paramsArrayPib);
-      /*---------------------------------------------------------------------------------*/
+      /*відображаємо дані про службові*/
+      sendRequestAndUpdate({
+        url: elements.url, // Використовуйте URL з об'єкта elements
+        updateElement: elements.krok2SQL,
+        codesValue: elements.swichKrok2,
+        paramsArr: paramsArrayPib
+      });
 
+      sendRequestAndUpdate({
+        url: elements.url, // Використовуйте URL з об'єкта elements
+        updateElement: elements.HtmlUserInfo,
+        codesValue: elements.swichKrok3,
+        paramsArr: paramsArrayPib,
+        handleJsonResponse: generateHtmlFromData
+      });
+
+      /*---------------------------------------------------------------------------------*/
+     
       // Викликати функцію showHideHiddenBlock зі значенням
       showHideHiddenBlock(IdSelectValue);
-
     });
   }
 }
@@ -118,8 +199,13 @@ function showHideHiddenBlock(selectedDynamicValue) {
   getElementById('html-input-date').style.display = selectedDynamicValue !== '' ? 'block' : 'none';
   const paramsArray = []; // Опціонально, якщо є параметри для передачі
   
-  sendRequestAndUpdate(elements.loadingKrok2Select, 'rozblok-loading-krok1', paramsArray);
-
+  sendRequestAndUpdate({
+    url: elements.url, // Використовуйте URL з об'єкта elements
+    updateElement: elements.loadingKrok2Select,
+    codesValue: elements.swichKrok1,
+    paramsArr: paramsArray
+  });
+  
   filterSelectOptions();
 }
 
@@ -129,34 +215,81 @@ function filterSelectOptions() {
 }
 
 function clickButton() {
-  const elements = {
-    submitBtn: getElementById('php-submit-btn'),
-    inputeDate: getElementById('krok2-data'),
-    inputeNomer: getElementById('krok2-nomer'),
-    resultDiv: getElementById('resultDiv'),
-    selectPidSys: getElementById('html-select-PID-sys'),  
-  };
 
-  elements.inputeDate.addEventListener('input', checkButtonState);
-  elements.inputeNomer.addEventListener('input', checkButtonState);
-  elements.selectPidSys.addEventListener('change', checkButtonState);
+  elementsClik.inputeDate.addEventListener('input', checkButtonState);
+  elementsClik.inputeNomer.addEventListener('input', checkButtonState);
+  elementsClik.selectPidSys.addEventListener('change', checkButtonState);
+ 
+  elementsClik.submitBtn.addEventListener('click', () => {
+    
+    //console.log(state.responseData1);///////// тут зміни 
+    //console.log(state.responseData1[0])///////// тут зміни 
+      
+    // Підготовка інформації для відображення
+    let confirmationMessage = `
+    Ви впевнені, що хочете зберегти дані?
+    Дата  службової: ${elementsClik.inputeDate.value}
+    Номер службової: ${elementsClik.inputeNomer.value}
+    Система: ${elementsClik.selectPidSys.value}
+  `;
 
-  elements.submitBtn.addEventListener('click', () => {
-    const paramsArray = [
-      { name: 'date', value: elements.inputeDate.value },
-      { name: 'nomer', value: elements.inputeNomer.value },
-      { name: 'selectPidSys', value: elements.selectPidSys.value },
-    ];
+      const paramsArray = [
+        { name: 'date', value: elementsClik.inputeDate.value },
+        { name: 'nomer', value: elementsClik.inputeNomer.value },
+        { name: 'selectPidSys', value: elementsClik.selectPidSys.value },
+      ];
 
-    sendRequestAndUpdate(elements.resultDiv, 'insert-upadate-date', paramsArray);
+      const responseData = state.responseData1[0];
 
-    elements.inputeDate.value = '';
-    elements.inputeNomer.value = '';
-    elements.selectPidSys.value = '0';
-    elements.submitBtn.disabled = true;
+      // Додавання всіх полів з responseData до paramsArray
+      for (const key in responseData) {
+        if (Object.prototype.hasOwnProperty.call(responseData, key)) {
+          paramsArray.push({ name: key, value: responseData[key] });
+      
+          // Додавання інформації до виводу
+          confirmationMessage += `
+            ${key}: ${responseData[key]}
+          `;
+        }
+      }
+  
+    // Виклик вікна підтвердження з інформацією
+    if (window.confirm(confirmationMessage)) { 
+
+      sendRequestAndUpdate({
+        url: elements.url, // Використовуйте URL з об'єкта elements
+        updateElement: elements.resultDiv,
+        codesValue: elements.swichKrok4,
+        paramsArr: paramsArray,///////// тут зміни 
+      });
+ 
+      // Очистка введених даних
+      elementsClik.inputeDate.value = '';
+      elementsClik.inputeNomer.value = '';
+      elementsClik.selectPidSys.value = '0';
+      elementsClik.submitBtn.disabled = true;
+    }
   });
 
   checkButtonState();
+}
+
+
+// Функція для визначення власної назви за ключем
+function getCustomFieldName(key) {
+  // Тут ви можете встановити власні правила для визначення власних назв за ключами
+  // Наприклад, можна використовувати об'єкт для відображення ключів на власні назви
+  const customFieldNames = {
+    IP_SHTAT_MONTH: 'Оновлено дані ',
+    IP_SHTAT_INDEX: 'Індекс підрозділу',
+    IP_SHTAT_NAME_PIDR: 'Назва підрозділу',
+    IP_SHTAT_PIB: 'PIB',
+    IP_SHTAT_POSADA: 'Посада',
+    IP_STAT_DATE_START: 'Почав працювати з ',
+  };
+
+  // Перевірка, чи існує власна назва для даного ключа
+  return customFieldNames[key] || key;
 }
 
 function checkButtonState() {
