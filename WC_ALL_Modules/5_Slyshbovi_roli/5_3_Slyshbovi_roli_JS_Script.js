@@ -244,15 +244,18 @@ function clickButton() {
       // Додавання всіх полів з responseData до paramsArray
       for (const key in responseData) {
         if (Object.prototype.hasOwnProperty.call(responseData, key)) {
-          paramsArray.push({ name: key, value: responseData[key] });
-      
+        
+          const customFieldName = getCustomFieldName(key); // Функція для отримання власної назви за ключем
+        
+          paramsArray.push({ name: key, value: responseData[key] });      
           // Додавання інформації до виводу
           confirmationMessage += `
-            ${key}: ${responseData[key]}
+            ${customFieldName}: ${responseData[key]}
           `;
         }
       }
-  
+
+
     // Виклик вікна підтвердження з інформацією
     if (window.confirm(confirmationMessage)) { 
 
