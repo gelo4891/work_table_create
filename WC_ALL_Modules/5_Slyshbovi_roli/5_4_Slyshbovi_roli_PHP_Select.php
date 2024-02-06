@@ -64,60 +64,63 @@ if (isset($_POST['codes'])) {
     
 /*---------------------------------------------------------------------------------------------------------*/
 
- case 'insert-upadate-date':
-                $dateValue = isset($_POST['date']) ? $_POST['date'] : '';
-                $nomerValue = isset($_POST['nomer']) ? $_POST['nomer'] : '';
-                $selectPidSys = isset($_POST['selectPidSys']) ? $_POST['selectPidSys'] : '';
-                $IP_SHTAT_INDEX = isset($_POST['IP_SHTAT_INDEX']) ? $_POST['IP_SHTAT_INDEX'] : '';
-                
-                 
+            case 'insert-upadate-date':
+                $SL_DATE = isset($_POST['SL_DATE']) ? $_POST['SL_DATE'] : '';
+                $SL_NUMBER = isset($_POST['SL_NUMBER']) ? $_POST['SL_NUMBER'] : '';
+                $SL_SYSTEM = isset($_POST['SL_SYSTEM']) ? $_POST['SL_SYSTEM'] : '';
+                $IP_SHTAT_INDEX = isset($_POST['IP_SHTAT_INDEX']) ? $_POST['IP_SHTAT_INDEX'] : '';         
                 $IP_SHTAT_MONTH = isset($_POST['IP_SHTAT_MONTH']) ? $_POST['IP_SHTAT_MONTH'] : '';
                 $IP_SHTAT_NAME_PIDR = isset($_POST['IP_SHTAT_NAME_PIDR']) ? $_POST['IP_SHTAT_NAME_PIDR'] : '';
                 $IP_SHTAT_PIB = isset($_POST['IP_SHTAT_PIB']) ? $_POST['IP_SHTAT_PIB'] : '';
                 $IP_SHTAT_POSADA = isset($_POST['IP_SHTAT_POSADA']) ? $_POST['IP_SHTAT_POSADA'] : '';
-                $IP_STAT_DATE_START = isset($_POST['IP_STAT_DATE_START']) ? $_POST['IP_STAT_DATE_START'] : '';
+                $IP_SHTAT_DATE_START = isset($_POST['IP_SHTAT_DATE_START']) ? $_POST['IP_SHTAT_DATE_START'] : '';
+                $SL_PRUMITKA='';
 
-                echo  'Date insert with dateValue:' . $dateValue.'<br>';
-                echo  'nomerValue:' . $nomerValue.'<br>';
-                echo  'selectPidSys:' . $selectPidSys.'<br>';
+                // convert params
+                $IP_SHTAT_PIB_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_PIB);
+                $IP_SHTAT_NAME_PIDR_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_NAME_PIDR);
+                $IP_SHTAT_POSADA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_POSADA);
+                $SL_SYSTEM_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_SYSTEM);
+                $SL_PRUMITKA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_PRUMITKA);
                 
-                echo  'IP_SHTAT_INDEX:' . $IP_SHTAT_INDEX.'<br>';
+                $query_SQL_date = getQueryByType(
+                    'DATE_INSERT',
+                    $IP_SHTAT_PIB_windows1251,
+                    $IP_SHTAT_INDEX, 
+                    $IP_SHTAT_NAME_PIDR_windows1251,
+                    $IP_SHTAT_POSADA_windows1251,
+                    $SL_DATE,
+                    $SL_NUMBER,
+                    $SL_SYSTEM_windows1251, 
+                    $SL_PRUMITKA_windows1251
+                    
+                );
+
+                $stmt_upr28_date = $conn->prepare($query_SQL_date);
+                
+                // Встановлюємо значення параметрів
+                $stmt_upr28_date->bindParam(':SL_PIB', $IP_SHTAT_PIB_windows1251, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_IND', $IP_SHTAT_INDEX, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_NAME_PIDROZDIL', $IP_SHTAT_NAME_PIDR_windows1251, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_POSADA', $IP_SHTAT_POSADA_windows1251, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_DATE', $SL_DATE, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_NUMBER', $SL_NUMBER, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_SYSTEM', $SL_SYSTEM_windows1251, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_PRUMITKA', $SL_PRUMITKA_windows1251, PDO::PARAM_STR);
+
+                // Виконуємо запит
+                $stmt_upr28_date->execute();
+
+                echo  'SL_DATE:' . $SL_DATE.'<br>';
+                echo  'SL_NUMBER:' . $SL_NUMBER.'<br>';
+                echo  'SL_SYSTEM:' . $SL_SYSTEM.'<br>';                
+                echo  'SL_IND:' . $IP_SHTAT_INDEX.'<br>';
                 echo  'IP_SHTAT_MONTH:' .$IP_SHTAT_MONTH.'<br>';
                 echo  'IP_SHTAT_NAME_PIDR:' .$IP_SHTAT_NAME_PIDR.'<br>';
                 echo  'IP_SHTAT_PIB:' .$IP_SHTAT_PIB.'<br>';
                 echo  'IP_SHTAT_POSADA:' .$IP_SHTAT_POSADA .'<br>';
-                echo  'IP_STAT_DATE_START:' .$IP_STAT_DATE_START .'<br>';
-
-
-/*
-            case 'insert-upadate-date':
-                echo '------------------Результат-------------------------<br>';                
-
-                // Отримання додаткових даних з responseData та розбір JSON-рядка
-                $responseDataValue = isset($_POST['responseData']) ? json_decode($_POST['responseData'], true) : [];
-
-                echo '___________' . $codes . '_______<br>';
-                    echo '<pre>';
-                    var_dump($responseDataValue);
-                    echo '<pre>';
-                
-                // Виведення додаткових даних
-                echo ' and responseDataValue new: ';
-                
-                if (is_array($responseDataValue) || is_object($responseDataValue)) {
-                    foreach ($responseDataValue as $column => $value) {
-                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ';
-                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '<br>';
-                    }
-                
-                    echo '<hr>';
-                }
-                 else {
-                    echo 'Додаткові дані не є масивом або об\'єктом.';
-                } 
-                
-                break;
-*/
+                echo  'IP_SHTAT_DATE_START:' .$IP_SHTAT_DATE_START .'<br>';
+            break;
    /*---------------------------------------------------------------------------------------------------------*/
                 case 'select-date-pib':
                     try {

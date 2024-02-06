@@ -79,7 +79,7 @@ function generateHtmlFromData(data) {
 
       // Створення рядка заголовків
       const headerRow = document.createElement('tr');
-      const customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада'];
+      const customHeaders = ['Дата інформації', 'Індекс', 'ПІБ', 'Підрозділ', 'Посада','дата прийняття на роботу'];
 
       customHeaders.forEach(headerText => {
         const headerCell = document.createElement('th');
@@ -225,36 +225,33 @@ function clickButton() {
     //console.log(state.responseData1);///////// тут зміни 
     //console.log(state.responseData1[0])///////// тут зміни 
       
-    // Підготовка інформації для відображення
-    let confirmationMessage = `
-    Ви впевнені, що хочете зберегти дані?
-    Дата  службової: ${elementsClik.inputeDate.value}
-    Номер службової: ${elementsClik.inputeNomer.value}
-    Система: ${elementsClik.selectPidSys.value}
-  `;
-
-      const paramsArray = [
-        { name: 'date', value: elementsClik.inputeDate.value },
-        { name: 'nomer', value: elementsClik.inputeNomer.value },
-        { name: 'selectPidSys', value: elementsClik.selectPidSys.value },
-      ];
-
-      const responseData = state.responseData1[0];
-
-      // Додавання всіх полів з responseData до paramsArray
-      for (const key in responseData) {
-        if (Object.prototype.hasOwnProperty.call(responseData, key)) {
-        
-          const customFieldName = getCustomFieldName(key); // Функція для отримання власної назви за ключем
-        
-          paramsArray.push({ name: key, value: responseData[key] });      
-          // Додавання інформації до виводу
-          confirmationMessage += `
-            ${customFieldName}: ${responseData[key]}
-          `;
-        }
+    const paramsArray = [
+      { name: 'SL_DATE', value: elementsClik.inputeDate.value },
+      { name: 'SL_NUMBER', value: elementsClik.inputeNomer.value },
+      { name: 'SL_SYSTEM', value: elementsClik.selectPidSys.value },
+    ];
+    
+    const responseData = state.responseData1[0];
+    
+    // Додавання всіх полів з responseData до paramsArray
+    for (const key in responseData) {
+      if (Object.prototype.hasOwnProperty.call(responseData, key)) {        
+        const customFieldName = getCustomFieldName(key);
+        paramsArray.push({ name: key, value: responseData[key] });
       }
+    }
 
+    // Тепер формуємо confirmationMessage на основі paramsArray
+    let confirmationMessage = `Ви впевнені, що хочете зберегти дані?`;
+
+    // Додавання інформації з paramsArray до confirmationMessage
+    for (const param of paramsArray) {
+      const customFieldName = getCustomFieldName(param.name);
+      confirmationMessage += `
+        ${customFieldName}: ${param.value}
+      `;
+    }
+      //console.log(paramsArray);
 
     // Виклик вікна підтвердження з інформацією
     if (window.confirm(confirmationMessage)) { 
@@ -263,8 +260,10 @@ function clickButton() {
         url: elements.url, // Використовуйте URL з об'єкта elements
         updateElement: elements.resultDiv,
         codesValue: elements.swichKrok4,
-        paramsArr: paramsArray,///////// тут зміни 
+        paramsArr: paramsArray,
       });
+
+      
  
       // Очистка введених даних
       elementsClik.inputeDate.value = '';
@@ -277,18 +276,20 @@ function clickButton() {
   checkButtonState();
 }
 
-
 // Функція для визначення власної назви за ключем
 function getCustomFieldName(key) {
   // Тут ви можете встановити власні правила для визначення власних назв за ключами
   // Наприклад, можна використовувати об'єкт для відображення ключів на власні назви
   const customFieldNames = {
+    SL_DATE: 'Дата  службової ',
+    SL_NUMBER: 'Номер службової №',
+    SL_SYSTEM: 'Система ',
     IP_SHTAT_MONTH: 'Оновлено дані ',
     IP_SHTAT_INDEX: 'Індекс підрозділу',
     IP_SHTAT_NAME_PIDR: 'Назва підрозділу',
     IP_SHTAT_PIB: 'PIB',
     IP_SHTAT_POSADA: 'Посада',
-    IP_STAT_DATE_START: 'Почав працювати з ',
+    IP_SHTAT_DATE_START: 'Почав працювати з ',
   };
 
   // Перевірка, чи існує власна назва для даного ключа

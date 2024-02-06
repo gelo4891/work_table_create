@@ -14,7 +14,7 @@ $dbPass = 'upr28';
 
 function getQueryByType($type, $param = null) {
   switch ($type) {
-      case 'PIB':
+    case 'PIB':
           return "SELECT 
                       IP_SHTAT_MONTH, IP_SHTAT_INDEX, IP_SHTAT_PIB,  
                       IP_SHTAT_NAME_PIDR, IP_SHTAT_POSADA, IP_SHTAT_NAPRYAM
@@ -24,8 +24,9 @@ function getQueryByType($type, $param = null) {
                       IP_SHTAT_MONTH = (SELECT DISTINCT(MAX(IP_SHTAT_MONTH)) FROM UPR28.IP_2021_SHTAT )
                   ORDER BY 
                       IP_SHTAT_PIB";
-         
-      case 'PIB_ALL':
+         break;
+
+    case 'PIB_ALL':
           $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
           return "SELECT 
                       SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
@@ -36,8 +37,8 @@ function getQueryByType($type, $param = null) {
                       REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')  
                   ORDER BY 
                       sl_date DESC";
-      
-      case 'PIB_DATE':
+               break;
+    case 'PIB_DATE':
           $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
           //$userPibWindows1251 =  $param;
           return "SELECT 
@@ -46,14 +47,40 @@ function getQueryByType($type, $param = null) {
                       IP_SHTAT_PIB, 
                       IP_SHTAT_NAME_PIDR, 
                       IP_SHTAT_POSADA, 
-                      TO_CHAR(IP_STAT_DATE_START, 'YYYY-MM-DD') AS IP_STAT_DATE_START
+                      TO_CHAR(IP_SHTAT_DATE_START, 'YYYY-MM-DD') AS IP_SHTAT_DATE_START
                   FROM 
                       UPR28.IP_2021_SHTAT
                   WHERE 
                       IP_SHTAT_MONTH = (SELECT DISTINCT(MAX(IP_SHTAT_MONTH)) FROM UPR28.IP_2021_SHTAT)
                       AND REPLACE(UPPER(IP_SHTAT_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')";
+               break;
       
-      default:
+    case 'DATE_INSERT':
+            return "INSERT INTO UPR28.OLEG_SL_YDO_BLOK  (
+                SL_PIB,
+                SL_IND,
+                SL_NAME_PIDROZDIL, 
+                SL_POSADA,
+                SL_DATE,
+                SL_NUMBER, 
+                SL_SYSTEM,
+                SL_PRUMITKA
+            )
+            SELECT
+                :SL_PIB,
+                :SL_IND,
+                :SL_NAME_PIDROZDIL, 
+                :SL_POSADA,
+                TO_DATE(:SL_DATE, 'YYYY-MM-DD'), -- Припускаємо, що SL_DATE - це рядок у форматі 'YYYY-MM-DD'
+                :SL_NUMBER, 
+                :SL_SYSTEM,
+                :SL_PRUMITKA
+
+            FROM DUAL;";
+               break;
+      
+      
+    default:
           // Handle unknown type
           return "";
   }
