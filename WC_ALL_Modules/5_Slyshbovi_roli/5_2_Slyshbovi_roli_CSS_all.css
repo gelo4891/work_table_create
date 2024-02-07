@@ -12,44 +12,43 @@ body {
 }
 
 #html-input-date{
- border: 1px solid blueviolet;
+ /*border: 1px solid blueviolet;*/
+ text-align: center;
 }
 
 
 #html-blok1_zagolovok{
   width: 100%;
-  background-color: aquamarine;
-  height: 15%;
-  border: 1px solid blue;
+  background-color: #2ba0e666;
+  height: 10%;
+  border-bottom: 5px solid rgb(193, 140, 12);
+  text-align: center;
 }
 
 #html-blok2_vnesennya{
   width: 70%;
   background-color: #e8a6095c;
-  height: 70%;
-  border: 1px solid blue;
+  height: 75%;
+  border-right: 5px solid rgb(193, 140, 12);
   overflow-y: auto;
 }
 
 #html-blok3_dani_user{
-  border: 1px solid red;
   width: 29%;
-  height: 70%;
+  height: 75%;
   overflow-y: auto;
   background: #3bcc1d47;
 }
 
 #resultDiv{
-  border: 1px solid red;
+  position: relative;
+  border-top: 5px solid rgb(193, 140, 12);
   width: 100%;
-  height: 15%;
+  height: 13%;
+  background-color: #fff77f;
 }
 
 #loading-krok1{
-  text-align: center;
-}
-
-#html-input-date{
   text-align: center;
 }
 
@@ -79,138 +78,53 @@ body {
 }
 
 
-
-
-
-
-/*-----------------------END Select Blok---------------------------------*/
-
-.table-row div {
-  display: table-cell;
-  padding: 5px;
-}
-    /*--------------------old-----------------------*/
-    
-    #name-h1{
-      text-align: center;
-    }
-
-    #code-input {
-      width: 99%;
-      height: 100px;
-      resize: none; /* Заборонити змінювати розмір */    
-    }
-
-    #submit-btn{
-      width: 99%; 
-      font-size: 24px;
-      color: darkred;
-      border: 2px solid darkmagenta;
-    }
-    #submit-btn:hover{
-      background-color: burlywood;
-    }
-
-    #export-btn{
-      width: 99%; 
-      font-size: 24px;
-      color: blue;
-      border: 4px solid darkgreen;
-    }
-    #export-btn:hover{
-      background-color: burlywood;
-    }
-
-    #code-table {
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-
-    #code-table th,
-    #code-table td {
-      padding: 5px;
-      border: 1px solid black;
-    }
-
-    #error-code-table {
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-
-    #error-code-table th,
-    #error-code-table td {
-      padding: 5px;
-      border: 1px solid black;
-    }
-
-
-    #table-good{
-      background-color: greenyellow;
-      overflow-x: auto;
-    }
-    
-    #table-error{
-      background-color: red;
-      overflow-x: auto;
-    }
-
-    #table-good th, 
-    #table-error th{
-      font-size: 30px;
-    /*  text-align: left;*/
-    }
-    #table-data{
-      border: 6px solid blue;      
-      overflow-x: auto; 
-    }
-/*=========================================================*/
-.error{
-  color: red;
-  font-size: 30px;
-}
-
-/*=========================================================*/
-#loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  z-index: 9999;
-
-}
-
-#loading-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
-  background-color: #ffffff;
-  text-align: center;
-  padding: 20px;
-  font-size: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: red;
-  animation: blinkBorder 2s infinite;
-  border-radius: 30%;
-}
-
-@keyframes blinkBorder {
+@keyframes changeGradient {
   0% {
-    border: 30px solid chartreuse;
-  }
-  50% {
-    border: 20px solid blue;
+    background-position: 0% 0%;
   }
   100% {
-    border: 10px solid green;
+    background-position: 100% 100%;
   }
 }
+
+#DivInsert {
+  position: absolute;
+  border-radius: 45%;
+  border: 4px solid aliceblue;
+  text-align: center;
+  top: 10%;
+  left: 35%;
+  background: linear-gradient(45deg, #6d26df, rgb(253, 215, 7), rgb(34, 180, 216), #61df26);
+  background-size: 200% 200%;
+  animation: changeGradient 4s infinite linear; /* Лінійна анімація для плавного переходу */
+}
+
+#DivInsert h1{
+  padding: 10px;
+}
+
+#Krok2-Input{
+  width: 500px;
+  height: 50px;
+  resize: none;
+}
+
+
+/*-------------------Таблиця про службові -------------------------------*/
+
+[id^="dani-slugbova"] {
+  border-collapse: collapse;
+}
+
+[id^="dani-slugbova"] th,
+[id^="dani-slugbova"] td {
+  border: 1px solid darkblue;
+}
+
+
+#dani-slugbova-slid{
+background-color: lightgray;
+text-align: center;
+}
+/*-------------------------------*/
 

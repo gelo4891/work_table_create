@@ -29,8 +29,14 @@ function getQueryByType($type, $param = null) {
     case 'PIB_ALL':
           $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
           return "SELECT 
-                      SL_PIB, SL_IND, SL_NAME_PIDROZDIL, 
-                      SL_POSADA, SL_DATE, SL_NUMBER, SL_SYSTEM, SL_PRUMITKA 
+                    SL_PIB,
+                    SL_IND,
+                    SL_NAME_PIDROZDIL,
+                    SL_POSADA, 
+                    SL_DATE, 
+                    SL_NUMBER, 
+                    SL_SYSTEM, 
+                    SL_PRUMITKA 
                   FROM 
                       UPR28.OLEG_SL_YDO_BLOK 
                   WHERE 
@@ -38,6 +44,8 @@ function getQueryByType($type, $param = null) {
                   ORDER BY 
                       sl_date DESC";
                break;
+
+
     case 'PIB_DATE':
           $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
           //$userPibWindows1251 =  $param;

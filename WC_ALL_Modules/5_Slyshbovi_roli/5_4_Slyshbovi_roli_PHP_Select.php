@@ -74,9 +74,10 @@ if (isset($_POST['codes'])) {
                 $IP_SHTAT_PIB = isset($_POST['IP_SHTAT_PIB']) ? $_POST['IP_SHTAT_PIB'] : '';
                 $IP_SHTAT_POSADA = isset($_POST['IP_SHTAT_POSADA']) ? $_POST['IP_SHTAT_POSADA'] : '';
                 $IP_SHTAT_DATE_START = isset($_POST['IP_SHTAT_DATE_START']) ? $_POST['IP_SHTAT_DATE_START'] : '';
-                $SL_PRUMITKA='';
+                $SL_PRUMITKA= isset($_POST['SL_PRUMITKA']) ? $_POST['SL_PRUMITKA'] : '';
 
                 // convert params
+                $SL_NUMBER_windows1251= iconv('UTF-8', 'WINDOWS-1251', $SL_NUMBER);
                 $IP_SHTAT_PIB_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_PIB);
                 $IP_SHTAT_NAME_PIDR_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_NAME_PIDR);
                 $IP_SHTAT_POSADA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_POSADA);
@@ -104,14 +105,22 @@ if (isset($_POST['codes'])) {
                 $stmt_upr28_date->bindParam(':SL_NAME_PIDROZDIL', $IP_SHTAT_NAME_PIDR_windows1251, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_POSADA', $IP_SHTAT_POSADA_windows1251, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_DATE', $SL_DATE, PDO::PARAM_STR);
-                $stmt_upr28_date->bindParam(':SL_NUMBER', $SL_NUMBER, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_NUMBER', $SL_NUMBER_windows1251, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_SYSTEM', $SL_SYSTEM_windows1251, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_PRUMITKA', $SL_PRUMITKA_windows1251, PDO::PARAM_STR);
 
                 // Виконуємо запит
-                $stmt_upr28_date->execute();
 
-                echo  'SL_DATE:' . $SL_DATE.'<br>';
+                if ($stmt_upr28_date->execute()) {
+                    echo '<div id="DivInsert">
+                     <h1> Дані записано успішно! </h1>
+                     </div>';
+                } else {
+                    echo "Помилка виконання запиту: " . implode(" ", $stmt_upr28_date->errorInfo());
+                }
+
+
+               /* echo  'SL_DATE:' . $SL_DATE.'<br>';
                 echo  'SL_NUMBER:' . $SL_NUMBER.'<br>';
                 echo  'SL_SYSTEM:' . $SL_SYSTEM.'<br>';                
                 echo  'SL_IND:' . $IP_SHTAT_INDEX.'<br>';
@@ -119,12 +128,12 @@ if (isset($_POST['codes'])) {
                 echo  'IP_SHTAT_NAME_PIDR:' .$IP_SHTAT_NAME_PIDR.'<br>';
                 echo  'IP_SHTAT_PIB:' .$IP_SHTAT_PIB.'<br>';
                 echo  'IP_SHTAT_POSADA:' .$IP_SHTAT_POSADA .'<br>';
-                echo  'IP_SHTAT_DATE_START:' .$IP_SHTAT_DATE_START .'<br>';
+                echo  'IP_SHTAT_DATE_START:' .$IP_SHTAT_DATE_START .'<br>';*/
             break;
    /*---------------------------------------------------------------------------------------------------------*/
                 case 'select-date-pib':
                     try {
-                        echo '....................Дані про службові......................<br>';
+                        
                         $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
                     
                        // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
@@ -150,13 +159,31 @@ if (isset($_POST['codes'])) {
                             // Отримуємо дані з запиту
                             $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);
 
+                            
+                            $counter = 1; // Ініціалізуємо лічильник
+
                             foreach ($data_upr28 as $row) {
+                                echo '<table id="dani-slugbova'.$counter.'">';
+                                echo '<tr>';
+                                echo '<th id="dani-slugbova-slid" colspan="2">';
+                                echo 'Дані про службову ' . $counter; // Виводимо номер
+                                echo '</th>';
+                                echo '</tr>';
                                 foreach ($row as $column => $value) {
-                                 //   echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ' ;
-                                    echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '<br>';
+                                    
+                                    echo '<tr>';
+                                    echo '<td>';
+                                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ' ;
+                                    echo '</td>';
+                                    echo '<td>';
+                                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) ;
+                                    echo '</td>';
+                                    echo '</tr>';
                                 }
-                                echo '<hr>';
-                            }                         
+                              $counter++; // Збільшуємо лічильник
+                              echo '</table>'; 
+                              echo '<br>';
+                            }    
                         }
 
                     } catch (PDOException $e) {

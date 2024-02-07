@@ -18,7 +18,8 @@ const elementsClik = {
   submitBtn: getElementById('php-submit-btn'),
   inputeDate: getElementById('krok2-data'),
   inputeNomer: getElementById('krok2-nomer'),    
-  selectPidSys: getElementById('html-select-PID-sys')  
+  selectPidSys: getElementById('html-select-PID-sys'), 
+  inputPrumitka: getElementById('Krok2-Input')  
 };
 
 // Зовнішній об'єкт для зберігання стану
@@ -49,7 +50,7 @@ function sendRequestAndUpdate(options) {
       }
       }
     }
-  };
+  }; 
 
   const paramsArray = options.paramsArr.map(param => `${param.name}=${encodeURIComponent(param.value)}`);
   const paramsString = paramsArray.join('&');
@@ -165,6 +166,13 @@ function initializeDynamicSelect(ID_PhpSelectMenu) {
   if (IdSelectValue) {
     IdSelectValue.addEventListener('input', () => {
       const selectedValue = IdSelectValue.value;
+
+      var divInsert = document.getElementById('DivInsert');
+
+      if (divInsert) {
+        divInsert.style.display = 'none';
+      } 
+
       console.log('Ви вибрали:', selectedValue);
 
       const paramsArrayPib = [
@@ -215,10 +223,10 @@ function filterSelectOptions() {
 }
 
 function clickButton() {
-
   elementsClik.inputeDate.addEventListener('input', checkButtonState);
   elementsClik.inputeNomer.addEventListener('input', checkButtonState);
   elementsClik.selectPidSys.addEventListener('change', checkButtonState);
+  elementsClik.inputPrumitka.addEventListener('change', checkButtonState);
  
   elementsClik.submitBtn.addEventListener('click', () => {
     
@@ -229,6 +237,8 @@ function clickButton() {
       { name: 'SL_DATE', value: elementsClik.inputeDate.value },
       { name: 'SL_NUMBER', value: elementsClik.inputeNomer.value },
       { name: 'SL_SYSTEM', value: elementsClik.selectPidSys.value },
+      { name: 'SL_PRUMITKA', value: elementsClik.inputPrumitka.value },
+
     ];
     
     const responseData = state.responseData1[0];
@@ -261,14 +271,13 @@ function clickButton() {
         updateElement: elements.resultDiv,
         codesValue: elements.swichKrok4,
         paramsArr: paramsArray,
-      });
-
-      
+      });    
  
       // Очистка введених даних
       elementsClik.inputeDate.value = '';
       elementsClik.inputeNomer.value = '';
       elementsClik.selectPidSys.value = '0';
+      elementsClik. inputPrumitka.value = '';
       elementsClik.submitBtn.disabled = true;
     }
   });

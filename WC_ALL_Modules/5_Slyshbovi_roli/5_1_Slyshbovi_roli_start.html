@@ -6,37 +6,28 @@
   <link type="text/css" rel="stylesheet" href="/WC_ALL_Modules/5_Slyshbovi_roli/5_2_Slyshbovi_roli_CSS_all.css">
 </head>
 <body>
+ 
   <div class="container">
-  <div id="html-blok1_zagolovok">  
-    <h2 id="name-h1">Внесення даних по службових<br>
+    <div id="html-blok1_zagolovok">  
+      <h2 id="name-h1">Внесення даних по службових<br>
                     ІКС "Податковий блок" або ІКС "Управління документами"
-    </h2>
-</div>
+      </h2>
+    </div>
 
   <div id="html-blok2_vnesennya">
     
-    <!--
-    <div> 
-     <p><h2>Крок 1</h2>Спочатку Виберіть систему</p>
-     <select id="html-select-PB-YDO">
-        <option disabled selected value="">Натисніть та виберіть ІКС</option>
-        <option value="1">ІКС "Податковий Блок"</option>
-        <option value="2">ІКС "Управління документами"</option>
-        <option value="3">TEST NULL</option>  
-     </select>  
-    </div> 
-  -->
-  
     <div id="loading-krok1">    
       <p><h2>Крок 1</h2>Через пошук або із списку виберіть працівника</p>
       <input type="text" id="searchInput" placeholder="Пошук працівника">
+
       <div id="html-loading-krok2-select"> </div>
+
     </div>  
 
     <div id="html-input-date" style="display: none;">
-      <div  id="html-krok2-SQL">
-        <h2>Дані про користувача</h2>
-        <p id="UserInfo"></p>
+        <div  id="html-krok2-SQL">
+          <h2>Дані про користувача</h2>
+          <p id="UserInfo"></p>
       </div>
 
 
@@ -73,9 +64,9 @@
             </td>
             <td>
               <label for="php-krok2-nomer">Введіть номер</label> 
-            </td>
+            </td>            
           </tr>
-            
+           
           <tr>
             <td>
               <input type="date" id="krok2-data" >
@@ -84,6 +75,18 @@
               <input type="text" id="krok2-nomer" >
             </td>
           </tr>
+
+          <tr>
+            <td colspan="2">
+              <a id="php-krok2-prumitka">Примітка</a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <textarea id="Krok2-Input"></textarea>
+            </td>
+          </tr>
+
         </table>    
 
       </div>
