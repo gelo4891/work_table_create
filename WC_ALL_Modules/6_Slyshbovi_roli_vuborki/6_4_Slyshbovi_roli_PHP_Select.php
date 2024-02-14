@@ -26,10 +26,7 @@ if (isset($_POST['codes'])) {
         case 'switch-select-all':
                 try {
                     
-                   // $dateValue = isset($_POST['PIB']) ? $_POST['PIB'] : '';
-                
-                   // echo '<input type="text" id="krok2-PIB-name" value="'.htmlspecialchars($dateValue).'">';
-
+                     // Отримання данних з бази
                     $query_SQL_date = getQueryByType('PIB_ALL');
                     $stmt_upr28_date = $conn->prepare($query_SQL_date);
             
@@ -70,15 +67,15 @@ if (isset($_POST['codes'])) {
                             
                             echo '<tr>';
                                 echo '<td>';
-                                echo '<input type="text" id="krok2-nomer" >';
+                                echo '<input type="text" id="select-PIB">';
                                 echo '</td>';
 
                                 echo '<td>';
-                                echo '<input type="text" id="krok2-nomer" >';
+                                echo '<input type="text" id="select-Index" >';
                                 echo '</td>';
 
                                 echo '<td>';
-                                echo '<input type="text" id="krok2-nomer" >';
+                                echo '<input type="text" id="select-name-pidr" >';
                                 echo '</td>';
 
                                 echo '<td>';
@@ -88,12 +85,12 @@ if (isset($_POST['codes'])) {
                                 echo '</td>';
 
                                 echo '<td>';
-                                echo '<input type="text" id="krok2-nomer" >';
+                                echo '<input type="text" id="select-number-sl" >';
                                 echo '</td>';
 
                                 echo '<td>';
                                     echo ' 
-                                    <select id="html-selects">
+                                    <select id="select-system">
                                         <option disabled selected value="0">Системи</option>
                                         <option value="ІКС Управління документами">ІКС "Управління документами"</option>
                                         <option value="ІКС Податковий Блок(основна)">ІКС "Податковий Блок"(основна)</option>
@@ -122,6 +119,7 @@ if (isset($_POST['codes'])) {
 
 
                         echo '<div>';
+                        
                         echo '<table id="dani-slugbova">';
                       
                        foreach ($data_upr28 as $row) {                            

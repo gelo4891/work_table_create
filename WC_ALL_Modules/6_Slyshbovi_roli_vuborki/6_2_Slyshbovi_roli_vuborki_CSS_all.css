@@ -1,6 +1,8 @@
 /*---------------------5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
+
 #container_vuborki{
-  height: 100vh;
+  height: 98vh;
+  background-color: blanchedalmond;
 }
 
 
@@ -18,7 +20,7 @@
 
 #blok_select{
   width: 100%;
-  height: 10%;
+  height: 13%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,7 +28,7 @@
   background-image: url('/WC_ALL_Modules/6_Slyshbovi_roli_vuborki/img/images.jpg'); /* Додайте шлях до свого файлу зображення */
   /*background: linear-gradient(45deg,rgb(34, 180, 216), rgb(253, 215, 7), #61df26,  rgb(34, 180, 216));*/
   background-size: 300% 300%;
-  animation: blok_select_bacground 15s infinite linear; /* Лінійна анімація для плавного переходу */
+  animation: blok_select_bacground 20s infinite linear; /* Лінійна анімація для плавного переходу */
 }
 
 
@@ -36,7 +38,7 @@
 
 #blok-rez{
   width: 100%;
-  height: 90%;
+  height: 80%;
   background-color: aqua;
   overflow-y: auto;
 }
@@ -61,6 +63,10 @@
 }
 #table-th input, #table-th select{
   width: 95%;
+}
+
+#blok_button{
+  text-align: center;
 }
 
 /*---------------------end 5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
