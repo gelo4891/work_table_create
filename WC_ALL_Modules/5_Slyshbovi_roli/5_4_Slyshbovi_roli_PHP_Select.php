@@ -148,18 +148,30 @@ if (isset($_POST['codes'])) {
                         $errorInfo = $stmt_upr28_date->errorInfo();
                         if ($errorInfo[0] !== PDO::ERR_NONE) {
                             echo 'Помилка виконання запиту: ' . $errorInfo[2];
-                        } else {
+                        } else {                        
 
-                            $columns = [];
+                            /*$columns = [];
                             for ($i = 0; $i < $stmt_upr28_date->columnCount(); $i++) {
                                 $colMeta = $stmt_upr28_date->getColumnMeta($i);
                                 $columns[] = $colMeta['name'];
-                            }
+                            }*/
+
+                             $customColumnNames = [
+                                'SL_PIB' => 'ПІБ',
+                                'SL_IND' => 'Індекс',
+                                'SL_NAME_PIDROZDIL'=> 'Назва підрозділу',
+                                'SL_POSADA'=> 'Посада',
+                                'SL_DATE'=> 'Дата службової',
+                                'SL_NUMBER'=> 'Номер службової',
+                                'SL_SYSTEM'=> 'Система',
+                                'SL_PRUMITKA'=> 'Примітка'
+
+                                // Додайте інші назви полів, які вам потрібні
+                            ];
 
                             // Отримуємо дані з запиту
                             $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);
-
-                            
+          
                             $counter = 1; // Ініціалізуємо лічильник
 
                             foreach ($data_upr28 as $row) {
@@ -169,14 +181,15 @@ if (isset($_POST['codes'])) {
                                 echo 'Дані про службову ' . $counter; // Виводимо номер
                                 echo '</th>';
                                 echo '</tr>';
-                                foreach ($row as $column => $value) {
+                                foreach ($row as $column     => $value) {
                                     
+                                    $customColumnName = $customColumnNames[$column] ?? $column;
                                     echo '<tr>';
                                     echo '<td>';
-                                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $column)) . ': ' ;
+                                    echo  $customColumnName;
                                     echo '</td>';
                                     echo '<td>';
-                                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) ;
+                                    echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) ;
                                     echo '</td>';
                                     echo '</tr>';
                                 }

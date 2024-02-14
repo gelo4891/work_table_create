@@ -41,13 +41,13 @@ function getQueryByType($type, $param = null) {
                     SL_PRUMITKA
                 FROM
                     UPR28.OLEG_SL_YDO_BLOK
-                WHERE
-                    REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')
-                ORDER BY
-                CASE WHEN SL_SYSTEM = '$OrderBy1' THEN 0 ELSE 1 END,                    
+               /* WHERE
+                    REPLACE(UPPER(SL_PIB), ' ', '') = REPLACE(UPPER('$userPibWindows1251'), ' ', '')*/
+                ORDER BY SL_IND
+              /*  CASE WHEN SL_SYSTEM = '$OrderBy1' THEN 0 ELSE 1 END,                    
                     CASE WHEN SL_SYSTEM = '$OrderBy2' THEN 0 ELSE 1 END,
                     SL_SYSTEM ,
-                    SL_DATE ";
+                    SL_DATE*/ ";
                break;
 
 

@@ -1,0 +1,70 @@
+/*---------------------5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
+#container_vuborki{
+  height: 100vh;
+}
+
+
+@keyframes blok_select_bacground {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+ /* 100% {
+    background-position: 0% 0%;
+  }*/
+}
+
+#blok_select{
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url('/WC_ALL_Modules/6_Slyshbovi_roli_vuborki/img/images.jpg'); /* Додайте шлях до свого файлу зображення */
+  /*background: linear-gradient(45deg,rgb(34, 180, 216), rgb(253, 215, 7), #61df26,  rgb(34, 180, 216));*/
+  background-size: 300% 300%;
+  animation: blok_select_bacground 15s infinite linear; /* Лінійна анімація для плавного переходу */
+}
+
+
+#blok_select select{
+  font-size: 20px;
+}
+
+#blok-rez{
+  width: 100%;
+  height: 90%;
+  background-color: aqua;
+  overflow-y: auto;
+}
+
+#div-dani{
+  position: sticky;
+  top: 0px; /* Регулюйте це значення відповідно до ваших потреб */
+  background-color: antiquewhite;; /* Фон заголовків, які мають залишатися видимими */
+  z-index: 99; /* Значення z-index менше, ніж у блоку #blok_select, але більше, ніж у решти контенту */
+}
+
+
+#table-th, #dani-slugbova {
+  width: 100%;
+  table-layout: fixed; /* Забезпечує однакову ширину стовпців */
+  border-collapse: collapse;
+}
+
+#table-th th,#table-th td, #dani-slugbova th, #dani-slugbova td {
+  border: 1px solid darkblue;
+  padding: 8px;
+}
+#table-th input, #table-th select{
+  width: 95%;
+}
+
+/*---------------------end 5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
+
+
+
+

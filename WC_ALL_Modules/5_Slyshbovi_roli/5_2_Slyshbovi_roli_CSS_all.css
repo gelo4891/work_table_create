@@ -9,6 +9,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   height: 100vh;
+
+  
 }
 
 #html-input-date{
@@ -18,34 +20,70 @@ body {
 
 
 #html-blok1_zagolovok{
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
   background-color: #2ba0e666;
-  height: 10%;
+  height: 15%;
   border-bottom: 5px solid rgb(193, 140, 12);
   text-align: center;
 }
 
+
+@keyframes changebacgrount {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+
+#html-blok1_statik{
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(45deg, #6d26df,  rgb(34, 180, 216),rgb(253, 215, 7), #61df26);
+  background-size: 200% 200%;
+  animation: changebacgrount 4s infinite linear; /* Лінійна анімація для плавного переходу */
+}
+
+#html-blok1_statik a{
+  font-size: 20px;
+}
+
+#html-blok1_text{
+  width: 80%;
+}
+
 #html-blok2_vnesennya{
-  width: 70%;
+  width: 67%;
   background-color: #e8a6095c;
-  height: 75%;
+  height: 84%;
   border-right: 5px solid rgb(193, 140, 12);
   overflow-y: auto;
 }
 
 #html-blok3_dani_user{
-  width: 29%;
-  height: 75%;
+  width: 32%;
+  height: 84%;
   overflow-y: auto;
   background: #3bcc1d47;
 }
 
 #resultDiv{
-  position: relative;
+  /*position: relative;
   border-top: 5px solid rgb(193, 140, 12);
   width: 100%;
   height: 13%;
-  background-color: #fff77f;
+  background-color: #fff77f;*/
+ /* display: none;*/
 }
 
 #loading-krok1{
@@ -88,12 +126,12 @@ body {
 }
 
 #DivInsert {
-  position: absolute;
-  border-radius: 45%;
+  /*position: absolute;
+  border-radius: 45%;*/
   border: 4px solid aliceblue;
   text-align: center;
-  top: 10%;
-  left: 35%;
+  /*top: 10%;
+  left: 35%;*/
   background: linear-gradient(45deg, #6d26df, rgb(253, 215, 7), rgb(34, 180, 216), #61df26);
   background-size: 200% 200%;
   animation: changeGradient 4s infinite linear; /* Лінійна анімація для плавного переходу */
@@ -114,6 +152,7 @@ body {
 
 [id^="dani-slugbova"] {
   border-collapse: collapse;
+  background-color: #d3df26;
 }
 
 [id^="dani-slugbova"] th,
@@ -126,5 +165,8 @@ body {
 background-color: lightgray;
 text-align: center;
 }
+
 /*-------------------------------*/
+
+
 
