@@ -68,6 +68,22 @@
 #blok_button{
   text-align: center;
 }
+/*--------------button edit save delete----------------*/
+#but-Edit{
+  background-color: cornflowerblue;
+}
+
+#but-Del{
+  background-color: red;
+}
+
+#but-Save{
+  background-color: chartreuse;
+}
+.edit-input{
+  width: 100%;
+}
+/*-----------------------------------------------------*/
 
 /*---------------------end 5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
 

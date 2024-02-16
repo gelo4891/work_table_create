@@ -47,7 +47,8 @@ if (isset($_POST['codes'])) {
                             'SL_DATE'=> 'Дата службової',
                             'SL_NUMBER'=> 'Номер службової',
                             'SL_SYSTEM'=> 'Система',
-                            'SL_PRUMITKA'=> 'Примітка'
+                            'SL_PRUMITKA'=> 'Примітка',
+                            'Дії'=> 'ДІї'
 
                             // Додайте інші назви полів, які вам потрібні
                         ];
@@ -79,9 +80,11 @@ if (isset($_POST['codes'])) {
                                 echo '</td>';
 
                                 echo '<td>';
+                                echo '<input type="text" id="select-name-posada" style="display:none">';
                                 echo '</td>';
 
                                 echo '<td>';
+                                echo '<input type="text" id="select-name-date" style="display:none">';
                                 echo '</td>';
 
                                 echo '<td>';
@@ -90,10 +93,10 @@ if (isset($_POST['codes'])) {
 
                                 echo '<td>';
                                     echo ' 
-                                    <select id="select-system">
-                                        <option disabled selected value="0">Системи</option>
+                                    <select id="select-system-filter">
+                                        <option selected value="0">ВСІ Системи</option>
                                         <option value="ІКС Управління документами">ІКС "Управління документами"</option>
-                                        <option value="ІКС Податковий Блок(основна)">ІКС "Податковий Блок"(основна)</option>
+                                        <option value="ІКС Податковий Блок (основна)">ІКС "Податковий Блок" (основна)</option>
                                         <option value="ІКС Податковий Блок (додаткові ролі)">ІКС "Податковий Блок"(додаткові ролі)</option>
                                         <option value="ІКС Єдине вікно подання звітності">ІКС "Єдине вікно подання звітності (Архів)"</option>
                                         <option value="ІКС Адміністративне та судове оскарження">ІКС "Адміністративне та судове оскарження"</option> 
@@ -119,21 +122,40 @@ if (isset($_POST['codes'])) {
 
 
                         echo '<div>';
-                        
+
                         echo '<table id="dani-slugbova">';
-                      
-                       foreach ($data_upr28 as $row) {                            
-                           foreach ($row as $column => $value) {
-                               
-                                echo '<td>';
-                                echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value));
-                                echo '</td>';
+
+                        foreach ($data_upr28 as $row) {                            
+                            $uniqueId = isset($row['ROWID']) ? $row['ROWID'] : 'ROWID'; // Використовуйте існуючий ROWID або створіть новий, якщо він не існує
+                            echo '<tr data-row-id="' . $uniqueId . '">';
+                            
+                            foreach ($row as $column => $value) {
+                                // Перевірте, чи поточна колонка має бути редагована
+                                if ($column != 'ROWID') {
+                                if (in_array($column, ['SL_DATE', 'SL_NUMBER', 'SL_PRUMITKA'])) {
+                                    echo '<td class="editable-column">';
+                                    echo '<span class="cell-value">' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '</span>';
+                                    echo '<input type="text" class="edit-input" data-column-name="' . $column . '" value="' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '" style="display:none;">';
+                                    echo '</td>';
+                                } else {
+                                    // Якщо колонка не потребує редагування, виводимо звичайний текст
+                                    echo '<td>';
+                                    echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value));
+                                    echo '</td>';
+                                }
                             }
-                        
+                        }
+                            
+                            echo '<td class="exclude-from-export">';
+                            echo '<button class="edit-btn">Edit</button>';
+                            echo '<button class="save-btn" style="display:none;">Save</button>';
+                            echo '<button class="cancel-btn" style="display:none;">Cancel</button>';    
+                            echo '</td>';
                             echo '</tr>';
                         }
-                        
+
                         echo '</table>';
+
                         echo '</div>';
                         echo '<br>';
  
@@ -144,7 +166,56 @@ if (isset($_POST['codes'])) {
                 }
 
                 break;    
+    /*------------------------------------------------------------*/
+        case 'switch-update':
+            try {
+                // Перевірка наявності обов'язкових параметрів
+                $SL_ROW = isset($_POST['data-row-id']) ? $_POST['data-row-id'] : '';
+                $SL_DATE = isset($_POST['SL_DATE']) ? $_POST['SL_DATE'] : '';
+                $SL_NUMBER = isset($_POST['SL_NUMBER']) ? $_POST['SL_NUMBER'] : '';
+                $SL_PRUMITKA = isset($_POST['SL_PRUMITKA']) ? $_POST['SL_PRUMITKA'] : '';
+            
+                // convert params
+                $SL_NUMBER_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_NUMBER);
+                $SL_PRUMITKA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_PRUMITKA);
+            /*
+                // Виведення даних на екран
+                echo 'data-row-id: ' . $SL_ROW . '<br>';
+                echo 'SL_DATE: ' . $SL_DATE . '<br>';
+                echo 'SL_NUMBER: ' . $SL_NUMBER_windows1251 . '<br>';
+                echo 'SL_PRUMITKA: ' . $SL_PRUMITKA_windows1251 . '<br>';
+          */
+               // Отримання данних з бази
+                $query_SQL_date = getQueryByType('DATE_UPDATE', 
+                    $SL_DATE
+                );
+
+                //echo $query_SQL_date;
+
+                $stmt_upr28_date = $conn->prepare($query_SQL_date);
+
+                // Встановлення параметрів та виконання запиту
+               // $stmt_upr28_date->bindParam(':SL_DATE', $SL_DATE, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_NUMBER', $SL_NUMBER_windows1251, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_PRUMITKA', $SL_PRUMITKA_windows1251, PDO::PARAM_STR);
+                $stmt_upr28_date->bindParam(':SL_ROW', $SL_ROW, PDO::PARAM_STR);
+
+                // Виконання запиту
+                $stmt_upr28_date->execute();
+            
+                // Перевірка помилок
+                $errorInfo = $stmt_upr28_date->errorInfo();
+                if ($errorInfo[0] !== PDO::ERR_NONE) {
+                    echo 'Помилка виконання запиту: ' . iconv('UTF-8', 'WINDOWS-1251', $errorInfo[2]);
+                }
+
+         } catch (PDOException $e) {
+            echo 'Помилка: ' . $e->getMessage();
+               
+            }
     
+            
+        break;  
     /*---------------------------------------------------------------------------------------------------------*/         
 
         default:
