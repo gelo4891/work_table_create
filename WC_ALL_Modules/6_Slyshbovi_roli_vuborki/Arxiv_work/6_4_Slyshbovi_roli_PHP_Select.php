@@ -55,7 +55,8 @@ if (isset($_POST['codes'])) {
 
                         // Отримуємо дані з запиту
                         $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);
-                          
+      
+                    
                         echo '<div id="div-dani">';
                             echo '<table id="table-th">';
                         
@@ -119,6 +120,7 @@ if (isset($_POST['codes'])) {
                             echo '</table>';
                         echo '</div>';
 
+
                         echo '<div>';
 
                         echo '<table id="dani-slugbova">';
@@ -130,15 +132,24 @@ if (isset($_POST['codes'])) {
                             foreach ($row as $column => $value) {
                                 // Перевірте, чи поточна колонка має бути редагована
                                 if ($column != 'ROWID') {
+                                if (in_array($column, ['SL_DATE', 'SL_NUMBER', 'SL_PRUMITKA'])) {
+                                    echo '<td class="editable-column">';
+                                    echo '<span class="cell-value">' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '</span>';
+                                    echo '<input type="text" class="edit-input" data-column-name="' . $column . '" value="' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '" style="display:none;">';
+                                    echo '</td>';
+                                } else {
                                     // Якщо колонка не потребує редагування, виводимо звичайний текст
                                     echo '<td>';
                                     echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value));
                                     echo '</td>';
+                                }
                             }
                         }
+                            
                             echo '<td class="exclude-from-export">';
-                            echo '<button id="id-edit-btn" class="edit-btn">Edit</button>';
-    
+                            echo '<button class="edit-btn">Edit</button>';
+                            echo '<button class="save-btn" style="display:none;">Save</button>';
+                            echo '<button class="cancel-btn" style="display:none;">Cancel</button>';    
                             echo '</td>';
                             echo '</tr>';
                         }
@@ -156,27 +167,35 @@ if (isset($_POST['codes'])) {
 
                 break;    
     /*------------------------------------------------------------*/
-        case 'update-date':
+        case 'switch-update':
             try {
                 // Перевірка наявності обов'язкових параметрів
-                $SL_ROW = isset($_POST['ROWID']) ? $_POST['ROWID'] : '';
+                $SL_ROW = isset($_POST['data-row-id']) ? $_POST['data-row-id'] : '';
                 $SL_DATE = isset($_POST['SL_DATE']) ? $_POST['SL_DATE'] : '';
                 $SL_NUMBER = isset($_POST['SL_NUMBER']) ? $_POST['SL_NUMBER'] : '';
                 $SL_PRUMITKA = isset($_POST['SL_PRUMITKA']) ? $_POST['SL_PRUMITKA'] : '';
-
+            
                 // convert params
                 $SL_NUMBER_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_NUMBER);
                 $SL_PRUMITKA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_PRUMITKA);
-
+            /*
+                // Виведення даних на екран
+                echo 'data-row-id: ' . $SL_ROW . '<br>';
+                echo 'SL_DATE: ' . $SL_DATE . '<br>';
+                echo 'SL_NUMBER: ' . $SL_NUMBER_windows1251 . '<br>';
+                echo 'SL_PRUMITKA: ' . $SL_PRUMITKA_windows1251 . '<br>';
+          */
                // Отримання данних з бази
                 $query_SQL_date = getQueryByType('DATE_UPDATE', 
                     $SL_DATE
-                );               
+                );
+
+                //echo $query_SQL_date;
 
                 $stmt_upr28_date = $conn->prepare($query_SQL_date);
 
                 // Встановлення параметрів та виконання запиту
-                $stmt_upr28_date->bindParam(':SL_DATE', $SL_DATE, PDO::PARAM_STR);
+               // $stmt_upr28_date->bindParam(':SL_DATE', $SL_DATE, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_NUMBER', $SL_NUMBER_windows1251, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_PRUMITKA', $SL_PRUMITKA_windows1251, PDO::PARAM_STR);
                 $stmt_upr28_date->bindParam(':SL_ROW', $SL_ROW, PDO::PARAM_STR);
@@ -191,106 +210,14 @@ if (isset($_POST['codes'])) {
                 }
 
          } catch (PDOException $e) {
-            echo 'Помилка: ' . $e->getMessage();               
-            }   
-            
-        break;  
-
-
-    /*---------------------------------------------------------------------------------------------------------*/         
-    case 'switch-info-update':
-       try {      
-            $SL_ROW = isset($_POST['SL_ROW']) ? $_POST['SL_ROW'] : '';
-           
-      
-            // Отримання данних з бази
-            $query_SQL_date = getQueryByType('PIB_UPDATE_INFO',$SL_ROW);
-            $stmt_upr28_date = $conn->prepare($query_SQL_date);
-
-            // Виконуємо запит
-            $stmt_upr28_date->execute();
-
-            // Перевірка помилок
-            $errorInfo = $stmt_upr28_date->errorInfo();
-            if ($errorInfo[0] !== PDO::ERR_NONE) {
-                echo 'Помилка виконання запиту: ' . $errorInfo[2];
-            } else {  
-                
-              // Отримуємо дані з запиту
-              $data_upr28 = $stmt_upr28_date->fetchAll(PDO::FETCH_ASSOC);   
-
-            $customColumnNames = [
-                'ROWID'=> 'ROWID',
-                'SL_PIB' => 'ПІБ',
-                'SL_IND' => 'Індекс',
-                'SL_NAME_PIDROZDIL'=> 'Назва підрозділу',
-                'SL_POSADA'=> 'Посада',
-                'SL_DATE'=> 'Дата службової',
-                'SL_NUMBER'=> 'Номер службової',
-                'SL_SYSTEM'=> 'Система',
-                'SL_PRUMITKA'=> 'Примітка',
-                // Додайте інші назви полів, які вам потрібні
-            ];
-
-              echo '<table id="data-update-slugbova">';
-
-              foreach ($data_upr28 as $row) {                      
-                echo '<tr>';
-                echo '<th>';
-                echo 'Коригування даних';
-                echo '</th>';
-                echo '</tr>';
-                              
-                foreach ($row as $column => $value) {
-                    // Перевірте, чи поточна колонка має бути редагована
-                    echo '<tr>';
-                    echo '<td>'.$customColumnNames[$column].'</td>';
-                
-                    if  (in_array($column, ['ROWID'])) {
-                        echo '<td oracle_row_id="'.$value.'">';
-                        echo  htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) ;
-                        echo '</td>';
-                    }
-                    else if ($column === 'SL_DATE') {
-                        // Форматуємо дату в формат "YYYY-MM-DD"
-                        $formattedDate = date('Y-m-d', strtotime($value));                
-                        echo '<td>';
-                        echo '<input type="date" data-column-name="' . $column . '" value="' . $formattedDate . '" ></input>';
-                        echo '</td>';                        
-                    } else if (in_array($column, ['SL_NUMBER', 'SL_PRUMITKA'])) {
-                        echo '<td>';
-                        echo '<input type="text" data-column-name="' . $column . '" value="' . htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value)) . '" ></input>';
-                        echo '</td>';
-                    } else {
-                        // Якщо колонка не потребує редагування, виводимо звичайний текст
-                        echo '<td>';
-                        echo htmlspecialchars(iconv('WINDOWS-1251', 'UTF-8', $value));
-                        echo '</td>';
-                    }                    
-                    echo '</tr>';  
-                }   
-
-                echo '<tr>';
-                echo '<td class="button-exclude-from-export">';
-                echo '<button class="save-btn">Save</button>';
-                echo '<button class="cancel-btn">Cancel</button>'; 
- 
-                echo '</td>';
-                echo '</tr>';
-              }
-
-             echo '</table>';
-
-           } 
-           
-        }catch (PDOException $e) {
             echo 'Помилка: ' . $e->getMessage();
                
             }
+    
+            
+        break;  
+    /*---------------------------------------------------------------------------------------------------------*/         
 
-
-        break; 
-            /*---------------------------------------------------------------------------------------------------------*/   
         default:
             // Якщо параметри не було передано, повертаємо порожню відповідь або виконуємо іншу логіку
             echo 'Invalid request';

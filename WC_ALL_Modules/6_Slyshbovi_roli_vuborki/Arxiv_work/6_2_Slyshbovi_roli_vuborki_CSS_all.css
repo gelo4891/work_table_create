@@ -87,30 +87,6 @@
 
 /*---------------------end 5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
 
-#blok-show {
-   display: none; 
-  width: 700px;
-  height: 600px;
-  background-color: #c2cfbb;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /*transform: translate(-50%, -50%) rotateY(30deg) rotateX(30deg);*/
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  z-index: 999;
-  transition: transform 0.3s ease; /* Додайте плавні переходи */
-}
 
-#blok-show:hover {
-  transform: translate(-50%, -50%) rotateY(0deg) rotateX(0deg);
-}
 
-#data-update-slugbova{
-  border: 1px solid blue;
-  border-collapse: collapse;
-}
-#data-update-slugbova tr, #data-update-slugbova td{
-  border: 1px solid blue;
-}
+

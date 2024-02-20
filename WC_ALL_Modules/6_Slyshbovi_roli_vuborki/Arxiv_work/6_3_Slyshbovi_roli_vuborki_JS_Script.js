@@ -3,10 +3,8 @@ const elements = {
   div_blok_rez: document.getElementById('blok-rez'),
   url: '/WC_ALL_Modules/6_Slyshbovi_roli_vuborki/6_4_Slyshbovi_roli_PHP_Select.php',
   swichKrok1: 'switch-select-all',
-  swichKrok2: 'update-date',
-  swichKrok3: 'switch-info-update',
+  swichKrok2: 'switch-update',
   exportBtn: document.getElementById('ButtonSave'),
-  blokShowElement: document.getElementById('blok-show'),
   paramsArrayTEST: [
     { name: 'PIB', value: 'test' },
   ],
@@ -148,7 +146,7 @@ document.addEventListener('click', function(event) {
   if (target.classList.contains('edit-btn')) {
     handleEditButton(target);
   } else if (target.classList.contains('save-btn')) {
-    handleSaveButton();
+    handleSaveButton(target);
   } else if (target.classList.contains('cancel-btn')) {
     handleCancelButton(target);
   }
@@ -156,86 +154,75 @@ document.addEventListener('click', function(event) {
 
 /*--------------------------------------------------------------------------------------*/
 function handleEditButton(button) {
-  // Отримуємо ближчий рядок (tr), в якому міститься кнопка
   var row = button.closest('tr');
+  var editableCells = row.querySelectorAll('.editable-column');
+  var editInputs = row.querySelectorAll('.edit-input');
 
-  // Отримуємо всі кнопки за класом "edit-btn" всередині рядка
-  var editButtons = row.querySelectorAll('.edit-btn');
-
-  // Вимикаємо активний клас для всіх кнопок у даному рядку
-  editButtons.forEach(function(editBtn) {
-    editBtn.classList.remove('active');
+  editableCells.forEach(function(cell, index) {
+      editInputs[index].value = cell.querySelector('.cell-value').innerText;
   });
 
-  // Додаємо активний клас тільки до натисканої кнопки
-  button.classList.add('active');
+  toggleElementVisibility(row, '.editable-column .cell-value', 'none');
+  toggleElementVisibility(row, '.editable-column .edit-input', 'inline-block');
+  toggleElementVisibility(row, '.edit-btn', 'none');
+  toggleElementVisibility(row, '.save-btn', 'inline-block');
+  toggleElementVisibility(row, '.cancel-btn', 'inline-block');
+}
 
-  /*---------------------Тестовий блок------------------------------------*/
-  elements.blokShowElement.style.display = 'block';
+/*--------------------------------------------------------------------------------------*/
+function handleSaveButton(button) {
+  var row = button.closest('tr');
+  var editInputs = row.querySelectorAll('.edit-input');
+  var cellValues = row.querySelectorAll('.cell-value');
 
-  // Отримуємо data-row-id для конкретного рядка
+  var updatedData = {};
+  editInputs.forEach(function(input, index) {
+    var columnName = input.getAttribute('data-column-name');
+    var columnValue = input.value;
+    updatedData[columnName] = columnValue;
+    cellValues[index].innerText = columnValue;
+  });
+
+  // Отримати ідентифікатор рядка
   var rowId = row.getAttribute('data-row-id');
 
-  // Створюємо масив для збереження параметрів
-  var paramsArray_rowId = [{ name: 'SL_ROW', value: rowId }];
+  // Відправити дані на сервер або виконати інші дії
+  toggleElementVisibility(row, '.cell-value', 'inline-block');
+  toggleElementVisibility(row, '.edit-input', 'none');
+  toggleElementVisibility(row, '.edit-btn', 'inline-block');
+  toggleElementVisibility(row, '.save-btn', 'none');
+  toggleElementVisibility(row, '.cancel-btn', 'none');
 
-  // Викликаємо вашу функцію sendRequestAndUpdate
+  // Підготувати дані для відправлення на сервер
+  var paramsArray1 = [];
+  for (var key in updatedData) {
+    paramsArray1.push({ name: key, value: updatedData[key] });
+  }
+
+  // Додати ідентифікатор рядка до параметрів
+  paramsArray1.push({ name: 'data-row-id', value: rowId });
+
+  // Відправити дані на сервер
   sendRequestAndUpdate({
     url: elements.url,
-    updateElement: elements.blokShowElement,
-    codesValue: elements.swichKrok3,
-    paramsArr: paramsArray_rowId,
+    updateElement: elements.blok_select,
+    codesValue: elements.swichKrok2,
+    paramsArr: paramsArray1,
   });
 }
 
-/*---------------------------------------------------------*/
-
-function handleSaveButton() {
-  var blokShow = document.getElementById('blok-show');
-
-  // Отримуємо всі input елементи в межах блоку
-  var inputs = blokShow.querySelectorAll('input[data-column-name]');
-
-  // Створюємо масив для збереження параметрів
-  var paramsArray = [];
-
-  // Отримуємо значення з input елементів
-  inputs.forEach(function(input) {
-      var columnName = input.getAttribute('data-column-name');
-      var value = input.value;
-
-      paramsArray.push({ name: columnName, value: value });
-  });
-
-  // Отримуємо значення oracle_row_id
-  var oracleRowId = blokShow.querySelector('td[oracle_row_id]').getAttribute('oracle_row_id');
-
-  // Додаємо oracle_row_id до масиву параметрів
-  paramsArray.push({ name: 'ROWID', value: oracleRowId });
-
-  // Виводимо отримані параметри в консоль (для перевірки)
-  console.log(paramsArray);
-
-  // Тепер ви можете використовувати цей масив параметрів для подальших дій
-  sendRequestAndUpdate({
-      url: elements.url,
-      updateElement: elements.blok_select,
-      codesValue: elements.swichKrok2,
-      paramsArr: paramsArray,
-  });
-
-  elements.blokShowElement.style.display = 'none';
-}
 
 
 /*--------------------------------------------------------------------------------------*/
 function handleCancelButton(button) {
   var row = button.closest('tr');
 
- toggleElementVisibility(row, '.edit-btn', 'block');
- elements.blokShowElement.style.display = 'none';
+  toggleElementVisibility(row, '.cell-value', 'inline-block');
+  toggleElementVisibility(row, '.edit-input', 'none');
+  toggleElementVisibility(row, '.edit-btn', 'inline-block');
+  toggleElementVisibility(row, '.save-btn', 'none');
+  toggleElementVisibility(row, '.cancel-btn', 'none');
 }
-
 
 function toggleElementVisibility(row, selector, displayValue) {
   row.querySelectorAll(selector).forEach(function(element) {
@@ -259,4 +246,3 @@ document.getElementById('ButtonSave').addEventListener('click', function() {
 
 });
 
-/*--------------------------------------------------------------*/
