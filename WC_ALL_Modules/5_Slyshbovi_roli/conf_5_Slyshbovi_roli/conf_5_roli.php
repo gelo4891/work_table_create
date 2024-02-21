@@ -30,6 +30,7 @@ function getQueryByType($type, $param = null) {
           $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
           $OrderBy1 = iconv('UTF-8', 'WINDOWS-1251', 'ІКС Податковий Блок (основна)');
           $OrderBy2 = iconv('UTF-8', 'WINDOWS-1251', 'ІКС Управління документами');
+          $userPibWindows1251 = str_replace("'", "''", $userPibWindows1251);
                 return "SELECT
                     SL_PIB,
                     SL_IND,
@@ -54,6 +55,7 @@ function getQueryByType($type, $param = null) {
     
     case 'PIB_DATE':
           $userPibWindows1251 = iconv('UTF-8', 'WINDOWS-1251', $param);
+          $userPibWindows1251 = str_replace("'", "''", $userPibWindows1251);
           //$userPibWindows1251 =  $param;
           return "SELECT 
                       IP_SHTAT_MONTH, 

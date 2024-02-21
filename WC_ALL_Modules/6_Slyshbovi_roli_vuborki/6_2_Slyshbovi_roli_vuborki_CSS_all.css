@@ -27,8 +27,8 @@
 
   background-image: url('/WC_ALL_Modules/6_Slyshbovi_roli_vuborki/img/images.jpg'); /* Додайте шлях до свого файлу зображення */
   /*background: linear-gradient(45deg,rgb(34, 180, 216), rgb(253, 215, 7), #61df26,  rgb(34, 180, 216));*/
-  background-size: 300% 300%;
-  animation: blok_select_bacground 20s infinite linear; /* Лінійна анімація для плавного переходу */
+  background-size: 200% 200%;
+  animation: blok_select_bacground 30s infinite linear; /* Лінійна анімація для плавного переходу */
 }
 
 
@@ -39,7 +39,7 @@
 #blok-rez{
   width: 100%;
   height: 80%;
-  background-color: aqua;
+  background-color: #35c7d794;
   overflow-y: auto;
 }
 
@@ -55,6 +55,17 @@
   width: 100%;
   table-layout: fixed; /* Забезпечує однакову ширину стовпців */
   border-collapse: collapse;
+}
+
+#dani-slugbova td{
+    /* Забезпечення переносу тексту на новий рядок, якщо він не поміщається */
+    word-wrap: break-word;
+
+    /* Або можна використати white-space: nowrap; для відключення автоматичного переносу тексту */
+    /*white-space: nowrap;
+
+    /* Забезпечення відображення зсуву тексту, який виходить за межі */
+    /*overflow: hidden;*/
 }
 
 #table-th th,#table-th td, #dani-slugbova th, #dani-slugbova td {
@@ -88,10 +99,10 @@
 /*---------------------end 5_5_Slyshbovi_roli_vuborki_start.html------------------------------*/
 
 #blok-show {
-   display: none; 
-  width: 700px;
-  height: 600px;
-  background-color: #c2cfbb;
+  display: none; 
+  /*width: 500px;
+  height: 400px;*/
+  background-color: beige;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -110,7 +121,37 @@
 #data-update-slugbova{
   border: 1px solid blue;
   border-collapse: collapse;
+ /* text-align: center;*/
+  margin: 5%;
 }
+
 #data-update-slugbova tr, #data-update-slugbova td{
   border: 1px solid blue;
+}
+
+#data-update-slugbova td:first-child {
+  /* Ваші стилі для першої колонки тут */
+  width: 150px;
+  font-weight: bold;
+  background-color: beige;  
+}
+  
+#dani-slugbova td:last-child{
+  text-align: center;
+}
+
+#data-update-slugbova td:not(:last-child) {
+    color: blue;
+}
+
+#id-edit-btn{
+  width: 50%;
+}
+
+.save-btn{
+  background-color: green;
+}
+
+.cancel-btn{
+  background-color: red;
 }

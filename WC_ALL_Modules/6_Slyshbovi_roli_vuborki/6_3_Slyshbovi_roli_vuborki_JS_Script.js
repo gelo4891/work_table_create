@@ -171,7 +171,9 @@ function handleEditButton(button) {
   button.classList.add('active');
 
   /*---------------------Тестовий блок------------------------------------*/
-  elements.blokShowElement.style.display = 'block';
+  elements.blokShowElement.style.display = 'flex';
+  elements.blokShowElement.style.justifyContent = 'center';
+  elements.blokShowElement.style.textAlign = 'center';
 
   // Отримуємо data-row-id для конкретного рядка
   var rowId = row.getAttribute('data-row-id');

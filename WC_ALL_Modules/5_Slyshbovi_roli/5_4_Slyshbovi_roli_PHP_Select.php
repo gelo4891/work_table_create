@@ -83,6 +83,10 @@ if (isset($_POST['codes'])) {
                 $IP_SHTAT_POSADA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $IP_SHTAT_POSADA);
                 $SL_SYSTEM_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_SYSTEM);
                 $SL_PRUMITKA_windows1251 = iconv('UTF-8', 'WINDOWS-1251', $SL_PRUMITKA);
+
+
+
+                //$IP_SHTAT_PIB_windows1251 = str_replace("'", "''", $IP_SHTAT_PIB_windows1251);
                 
                 $query_SQL_date = getQueryByType(
                     'DATE_INSERT',
@@ -149,12 +153,6 @@ if (isset($_POST['codes'])) {
                         if ($errorInfo[0] !== PDO::ERR_NONE) {
                             echo 'Помилка виконання запиту: ' . $errorInfo[2];
                         } else {                        
-
-                            /*$columns = [];
-                            for ($i = 0; $i < $stmt_upr28_date->columnCount(); $i++) {
-                                $colMeta = $stmt_upr28_date->getColumnMeta($i);
-                                $columns[] = $colMeta['name'];
-                            }*/
 
                              $customColumnNames = [
                                 'SL_PIB' => 'ПІБ',

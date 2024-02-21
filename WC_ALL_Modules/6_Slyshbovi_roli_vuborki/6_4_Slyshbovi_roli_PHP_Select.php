@@ -48,7 +48,7 @@ if (isset($_POST['codes'])) {
                             'SL_NUMBER'=> 'Номер службової',
                             'SL_SYSTEM'=> 'Система',
                             'SL_PRUMITKA'=> 'Примітка',
-                            'Дії'=> 'ДІї'
+                            'Коригування'=> 'Коригування'
 
                             // Додайте інші назви полів, які вам потрібні
                         ];
@@ -236,7 +236,7 @@ if (isset($_POST['codes'])) {
 
               foreach ($data_upr28 as $row) {                      
                 echo '<tr>';
-                echo '<th>';
+                echo '<th colspan="2">';
                 echo 'Коригування даних';
                 echo '</th>';
                 echo '</tr>';
@@ -273,9 +273,12 @@ if (isset($_POST['codes'])) {
                 echo '<tr>';
                 echo '<td class="button-exclude-from-export">';
                 echo '<button class="save-btn">Save</button>';
-                echo '<button class="cancel-btn">Cancel</button>'; 
- 
                 echo '</td>';
+
+                echo '<td>';                
+                echo '<button class="cancel-btn">Cancel</button>'; 
+                echo '</td>';
+
                 echo '</tr>';
               }
 
