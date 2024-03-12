@@ -109,7 +109,7 @@ function generateHtmlFromData(data) {
         table.appendChild(dataRow);
       });
 
-      // Додавання таблиці до елементу
+      // /*Додавання таблиці до елементу*/
       userInfoElement.appendChild(table);
     } else {
       console.error('Елемент UserInfo не знайдено.');

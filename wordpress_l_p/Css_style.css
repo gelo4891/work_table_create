@@ -1,0 +1,195 @@
+/* Css_style.css */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 0 5% 0 5%;
+  color: aquamarine;;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  background: url('img_progect/img_fon.jpg') center/120% 130% no-repeat fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/*--------------------------------------------------*/
+
+header {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+header a {
+  color: aquamarine;;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+.hed-div-1 p{
+  font-size: 30px;
+}
+
+.push-button{
+  background-color: #1589a7;
+  border-radius: 5%;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s; 
+}
+
+.push-button:active {
+  background-color: #38218c;
+  color: burlywood;
+}
+
+
+/*------------------------section start----------------------------------------*/
+section {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.block {  
+  box-sizing: border-box;
+}
+
+.block:nth-child(1),.block:nth-child(2) {
+  width: 48%;
+  height: 65vh; 
+}
+
+
+.sel_bl3 {
+  width: 100%;
+  height: 15vh;
+}
+
+.sel_bl1{
+ text-align: left;
+}
+
+.sel_bl1 p:nth-child(1){
+  font-size: 30px;
+}
+
+.sel_bl1 p:nth-child(2){
+  font-size: 20px;
+}
+
+/*----------------------Blok 2 img---------------------------------*/
+.block.sel_bl2 {
+  position: relative;
+  text-align: center;
+  overflow: hidden; 
+}
+
+.block.sel_bl2 h2,
+.block.sel_bl2 p {
+  position: relative;
+  z-index: 1;
+}
+
+.block.sel_bl2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('img_progect/img_hokey_1.png') center/contain no-repeat;
+  background-size: contain; 
+  animation: changeImage 10s infinite;   
+}
+
+@keyframes changeImage {
+  0% {
+    background-image: url('img_progect/img_coccet_1.png') ;
+  }
+  33.33% {
+    background-image: url('img_progect/img_hokey_1.png');
+  }
+  66.66% {
+    background-image: url('img_progect/img_basketbol_1.png');
+  }
+  100% {
+    background-image: url('img_progect/img_coccet_1.png') ;
+  }
+
+}
+/*------------------------------------------------------*/
+
+/*-----------------------start sel_bl3 -------------------------------*/
+
+.sel_bl3{
+  text-align: left;
+}
+
+/*------------------------sel_bl3 end------------------------------*/
+/*------------------------section end----------------------------------------*/
+
+/*------------------------Footer start----------------------------------------*/
+
+footer {
+  display: flex;
+  justify-content: space-around;  
+}
+
+footer div{
+  display: flex;
+  width: 50%;
+}
+
+footer div p:nth-child(1){
+  width: 25%;   
+  height: auto; 
+}
+
+footer div p:nth-child(2){
+  width: 75%; 
+  /*box-sizing: border-box; */
+  padding: 0 20px;  
+}
+
+
+footer div:nth-child(1) p:nth-child(1){
+  background: url(img_progect/img-giga.png) center/contain no-repeat;
+}
+
+footer div:nth-child(2) p:nth-child(1){
+  background: url(img_progect/img-turbo.png) center/contain no-repeat;
+}
+
+footer div:nth-child(3) p:nth-child(1){
+  background: url(img_progect/img-brain.png) center/contain no-repeat;
+}
+
+
+
+/*------------------------Footer end----------------------------------------*/
+
+/* Media queries for tablets and small screens */
+@media only screen and (max-width: 856px) {
+  section {
+      flex-direction: column;
+  }
+
+  .block:nth-child(1),
+  .block:nth-child(2),
+  .block:nth-child(3) {
+    width: 100%;
+    height:30vh; 
+  }
+}
